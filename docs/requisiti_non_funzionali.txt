@@ -1,0 +1,17 @@
+REQUISITI NON FUNZIONALI DEL SISTEMA SOFTWARE:
+
+RNF00: il sistema deve prevedere un'interfaccia utente, che sarà sviluppata tramite web-app. 
+	Questa permetterà agli utenti di interagire con il back-end.
+
+RNF01: il sistema deve prevedere un backend che espone un'interfaccia REST (per inserire dati ed interagire con essi).
+
+RNF02: il sistema deve prevedere un gestore del sottosistema IoT (uno per azienda), che comunica con i sensori e gli attuatori.
+
+RNF03: il gestore del sottosistema IoT interagisce con gli altri sottosistemi tramite broker MQTT.
+
+RNF04: saranno utilizzati i seguenti tool:
+	- Visual Paradigm per disegnare i diagrammi UML.
+	- Commenti in formato testuale
+	- IntelliJIdea per compilare, eseguire e testare il codice.
+	- Git per condividere documentazione e codice tra gli sviluppatori. 
+	- GitLab sarà utilizzato come repository on-line.
