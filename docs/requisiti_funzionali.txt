@@ -6,17 +6,15 @@ RF01: crea_utente
 
 RF02: aggiungi_proprieta --> solo agricoltori
 
-[RF02.1: configura_attuatori?] --> solo agricoltori (chiamato da RF02)
+RF03: configura_iot_devices --> solo agricoltori 
 
-RF03: visualizza_stato_proprieta --> condiviso da agricoltori e collaboratori
+RF04: visualizza_stato_proprieta (misure provenienti da sensori e stato attuatori) --> condiviso da agricoltori e collaboratori
 
-RF04: pianificazione_attuatori_proprieta --> solo agricoltori
+RF05: pianificazione_attuatori_proprieta --> solo agricoltori
 
-RF05: visualizza_elenco_proprieta --> collaboratori (?e agricoltori?)
+RF06: visualizza_elenco_proprieta --> collaboratori e agricoltori
 
-RF06: gestione_manuale_attuatori_proprieta --> condiviso da agricoltori e collaboratori
-
-RF07: visualizza_misure_proprieta --> condiviso da agricoltori e collaboratori
+RF07: gestione_manuale_attuatori_proprieta --> condiviso da agricoltori e collaboratori
 
 
 
