@@ -1,0 +1,20 @@
+REQUISITI FUNZIONALI DEL SISTEMA SOFTWARE:
+
+RF00: login
+
+RF01: crea_utente
+
+RF02: aggiungi_proprieta --> solo agricoltori
+
+RF03: configura_iot_devices --> solo agricoltori 
+
+RF04: visualizza_stato_proprieta (misure provenienti da sensori e stato attuatori) --> condiviso da agricoltori e collaboratori
+
+RF05: pianificazione_attuatori_proprieta --> solo agricoltori
+
+RF06: visualizza_elenco_proprieta --> collaboratori e agricoltori
+
+RF07: gestione_manuale_attuatori_proprieta --> condiviso da agricoltori e collaboratori
+
+
+
