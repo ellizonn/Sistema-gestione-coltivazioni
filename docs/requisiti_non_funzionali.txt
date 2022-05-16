@@ -15,3 +15,7 @@ RNF04: saranno utilizzati i seguenti tool:
 	- IntelliJIdea per compilare, eseguire e testare il codice.
 	- Git per condividere documentazione e codice tra gli sviluppatori. 
 	- GitLab sarà utilizzato come repository on-line.
+
+RNF05: si intende utilizzare un servizio di autorizzazione e autenticazione esterno basato sul protocollo OAUTH2
+
+RNF06: si intende realizzare un sistema molto modulare, basato su una architettura a microservizi

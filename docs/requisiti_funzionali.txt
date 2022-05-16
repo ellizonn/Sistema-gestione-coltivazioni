@@ -1,20 +1,30 @@
 REQUISITI FUNZIONALI DEL SISTEMA SOFTWARE:
 
-RF00: login
+RF00: login //questo requisito sarà gestito attraverso il protocollo OAuth2 e una libreria Java che lo supporta
 
-RF01: crea_utente
+RF01: crea_utente //questo requisito funzionale non sarà realizzato in pratica (gestito dagli amministratori tramite servizio OAuth2)
 
 RF02: aggiungi_proprieta --> solo agricoltori
 
+RF02B: elimina_proprieta --> solo agricoltori
+
 RF03: configura_iot_devices --> solo agricoltori 
+
+RF03B: elimina_iot_devices --> solo agricoltori
 
 RF04: visualizza_stato_proprieta (misure provenienti da sensori e stato attuatori) --> condiviso da agricoltori e collaboratori
 
 RF05: pianificazione_attuatori_proprieta --> solo agricoltori
 
+RF05B: elimina_configurazione --> solo agricoltori
+
 RF06: visualizza_elenco_proprieta --> collaboratori e agricoltori
 
 RF07: gestione_manuale_attuatori_proprieta --> condiviso da agricoltori e collaboratori
+
+RF08: invia_misure --> effettuato da sensori (visti come attori) + salvataggio su db
+
+RF09: ricezione_comandi --> recepiti dagli attuatori, inviati da gestore delle configurazione (mod. manuale/verificarsi di condizioni)
 
 
 
