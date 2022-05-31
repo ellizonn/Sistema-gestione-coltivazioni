@@ -7,6 +7,7 @@
 
     <!-- Optional JavaScript; choose one of the two! -->
     <script defer src="javascripts/navbar_footer.js"></script>
+    <script defer src="javascripts/richiedi_modals.js"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -28,38 +29,37 @@
       <h1>Questa è la pagina dove vengono visualizzate le proprieta possedute/collab e ne devo svegliere una</h1>
 
       <!--Questo è un esempio, ma dovrà tornare tutto dal javascripts-->
-      <form action>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Sinergia S.r.l
-        </label>
-      </div>
+     <!--       
+      <div class="card">
+        <div class="card-body">
+          <a class="nav-link" href="#azione_modal" data-toggle="modal" data-target="#azione_modal">FasoliPiante</a>
+        </div>
+      </div>-->
 
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-          FasoliPiante
-        </label>
-      </div>
+      <div class="card">
+        <div class="card-body">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#azione_modal">
+        FasoliPiante
+      </button>
+    </div>
+  </div>
 
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-          Agricoltiamo insieme
-        </label>
-      </div>
 
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-          Automatizzami sto cazzo
-        </label>
-      </div>
+  <div class="card">
+    <div class="card-body">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#azione_modal">
+    SempreVerde S.r.l
+  </button>
+</div>
+</div>
 
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>      
-
+<div class="card">
+  <div class="card-body">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#azione_modal">
+  SpigaOro
+</button>
+</div>
+</div>
     
     
 
@@ -77,4 +77,8 @@
      <footer class="footer bg-dark expand-xl text-center text-white id="menu_uniforme> 
     <img src="images/Logo_iSerra-removebg-preview.png">
     </footer>
+
+    <div id="modals_uniformi">
+      <!-- js -->
+    </div>
 </html>
