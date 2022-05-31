@@ -15,12 +15,16 @@ const port = 3000;
 //Oggetti per creare i JSON
 const azienda = require('./obj_azienda');
 const proprieta = require('./obj_proprieta');
+const dispositivo_iot = require ('./obj_dispositivo_iot');
 
 app.use(express.json());
 app.use(express.static('public'));
 app.get('/', (req, res) => res.redirect('/home.html'));
 
-//INIZIO API REST
+
+/* INIZIO API REST */
+
+// Paolo's API
 
 /*
   GET /v1/azienda_user/{id_user}
@@ -72,6 +76,61 @@ app.get ('/v1/aziende/:id_azienda/proprieta', (req, res) => {
           }); 
       }); 
 });
+
+
+// Elia's API
+
+/*
+    POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani
+    Aggiunge un nuovo piano di configurazione relativo ad una certa proprietà.
+*/
+app.post ('/v1/aziende/{id_azienda}/proprieta/{id_propr}/piani', (req, res) => {
+    gestore_configurazioni.nuova_configurazione(req.params.piano_configurazione).then ((id_piano) => {
+        if (id_piano.error404){
+            res.status(404).json(id_piano);
+        } else {
+            res.json(id_piano);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+});
+
+/*
+    PUT /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/?manuale={true;false}
+    Cambia la modalità di funzionamento (manuale/automatica) di un dato attuatore di una data proprietà.
+*/
+app.put ('/v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/?manuale={true;false}', (req, res) => {
+    gestore_configurazioni.cambio_mod_attuatore(req.params.id_device, req.params.manuale).then ((funzionamento_manuale) => {
+        if (funzionamento_manuale.error404){
+            res.status(404).json(funzionamento_manuale);
+        } else {
+            res.json(funzionamento_manuale);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+});
+
+/*
+    GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/device
+    Ottieni l’elenco degli IoT devices installati in una data proprietà.
+*/
+app.get ('/v1/aziende/{id_azienda}/proprieta/{id_propr}/device', (req, res) => {
+    gestore_configurazioni.ottieni_iot_proprieta(req.params.id_proprieta).then ((dispositivi_iot) => {
+        if (dispositivi_iot.error404){
+            res.status(404).json(dispositivi_iot);
+        } else {
+            res.json(dispositivi_iot);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+});
+
 
 //Attivo definitivamente il server --> ora accetto richieste
 app.listen (port, () =>  console.log(`Il server di iSerra è attivo all'indirizzo http://localhost:${port}` )) ;
