@@ -7,7 +7,7 @@
 class iSerra{
 
     constructor(){
-        /*this.DBSOURCE = './db.db';
+        this.DBSOURCE = './db.db';
         this.db =  new sqlite.Database(this.DBSOURCE, (err) => {
             if (err) {
                 //non si riesce ad aprire il db
@@ -17,8 +17,7 @@ class iSerra{
             else{
                 console.log('Il Database iSerra è stato aperto con successo');
             } 
-        });*/
-        console.log('Il Database iSerra è stato aperto con successo');
+        });
     }
 
 }

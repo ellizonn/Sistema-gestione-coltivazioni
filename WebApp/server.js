@@ -3,15 +3,15 @@
 
 //Varie import e costanti
 const express = require('express') ;
-const morgan = require('morgan');
-const fileUpload = require('express-fileupload');
+//const morgan = require('morgan');
+//const fileUpload = require('express-fileupload');
 
-const BacchettaMagicaServer = require('./iSerra'); //--> VEDERE
-const passport = require('passport'); //auth middleware
-const LocalStrategy = require('passport-local').Strategy; //username and password for login
-const session = require('express-session');
-const flash = require('connect-flash'); 
-const {check, validationResult} = require('express-validator');
+const iSerra = require('./iSerra'); //--> VEDERE
+//const passport = require('passport'); //auth middleware
+//const LocalStrategy = require('passport-local').Strategy; //username and password for login
+//const session = require('express-session');
+//const flash = require('connect-flash'); 
+//const {check, validationResult} = require('express-validator');
 const yhs = new iSerra(); // --> VEDERE
 const app = express();
 const port = 3000;

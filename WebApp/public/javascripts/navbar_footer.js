@@ -16,6 +16,16 @@ const x = `
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="elementi">
+
+
+        <li class="nav-item">
+        <a class="nav-link" href="Login.html">Login</a>
+        </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="Visualizza_elenco_proprieta.html">Visualizza elenco proprieta</a>
+        </li>
+
           <script>
             let log = document.getEle
           </script>

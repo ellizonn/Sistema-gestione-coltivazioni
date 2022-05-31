@@ -13,17 +13,40 @@ color: white;
   html,body{ 
     height: 100%; margin: 0; padding: 0; } 
 
+    
+
+    main{
+      margin-top: 130px;
+      text-align: center;
+      width: auto;
+      min-height: 100vh; /* will cover the 100% of viewport */
+       overflow: hidden;
+       display: block;
+       position: relative;
+    }
+
 
   .container{
     position: relative;
     inset-block-start: 20%;
   }
 
+  
   .footer {
-    position: relative;
-    bottom:0;
+    position: absolute;
+    bottom:auto;
     left:0;
     width:100%;
     height: auto;
     background: black;
     }
+
+
+   /* 
+   FOOTER PAOLO
+   .footer{
+      margin-top: 40px;
+      position: absolute;
+       bottom: 0;
+       width: 100%;
+    }*/
