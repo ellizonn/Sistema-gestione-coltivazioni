@@ -22,10 +22,10 @@ class gestore_configurazioni{
 
     /* METODI DEL GESTORE */
 
-    nuova_configurazione(piano_configurazione) {
+    nuova_configurazione(piano_configurazione, id_proprieta, id_utente) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO piani_configurazione VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            this.db.run(sql, [piano_configurazione.id_proprieta, piano_configurazione.id_utente, piano_configurazione.condizioni_misure, piano_configurazione.attuatori_coinvolti, piano_configurazione.conseguenze, piano_configurazione.tipo_piano, piano_configurazione.umidita_min, piano_configurazione.temperatura_max, piano_configurazione.tempo_funzionamento, piano_configurazione.temperatura_da, piano_configurazione.temperatura_a, piano_configurazione.luminosita_da, piano_configurazione.luminosita_a, piano_configurazione.orario_da, piano_configurazione.orario_a], function(err) {
+            this.db.run(sql, [piano_configurazione.id_proprieta, piano_configurazione.id_utente, piano_configurazione.condizioni_misure, piano_configurazione.attuatori_coinvolti, piano_configurazione.conseguenze, piano_configurazione.tipo_piano, piano_configurazione.umidita_min, piano_configurazione.temperatura_max, piano_configurazione.tempo_funzionamento, piano_configurazione.temperatura_da, piano_configurazione.temperatura_a, piano_configurazione.luminosita_da, piano_configurazione.luminosita_a, piano_configurazione.orario_da, piano_configurazione.orario_a, id_proprieta, id_utente], function(err) {
                 if (err) {
                     reject(err);
                 } else {
@@ -59,8 +59,8 @@ class gestore_configurazioni{
             this.db.get(sql, [id_proprieta], (err, rows) => {
                 if (err) 
                     reject(err);
-                else if (rows === undefined)
-                    resolve({error404: 'Nessun dispositivo_iot trovato per questa proprieta.'});
+                else if (rows.length === 0)
+                    resolve({error404: 'Nessun dispositivo_iot trovato per questa proprieta, o la proprieta non esiste'});
                 else {
                     let lista_dispositivi_iot = rows.map((row) => {return new dispositivo_iot(row.id_device,row.mod_interazione,row.parametri_connessione,row.tipo,row.unita_misura,row.funzione,row.stato,row.manuale)});
                     resolve(lista_dispositivi_iot);

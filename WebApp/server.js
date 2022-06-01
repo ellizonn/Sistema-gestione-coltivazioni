@@ -84,7 +84,7 @@ app.get ('/v1/aziende/:id_azienda/proprieta', (req, res) => {
 app.post ('/v1/aziende/:id_azienda/proprieta', (req, res) => {
     gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
         if (id_proprieta.error404){
-            res.status(404).json(id_piano);
+            res.status(404).json(id_piano); //TODO:forse intendevi id_proprieta?
         } else {
             res.json(id_proprieta);
         }}).catch( (err) => {
@@ -119,8 +119,8 @@ app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', (req, res) => {
     POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani
     Aggiunge un nuovo piano di configurazione relativo ad una certa proprietà.
 */
-app.post ('/v1/aziende/{id_azienda}/proprieta/{id_propr}/piani', (req, res) => {
-    gestore_configurazioni.nuova_configurazione(req.params.piano_configurazione).then ((id_piano) => {
+app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', (req, res) => {
+    gestore_configurazioni.nuova_configurazione(req.body.piano_configurazione, req.params.id_proprieta, req.params.id_utente).then ((id_piano) => {
         if (id_piano.error404){
             res.status(404).json(id_piano);
         } else {
@@ -136,7 +136,7 @@ app.post ('/v1/aziende/{id_azienda}/proprieta/{id_propr}/piani', (req, res) => {
     PUT /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/?manuale={true;false}
     Cambia la modalità di funzionamento (manuale/automatica) di un dato attuatore di una data proprietà.
 */
-app.put ('/v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/?manuale={true;false}', (req, res) => {
+app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?manuale={true;false}', (req, res) => {
     gestore_configurazioni.cambio_mod_attuatore(req.params.id_device, req.params.manuale).then ((funzionamento_manuale) => {
         if (funzionamento_manuale.error404){
             res.status(404).json(funzionamento_manuale);
@@ -153,8 +153,8 @@ app.put ('/v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/?manu
     GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/device
     Ottieni l’elenco degli IoT devices installati in una data proprietà.
 */
-app.get ('/v1/aziende/{id_azienda}/proprieta/{id_propr}/device', (req, res) => {
-    gestore_configurazioni.ottieni_iot_proprieta(req.params.id_proprieta).then ((dispositivi_iot) => {
+app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', (req, res) => {
+    gestore_devices.ottieni_iot_proprieta(req.params.id_proprieta).then ((dispositivi_iot) => {
         if (dispositivi_iot.error404){
             res.status(404).json(dispositivi_iot);
         } else {
