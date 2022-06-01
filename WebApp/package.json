@@ -17,5 +17,6 @@
   "main": "app.js",
   "author": "",
   "license": "ISC",
+  "devDependencies": {},
   "description": ""
 }

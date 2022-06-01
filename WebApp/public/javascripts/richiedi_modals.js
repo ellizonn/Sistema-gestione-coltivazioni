@@ -38,3 +38,70 @@ const plus = `
             `;
 
 mod.innerHTML += plus;
+
+
+/*Ci serve per dividere le opzioni di scelta tra agricoltore e collaboratore*/
+(async function(){
+  let log = document.getElementById("modals_uniformi");
+ // let logged_collab = await fetch('/....');
+ // let logged_agric = await fetch('/....');
+ // const lcjson = await logged_collab.json();
+ //  const lajson = await logged_agric.json();
+
+ const lajson = true;
+ const lcjson = false;
+
+  let m;
+
+  if(lajson){  //loggato come agricoltore
+     m = `
+     
+       <div class="card">
+         <div class="card-body">
+          <a href="Visualizza_stato_proprieta.html">Visualizza stato proprieta'</a>
+         </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <a href="Gestione_manuale_attuatori_proprieta.html">Gestione manuale attuatori proprieta'</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <a href="Pianificazione_attuatori_proprieta.html">Pianificazione attuatori proprieta'</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <a href="Elimina_IoT_devices.html">Elimina IoT devices</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <a href="Elimina_proprieta.html">Elimina proprieta'</a>
+        </div>
+      </div>
+     `;
+     log.innerHTML += m;
+  }
+  else if(lcjson.log){ //loggato come collaboratore
+    m = `
+      <div class="card">
+        <div class="card-body">
+         <a href="Visualizza_stato_proprieta.html">Visualizza stato proprieta'</a>
+        </div>
+      </div>
+        
+         <div class="card">
+         <div class="card-body">
+              <a href="Gestione_manuale_attuatori_proprieta.html">Gestione manuale attuatori proprieta'</a>
+        </div>
+    </div>
+    `;
+    log.innerHTML += m;
+  }
+})
