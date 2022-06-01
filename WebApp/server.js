@@ -77,6 +77,41 @@ app.get ('/v1/aziende/:id_azienda/proprieta', (req, res) => {
       }); 
 });
 
+/*
+    POST /v1/aziende/{id_azienda}/proprieta
+    Aggiunge una nuova proprietà.
+*/
+app.post ('/v1/aziende/:id_azienda/proprieta', (req, res) => {
+    gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
+        if (id_proprieta.error404){
+            res.status(404).json(id_piano);
+        } else {
+            res.json(id_proprieta);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+});
+
+/*
+    DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}
+    Elimina una proprietà tra quelle esistenti.
+*/
+app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', (req, res) => {
+    gestore_proprieta.elimina_proprieta(req.params.id_propr).then((err) => {
+        if (err)
+            res.status(404).json(err);
+        else
+            res.status(200).end();
+    }).catch((err) =>{
+         res.status(500).json({ 
+            'errors': [{'param': 'Server', 'msg': err}]
+         }); 
+    } );
+});
+
+
 
 // Elia's API
 
