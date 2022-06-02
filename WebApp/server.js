@@ -116,6 +116,23 @@ app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', (req, res) => {
 // Elia's API
 
 /*
+    GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/device
+    Ottieni l’elenco degli IoT devices installati in una data proprietà.
+*/
+app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', (req, res) => {
+    gestore_devices.ottieni_iot_proprieta(req.params.id_proprieta).then ((dispositivi_iot) => {
+        if (dispositivi_iot.error404){
+            res.status(404).json(dispositivi_iot);
+        } else {
+            res.json(dispositivi_iot);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+});
+
+/*
     POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani
     Aggiunge un nuovo piano di configurazione relativo ad una certa proprietà.
 */
@@ -150,21 +167,93 @@ app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?manuale
 });
 
 /*
-    GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/device
-    Ottieni l’elenco degli IoT devices installati in una data proprietà.
+    DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani/{id_piano}
+    Elimina uno specifico piano di configurazione inserito in precedenza.
 */
-app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', (req, res) => {
-    gestore_devices.ottieni_iot_proprieta(req.params.id_proprieta).then ((dispositivi_iot) => {
-        if (dispositivi_iot.error404){
-            res.status(404).json(dispositivi_iot);
+app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/piani/:id_piano', (req, res) => {
+    gestore_configurazioni.elimina_configurazione(req.params.id_piano).then((err) => {
+        if (err)
+            res.status(404).json(err);
+        else
+            res.status(200).end();
+    }).catch((err) =>{
+         res.status(500).json({ 
+            'errors': [{'param': 'Server', 'msg': err}]
+         }); 
+    } );
+});
+
+/*
+    GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani
+    Ottieni l’elenco di piani di configurazione presenti su una proprietà.
+*/
+app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', (req, res) => {
+    gestore_configurazioni.ottieni_configurazioni_proprieta(req.params.id_proprieta).then ((piano_configurazione) => {
+        if (piano_configurazione.error404){
+            res.status(404).json(piano_configurazione);
         } else {
-            res.json(dispositivi_iot);
+            res.json(piano_configurazione);
         }}).catch( (err) => {
            res.status(500).json({ 
                'errors': [{'param': 'Server', 'msg': err}],
             }); 
         }); 
 });
+
+/*
+    PUT /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/?stato={true;false}
+    Cambia lo stato (“on”/”off”) di un certo attuatore.
+    Con “on”/”off” intendiamo se l’attuatore sta funzionando o meno.
+*/
+app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?stato={true;false}', (req, res) => {
+    gestore_stati.cambio_stato_attuatore(req.params.id_device, req.params.new_stato).then ((stato_attuale) => {
+        if (stato_attuale.error404){
+            res.status(404).json(stato_attuale);
+        } else {
+            res.json(stato_attuale);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+});
+
+/*
+    POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/misura
+    TODO: aggiungere descrizione (anche su file WORD!!!!!!!!)
+*/
+app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/misura', (req, res) => {
+    gestore_stati.nuova_misura(req.body.nuova_misura, req.params.id_device).then ((id_misura) => {
+        if (id_misura.error404){
+            res.status(404).json(id_misura);
+        } else {
+            res.json(id_misura);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+});
+
+/* TODO: gestore_stati.ottieni_stato_proprieta */
+
+/*
+    GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/manuale
+    Trova l’id dell’azienda in cui lavora un utente.
+*/
+app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/manuale', (req, res) => {
+    gestore_stati.ottieni_mod_singolo_attuatore(req.params.id_device).then ((funzionamento_manuale) => {
+        if (funzionamento_manuale.error404){
+            res.status(404).json(funzionamento_manuale);
+        } else {
+            res.json(funzionamento_manuale);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+              'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        });    
+  });
+
 
 
 //Attivo definitivamente il server --> ora accetto richieste

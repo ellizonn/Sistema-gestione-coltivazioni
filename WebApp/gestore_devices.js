@@ -23,7 +23,7 @@ class gestore_devices{
 
     ottieni_iot_proprieta(id_proprieta) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT id_device,mod_interazione,parametri_connessione,tipo,unita_misura,funzione,stato,manuale FROM dispositivi_iot WHERE fk_proprieta = ?';
+            const sql = 'SELECT id_device,mod_interazione,parametri_connessione,tipo,unita_misura,funzione,stato,manuale FROM dispositivo_iot WHERE fk_proprieta = ?';
             this.db.get(sql, [id_proprieta], (err, rows) => {
                 if (err) 
                     reject(err);

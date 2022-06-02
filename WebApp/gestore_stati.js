@@ -19,7 +19,56 @@ class gestore_stati{
     }
 
 
-   //metodi del gestore
+    /* METODI DEL GESTORE */
+
+    cambio_stato_attuatore(id_device, new_stato) {
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE dispositivo_iot SET stato = ? WHERE id_device = ?';
+            this.db.run(sql,  [new_stato, id_device], 
+            function (err) {
+                if(err){
+                    reject(err);
+                } else { 
+                    if (this.changes === 0)
+                        resolve({error404: 'Attuatore richiesto non trovato, oppure la proprietà o l\'azienda non esistono.'});
+                    else {
+                        resolve();
+                    }
+                }
+            })
+        });
+    }
+
+    nuova_misura(misura, id_device) {
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO misura(data_misurazione,ora_misurazione,valore_misurato,unita_misura,fk_device) VALUES (?, ?, ?, ?, ?)';
+            this.db.run(sql, [misura.data_misurazione,misura.ora_misurazione,misura.valore_misurato,misura.unita_misura,id_device], function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.lastID);
+                }
+            });
+        });
+    }
+
+    /* TODO:
+    ottieni_stato_proprieta(id_proprieta) {
+    } */
+
+    ottieni_mod_singolo_attuatore(id_device) {
+        return new Promise((resolve, reject) => {
+            const sql = "SELECT manuale FROM dispositivo_iot WHERE id_device=?";
+            this.db.get(sql,[id_device],(err, rows) =>{
+                if (err)
+                    reject(err); 
+                else if (rows === undefined)
+                    resolve({error404:'Nessuna azienda trovata con questo id.'});
+                else
+                    resolve(rows.manuale);
+            });        
+        });
+    }
    
 }
 
