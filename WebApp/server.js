@@ -235,7 +235,22 @@ app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/misura'
         }); 
 });
 
-/* TODO: gestore_stati.ottieni_stato_proprieta */
+/*
+    GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/stati_device
+    Ottieni l’elenco degli stati dei device appartenenti ad una determinata proprietà.
+*/
+app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/stati_device', (req, res) => {
+    gestore_stati.ottieni_stato_proprieta(req.params.id_proprieta).then ((proprieta) => {
+        if (proprieta.error404){
+            res.status(404).json(proprieta);
+        } else {
+            res.json(proprieta);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+  });
 
 /*
     GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/manuale
