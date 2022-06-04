@@ -19,5 +19,6 @@
   "main": "app.js",
   "author": "Paolo Rossari, Elia Marisio, Mattia Iabichino, Gregorio Lupano",
   "license": "ISC",
+  "devDependencies": {},
   "description": ""
 }
