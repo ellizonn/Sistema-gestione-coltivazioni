@@ -6,3 +6,5 @@
 *.vpp.working-journal
 *.lock
 tmp/*
+
+node_modules
