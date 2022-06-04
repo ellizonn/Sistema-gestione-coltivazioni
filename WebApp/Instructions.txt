@@ -1,0 +1,7 @@
+Nella cartella WebApp, digitare sul terminale
+
+1) <npm install>
+    in modo da installare i moduli nella cartella node_modules
+
+2) <node server.js>
+    in modo da avviare l'applicazione web
