@@ -13,7 +13,7 @@ class gestore_devices{
                 throw err;
             }
             else{
-                console.log('Il Database iSerra è stato aperto con successo');
+                //console.log('Il Database iSerra è stato aperto con successo');
             } 
         });
     }
