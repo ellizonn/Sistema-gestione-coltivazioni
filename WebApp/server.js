@@ -84,7 +84,7 @@ app.get ('/v1/aziende/:id_azienda/proprieta', (req, res) => {
 app.post ('/v1/aziende/:id_azienda/proprieta', (req, res) => {
     gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
         if (id_proprieta.error404){
-            res.status(404).json(id_piano); //TODO:forse intendevi id_proprieta?
+            res.status(404).json(id_proprieta); 
         } else {
             res.json(id_proprieta);
         }}).catch( (err) => {
@@ -111,6 +111,39 @@ app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', (req, res) => {
     } );
 });
 
+/*
+    POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/device
+    Aggiunge un nuovo device in una data proprietà.
+*/
+app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', (req, res) => {
+    gestore_devices.nuovo_device(req.body.device, req.params.id_propr).then ((id_device) => {
+        if (id_device.error404){
+            res.status(404).json(id_device);
+        } else {
+            res.json(id_device);
+        }}).catch( (err) => {
+           res.status(500).json({ 
+               'errors': [{'param': 'Server', 'msg': err}],
+            }); 
+        }); 
+});
+
+/*
+    DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}
+    Elimina un determinato device in una data proprietà.
+*/
+app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device', (req, res) => {
+    gestore_devices.elimina_device(req.params.id_device).then((err) => {
+        if (err)
+            res.status(404).json(err);
+        else
+            res.status(200).end();
+    }).catch((err) =>{
+         res.status(500).json({ 
+            'errors': [{'param': 'Server', 'msg': err}]
+         }); 
+    } );
+});
 
 
 // Elia's API
