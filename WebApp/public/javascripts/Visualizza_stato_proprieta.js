@@ -78,11 +78,11 @@ class visual_stato_proprieta_manager{
     }
 
     async fetchinfoProprieta(){
-        let response = await fetch(`/v1/aziende/${id}`); //Nelle parentesi graffe ci deve andare l'id dell'azienda
+        let response = await fetch(`/v1/aziende/${id}`); //Nelle parentesi graffe ci deve andare l'id dell'azienda, SISTEMARE
         const infoJson = await response.json;
         if(response.ok){
             for(let i=0; i<serJson.length; i++)
-                this.info_proprieta.push(new my_info_proprieta(serJson[i].id_proprieta,));
+                this.info_proprieta.push(new my_info_proprieta(serJson[i].id_proprieta, serJson[i].estensione_ettari, serJson[i].coltura, serJson[i].data_semina, serJson[i].lat, serJson[i].long, serJson[i].tipo_proprieta, serJson[i].copertura_mobile));
             return this.info_proprieta;
         }
         else {
