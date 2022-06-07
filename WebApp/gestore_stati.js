@@ -1,6 +1,9 @@
 "use strict";
 
 const sqlite = require('sqlite3').verbose();
+const gestore_devices = require('./gestore_devices');
+const iot = require('./obj_dispositivo_iot');
+const misura = require('./obj_misura');
 
 class gestore_stati{
 
@@ -53,21 +56,19 @@ class gestore_stati{
     }
 
     ottieni_stato_proprieta(id_proprieta) {
-        let lista_stati_attuatori_proprieta = this.ottieni_stato_attuatori_proprieta(id_proprieta);
-        let lista_stati_misure_proprieta = this.ottieni_stato_misure_proprieta(id_proprieta);
-        
+        //TODO: ?
     }
 
         ottieni_stato_attuatori_proprieta(id_proprieta) {
             return new Promise((resolve, reject) => {
                 const sql = 'SELECT id_device,stato FROM dispositivo_iot WHERE fk_proprieta = ?';
-                this.db.get(sql, [id_proprieta], (err, rows) => {
+                this.db.all(sql, [id_proprieta], (err, rows) => {
                     if (err) 
                         reject(err);
                     else if (rows.length === 0)
                         resolve({error404: 'Nessun dispositivo_iot trovato per questa proprieta, o la proprieta non esiste'});
                     else {
-                        let lista_stati_attuatori_proprieta = rows.map((row) => {return new dispositivo_iot(row.id_device,row.stato)});
+                        let lista_stati_attuatori_proprieta = rows.map((row) => {return new iot(row.id_device,row.stato)});
                         resolve(lista_stati_attuatori_proprieta);
                     }
                 });
@@ -77,7 +78,7 @@ class gestore_stati{
         ottieni_stato_misure_proprieta(id_proprieta) {
             return new Promise((resolve, reject) => {
                 const sql = 'SELECT id_misura,data_misurazione,ora_misurazione,valore_misurato,unita_misura FROM misura WHERE fk_device = (SELECT id_device FROM dispositivo_iot WHERE fk_proprieta = ?)';
-                this.db.get(sql, [id_proprieta], (err, rows) => {
+                this.db.all(sql, [id_proprieta], (err, rows) => {
                     if (err) 
                         reject(err);
                     else if (rows.length === 0)

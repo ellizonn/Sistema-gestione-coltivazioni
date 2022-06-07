@@ -1,7 +1,7 @@
 "use strict";
 
 const sqlite = require('sqlite3').verbose();
-const dispositivo_iot = require ('./obj_dispositivo_iot');
+const piano_configurazione = require ('./obj_piano_configurazione');
 
 class gestore_configurazioni{
 
@@ -73,8 +73,8 @@ class gestore_configurazioni{
 
     ottieni_configurazioni_proprieta(id_proprieta) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT id_piano,condizioni_misure,attuatori_coinvolti,conseguenze,tipo_piano,umidita_min,temperatura_max,tempo_funzionamento,temperatura_da,temperatura_a,luminosita_da,luminosita_a,orario_da,orario_a FROM piano_configurazione WHERE fk_proprieta = ?';
-            this.db.get(sql, [id_proprieta], (err, rows) => {
+            const sql = "SELECT id_piano,condizioni_misure,attuatori_coinvolti,conseguenze,tipo_piano,umidita_min,temperatura_max,tempo_funzionamento,temperatura_da,temperatura_a,luminosita_da,luminosita_a,orario_da,orario_a FROM piano_configurazione WHERE fk_proprieta = ?";
+            this.db.all(sql, [id_proprieta], (err, rows) => {
                 if (err) 
                     reject(err);
                 else if (rows.length === 0)
@@ -85,7 +85,7 @@ class gestore_configurazioni{
                 }
             });
         });
-    }
+    }//OK
 
 }
 
