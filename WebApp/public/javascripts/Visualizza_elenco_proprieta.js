@@ -1,4 +1,4 @@
-"use strict"
+/*"use strict"
 
 const proprietaContainer = document.getElementById("elenco_proprieta"); //Inserire l'id nell'HTML
 
@@ -26,11 +26,13 @@ class visual_elenco_proprieta_manager{
     async fetchinfoProprieta(){
         let response = await fetch(`/v1/aziende/${1}/proprieta`); //Nelle parentesi graffe ci deve andare l'id dell'azienda, SISTEMARE ":id_azienda"
         const infoJson = await response.json;
+        console.log("Sono qui");
         if(response.ok){
-            for(let i=0; i<serJson.length; i++)
+            for(let i=0; i<infoJson.length; i++)
                 console.log("Sono qui");
-                this.info_proprieta.push(new my_info_proprieta(serJson[i].id_proprieta, serJson[i].estensione_ettari, serJson[i].coltura, serJson[i].data_semina, serJson[i].lat, serJson[i].long, serJson[i].tipo_proprieta, serJson[i].copertura_mobile));
-            return this.info_proprieta;
+                this.info_proprieta.push(new my_info_proprieta(infoJson[i].id_proprieta, infoJson[i].estensione_ettari, infoJson[i].coltura, infoJson[i].data_semina, infoJson[i].lat, infoJson[i].long, infoJson[i].tipo_proprieta, infoJson[i].copertura_mobile));
+                console.log(this.info_proprieta.estensione_ettari);
+                return this.info_proprieta;
         }
         else {
             throw infoJson;
@@ -85,3 +87,5 @@ class visual_elenco_proprieta_app{
 }
 
 let app = new visual_elenco_proprieta_app(proprietaContainer);
+
+*/
