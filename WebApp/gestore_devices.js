@@ -27,8 +27,8 @@ class gestore_devices{
     //Ottieni l’elenco degli IoT devices installati in una data proprietà.
     ottieni_iot_proprieta(id_proprieta) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT id_device,mod_interazione,parametri_connessione,tipo,unita_misura,funzione,stato,manuale FROM dispositivo_iot WHERE fk_proprieta = ?';
-            this.db.get(sql, [id_proprieta], (err, rows) => {
+            const sql = "SELECT id_device,mod_interazione,parametri_connessione,tipo,unita_misura,funzione,stato,manuale FROM dispositivo_iot WHERE fk_proprieta = ?";
+            this.db.all(sql, [id_proprieta], (err, rows) => {
                 if (err) 
                     reject(err);
                 else if (rows.length === 0)
@@ -39,7 +39,7 @@ class gestore_devices{
                 }
             });
         });
-    }
+    }//OK
 
     //Aggiunge un nuovo device in una data proprietà.
     nuovo_device(device, id_proprieta) {
