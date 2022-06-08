@@ -274,45 +274,16 @@ app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/misura'
 */
 app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/stati_device', (req, res) => {
 
-    gestore_stati.ottieni_stato_proprieta(req.params.id_propr).then ((proprieta) => {
-        if (proprieta.error404){
-            res.status(404).json(proprieta);
+    gestore_stati.ottieni_stato_proprieta(req.params.id_propr).then ((lista_stati) => {   
+        if (lista_stati.error404){
+            res.status(404).json(lista_stati);
         } else {
-            res.json(proprieta);
+            res.json(lista_stati);
         }}).catch( (err) => {
            res.status(500).json({ 
                'errors': [{'param': 'Server', 'msg': err}],
             }); 
         });
-
-    /* let stato_attuatori_res;
-    let stato_misure_res;
-    gestore_stati.ottieni_stato_attuatori_proprieta(req.params.id_propr).then ((stato_attuatori) => {
-        if (stato_attuatori.error404){
-            stato_attuatori_res = res.status(404).json(stato_attuatori);
-        } else {
-            stato_attuatori_res = stato_attuatori;
-        }}).catch( (err) => {
-            stato_attuatori_res = res.status(500).json({ 
-                'errors': [{'param': 'Server', 'msg': err}],
-            });
-        });
-
-    gestore_stati.ottieni_stato_misure_proprieta(req.params.id_propr).then ((stato_misure) => {
-        if (stato_misure.error404){
-            stato_misure_res = res.status(404).json(stato_misure);
-        } else {
-            stato_misure_res = stato_misure;
-        }}).catch( (err) => {
-            stato_misure_res = res.status(500).json({ 
-                'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        });
-
-    res.json({
-        stato_attuatori_res,
-        stato_misure_res
-    }) */
     
 });
 

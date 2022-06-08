@@ -55,41 +55,38 @@ class gestore_stati{
         });
     }
 
-    ottieni_stato_proprieta(id_proprieta) {
-        //TODO: ?
-    }
 
-        ottieni_stato_attuatori_proprieta(id_proprieta) {
-            return new Promise((resolve, reject) => {
-                const sql = 'SELECT id_device,stato FROM dispositivo_iot WHERE fk_proprieta = ?';
+    ottieni_stato_proprieta(id_proprieta) {
+        return new Promise((resolve, reject) => {
+            let lista_stati_attuatori_proprieta;
+            const sql = 'SELECT id_device,stato FROM dispositivo_iot WHERE fk_proprieta=? AND tipo=\'Attuatore\'';
                 this.db.all(sql, [id_proprieta], (err, rows) => {
                     if (err) 
                         reject(err);
                     else if (rows.length === 0)
-                        resolve({error404: 'Nessun dispositivo_iot trovato per questa proprieta, o la proprieta non esiste'});
+                        resolve({error404: 'Nessun Sensore trovato per questa proprieta, o la proprieta non esiste'});
                     else {
-                        let lista_stati_attuatori_proprieta = rows.map((row) => {return new iot(row.id_device,row.stato)});
-                        resolve(lista_stati_attuatori_proprieta);
+                        lista_stati_attuatori_proprieta = rows.map((row) => {return new iot(row.id_device,row.stato)});
+                        //resolve(lista_stati_attuatori_proprieta);
                     }
                 });
-            });
-        }
-
-        ottieni_stato_misure_proprieta(id_proprieta) {
-            return new Promise((resolve, reject) => {
-                const sql = 'SELECT id_misura,data_misurazione,ora_misurazione,valore_misurato,unita_misura FROM misura WHERE fk_device = (SELECT id_device FROM dispositivo_iot WHERE fk_proprieta = ?)';
-                this.db.all(sql, [id_proprieta], (err, rows) => {
+            const sql1 = 'SELECT id_misura,data_misurazione,ora_misurazione,valore_misurato,unita_misura FROM misura WHERE fk_device = (SELECT id_device FROM dispositivo_iot WHERE fk_proprieta=? AND tipo=\'Sensore\')';
+                this.db.all(sql1, [id_proprieta], (err, rows) => {
                     if (err) 
                         reject(err);
                     else if (rows.length === 0)
-                        resolve({error404: 'Nessuna misura trovata per questo dispositivo_iot, oppure nessun dispositivo_iot trovato per questa proprieta, o la proprieta non esiste'});
+                        resolve({error404: 'Nessuna misura di Sensori trovata per questa proprieta\', oppure nessun Sensore trovato per questa proprieta, o la proprieta non esiste'});
                     else {
                         let lista_stati_misure_proprieta = rows.map((row) => {return new misura(row.id_misura,row.data_misurazione,row.ora_misurazione,row.valore_misurato,row.unita_misura)});
-                        resolve(lista_stati_misure_proprieta);
+                        const result = {
+                            lista_stati_attuatori_proprieta,
+                            lista_stati_misure_proprieta
+                        };
+                        resolve(result);
                     }
                 });
-            });
-        }
+        });
+    }
 
     ottieni_mod_singolo_attuatore(id_device) {
         return new Promise((resolve, reject) => {
