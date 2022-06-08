@@ -38,6 +38,7 @@ class visual_elenco_proprieta_app{
 
             const div = document.createElement("div");
             div.className = "card";
+            div.addEventListener("click",this.visual_manager.card,false)
                 const div1 = document.createElement("div");
                 div.appendChild(div1)
                 div1.className = "card-body";
@@ -52,7 +53,6 @@ class visual_elenco_proprieta_app{
                     div1.appendChild(a);
                     a.toggleAttribute = "modal"
                     a.textContent = id;
-                    a.addEventListener("click",this.visual_manager.card,false)
 
 
             this.proprietaContainer.append(div);

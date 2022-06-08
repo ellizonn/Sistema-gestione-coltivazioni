@@ -76,7 +76,7 @@ class visual_elenco_proprieta_manager{
             document.location.reload();
         });
         
-        document.getElementById("modalCard").addEventListener("hidePrevented.bs.modal",function(){
+        document.getElementById("azione_modal").addEventListener("hidePrevented.bs.modal",function(){
             document.location.reload();
         });
 
