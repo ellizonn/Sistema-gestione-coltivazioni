@@ -153,7 +153,7 @@ app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device', (req
     Ottieni l’elenco degli IoT devices installati in una data proprietà.
 */
 app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', (req, res) => {
-    gestore_devices.ottieni_iot_proprieta(req.params.id_propr).then ((dispositivi_iot) => {
+    gestore_devices.ottieni_iot_proprieta(req.params.id_proprieta).then ((dispositivi_iot) => {
         if (dispositivi_iot.error404){
             res.status(404).json(dispositivi_iot);
         } else {
@@ -163,7 +163,7 @@ app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', (req, res) => {
                'errors': [{'param': 'Server', 'msg': err}],
             }); 
         }); 
-});//OK
+});
 
 /*
     POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani
@@ -221,7 +221,7 @@ app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/piani/:id_piano', (req, 
     Ottieni l’elenco di piani di configurazione presenti su una proprietà.
 */
 app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', (req, res) => {
-    gestore_configurazioni.ottieni_configurazioni_proprieta(req.params.id_propr).then ((piano_configurazione) => {
+    gestore_configurazioni.ottieni_configurazioni_proprieta(req.params.id_proprieta).then ((piano_configurazione) => {
         if (piano_configurazione.error404){
             res.status(404).json(piano_configurazione);
         } else {
@@ -231,7 +231,7 @@ app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', (req, res) => {
                'errors': [{'param': 'Server', 'msg': err}],
             }); 
         }); 
-});//OK
+});
 
 /*
     PUT /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/?stato={true;false}
@@ -273,8 +273,7 @@ app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/misura'
     Ottieni l’elenco degli stati dei device appartenenti ad una determinata proprietà.
 */
 app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/stati_device', (req, res) => {
-
-    gestore_stati.ottieni_stato_proprieta(req.params.id_propr).then ((proprieta) => {
+    gestore_stati.ottieni_stato_proprieta(req.params.id_proprieta).then ((proprieta) => {
         if (proprieta.error404){
             res.status(404).json(proprieta);
         } else {
@@ -283,38 +282,27 @@ app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/stati_device', (req, res) 
            res.status(500).json({ 
                'errors': [{'param': 'Server', 'msg': err}],
             }); 
-        });
+        }); 
+  });
 
-    /* let stato_attuatori_res;
-    let stato_misure_res;
-    gestore_stati.ottieni_stato_attuatori_proprieta(req.params.id_propr).then ((stato_attuatori) => {
-        if (stato_attuatori.error404){
-            stato_attuatori_res = res.status(404).json(stato_attuatori);
+/*
+    GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/manuale
+    Trova l’id dell’azienda in cui lavora un utente.
+*/
+app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/manuale', (req, res) => {
+    gestore_stati.ottieni_mod_singolo_attuatore(req.params.id_device).then ((funzionamento_manuale) => {
+        if (funzionamento_manuale.error404){
+            res.status(404).json(funzionamento_manuale);
         } else {
-            stato_attuatori_res = stato_attuatori;
+            res.json(funzionamento_manuale);
         }}).catch( (err) => {
-            stato_attuatori_res = res.status(500).json({ 
-                'errors': [{'param': 'Server', 'msg': err}],
-            });
-        });
-
-    gestore_stati.ottieni_stato_misure_proprieta(req.params.id_propr).then ((stato_misure) => {
-        if (stato_misure.error404){
-            stato_misure_res = res.status(404).json(stato_misure);
-        } else {
-            stato_misure_res = stato_misure;
-        }}).catch( (err) => {
-            stato_misure_res = res.status(500).json({ 
-                'errors': [{'param': 'Server', 'msg': err}],
+           res.status(500).json({ 
+              'errors': [{'param': 'Server', 'msg': err}],
             }); 
-        });
+        });    
+  });
 
-    res.json({
-        stato_attuatori_res,
-        stato_misure_res
-    }) */
-    
-});
+
 
 //Attivo definitivamente il server --> ora accetto richieste
 app.listen (port, () =>  console.log(`Il server di iSerra è attivo all'indirizzo http://localhost:${port}` )) ;
