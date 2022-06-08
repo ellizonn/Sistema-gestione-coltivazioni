@@ -24,7 +24,7 @@ class visual_elenco_proprieta_app{
 
 
     showProprieta(info_proprieta){
-     for(const info of info_proprieta){  
+        for(const info of info_proprieta){  
       /*  let all_data_of_propieta = `
                                 <div class="card">
                                     <div class="card-body">
@@ -41,13 +41,18 @@ class visual_elenco_proprieta_app{
                 const div1 = document.createElement("div");
                 div.appendChild(div1)
                 div1.className = "card-body";
-                    const button = document.createElement("button");
+                    /* const button = document.createElement("button");
                     div1.appendChild(button);
                     button.type="button";
                     button.className="btn btn-primary";
                     button.toggleAttribute = "modal"
                     button.formTarget="#azione_modal";
-                    button.textContent = id;
+                    button.textContent = id; */
+                    const a = document.createElement("a");
+                    div1.appendChild(a);
+                    a.toggleAttribute = "modal"
+                    a.textContent = id;
+                    a.addEventListener("click",this.visual_manager.card,false)
 
 
             this.proprietaContainer.append(div);
