@@ -12,6 +12,18 @@ const g_s = require('./gestore_stati');
 const gestore_stati = new g_s(); 
 const app = express();
 const port = 3000;
+
+//Keycloak
+/*
+const keycloak = require('./keycloak_config.js').initKeycloak();
+app.use(keycloak.middleware());
+*/
+const session = require('express-session')
+var memoryStore = new session.MemoryStore();
+app.use(session({ secret: 'some secret', resave: false, saveUninitialized: true, store: memoryStore }));
+const keycloak = require('./keycloak_config.js').initKeycloak(memoryStore);
+app.use(keycloak.middleware());
+
 //Oggetti per creare i JSON
 const azienda = require('./obj_azienda');
 const proprieta = require('./obj_proprieta');
@@ -20,6 +32,7 @@ const dispositivo_iot = require ('./obj_dispositivo_iot');
 app.use(express.json());
 app.use(express.static('public'));
 app.get('/', (req, res) => res.redirect('/home.html'));
+
 
 
 /* INIZIO API REST */
@@ -47,12 +60,12 @@ app.get ('/v1/azienda_user/:id_user', (req, res) => {
   GET /v1/aziende/{id_azienda}
   Fornisce info estese sull’azienda con l’ID specificato.
 */
-app.get ('/v1/aziende/:id_azienda', (req, res) => {
+app.get ('/v1/aziende/:id_azienda',/* keycloak.protect('agricoltore'),keycloak.protect('collaboratore'),*/(req, res) => {
   gestore_proprieta.ottieni_info_azienda(req.params.id_azienda).then ((azienda) => {
       if (azienda.error404){
           res.status(404).json(azienda);
       } else {
-          res.json(azienda);
+          res.json(azienda); 
       }}).catch( (err) => {
          res.status(500).json({ 
              'errors': [{'param': 'Server', 'msg': err}],
