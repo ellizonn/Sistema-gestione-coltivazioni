@@ -18,7 +18,7 @@ const plus = `
         
          <div class="card">
               <div class="card-body">
-                   <a href="azione1.html">Azione uno</a>
+                   <a href="Visualizza_stato_proprieta.html">Visualizza stato proprieta'</a>
              </div>
          </div>
 
