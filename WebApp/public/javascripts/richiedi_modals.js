@@ -24,7 +24,7 @@ const plus = `
 
          <div class="card">
               <div class="card-body">
-                   <a href="azione2.html">Azione due</a>
+                   <a href="Gestione_manuale_attuatori.html">Gestione manuale attuatori</a>
              </div>
          </div>
 
