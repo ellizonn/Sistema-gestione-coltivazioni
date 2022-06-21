@@ -98,12 +98,19 @@ class manuale_app{
              rowX.appendChild(rowXdata5);
  
              let rowXdata6 = document.createElement('td');
-             rowXdata6.innerHTML = `${IOT.stato}`;
+             let button_manuale0 = document.createElement('button');
+             button_manuale0 = document.createElement('button');
+             button_manuale0.innerText = `${IOT.stato}`;
+             rowXdata6.appendChild(button_manuale0);
+             //rowXdata6.innerHTML = `${IOT.stato}`;
              rowX.appendChild(rowXdata6);
  
              let rowXdata7 = document.createElement('td');
-             rowXdata7.innerHTML = `${IOT.manuale}`;
-             rowX.appendChild(rowXdata7);
+            let button_manuale1 = document.createElement('button');
+            button_manuale1.innerText = `${IOT.manuale}`;
+            //rowXdata7.innerHTML = `${IOT.manuale}`;
+            rowXdata7.appendChild(button_manuale1);
+            rowX.appendChild(rowXdata7);
  
              tbody.appendChild(rowX);
          }
