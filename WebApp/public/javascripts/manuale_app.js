@@ -100,14 +100,14 @@ class manuale_app{
              let rowXdata6 = document.createElement('td');
              let button_manuale0 = document.createElement('button');
              button_manuale0 = document.createElement('button');
-             button_manuale0.innerText = `${IOT.stato}`;
+             button_manuale0.innerText = `${IOT.stato}`;  // collegarlo alla query di cambio stato
              rowXdata6.appendChild(button_manuale0);
              //rowXdata6.innerHTML = `${IOT.stato}`;
              rowX.appendChild(rowXdata6);
  
              let rowXdata7 = document.createElement('td');
             let button_manuale1 = document.createElement('button');
-            button_manuale1.innerText = `${IOT.manuale}`;
+            button_manuale1.innerText = `${IOT.manuale}`;  //  collegarlo alla query per manuale/automatico
             //rowXdata7.innerHTML = `${IOT.manuale}`;
             rowXdata7.appendChild(button_manuale1);
             rowX.appendChild(rowXdata7);

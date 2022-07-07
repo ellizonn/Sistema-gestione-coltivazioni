@@ -100,6 +100,7 @@ app.post ('/v1/aziende/:id_azienda/proprieta', (req, res) => {
             res.status(404).json(id_proprieta); 
         } else {
             res.json(id_proprieta);
+            res.redirect("Visualizza_elenco_proprieta.html"); // Aggiunta da Mattia
         }}).catch( (err) => {
            res.status(500).json({ 
                'errors': [{'param': 'Server', 'msg': err}],
