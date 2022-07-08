@@ -26,6 +26,10 @@ const x = `
         <a class="nav-link" href="Visualizza_elenco_proprieta.html">Visualizza elenco proprieta</a>
         </li>
 
+        <li class="nav-item">
+        <a class="nav-link" href="Aggiungi_proprieta.html">Aggiungi proprieta'</a>
+        </li>
+
           <script>
             let log = document.getEle
           </script>
