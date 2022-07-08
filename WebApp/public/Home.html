@@ -1,6 +1,20 @@
 <!doctype html>
 <html lang="en">
   <head>
+
+    <script src="keycloak.js"></script>
+    <script>
+        function initKeycloak() {
+            const keycloak = new Keycloak();
+            keycloak.init({ onLoad: 'login-required' }).then(function(authenticated) {
+                alert(authenticated ? 'authenticated' : 'not authenticated');
+            }).catch(function() {
+                alert('failed to initialize');
+            });
+            keycloak.login();
+        }
+    </script>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,6 +31,7 @@
 
     <title>iSerra</title>
   </head>
+  <!--body onload="initKeycloak()" NON CANCELLARE-->
   <body>
     
 

@@ -12,26 +12,13 @@ var keycloakConfig = {
         secret: 'CZ5GVXj8sQ8sJPWKWZfJF5A0BCjTiZ4l'
     }
 };
-/*
-function initKeycloak() {
-    if (_keycloak) {
-        console.warn("Trying to init Keycloak again!");
-        return _keycloak;
-    } 
-    else {
-        console.log("Initializing Keycloak...");
-        var memoryStore = new session.MemoryStore();
-        _keycloak = new Keycloak({ store: memoryStore }, keycloakConfig);
-        return _keycloak;
-    }
-}
-*/
+
 function initKeycloak(memoryStore) { 
     if (_keycloak) { 
         console.warn("Trying to init Keycloak again!"); 
         return _keycloak; 
     } else {
-        console.log("Initializing Keycloak..."); 
+        console.log("Inizializzazione Keycloak in backend..."); 
         _keycloak = new Keycloak({ store: memoryStore }, keycloakConfig); 
         return _keycloak; 
     } 
