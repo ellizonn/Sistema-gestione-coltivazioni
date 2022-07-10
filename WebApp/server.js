@@ -58,9 +58,11 @@ app.get ('/v1/azienda_user/:id_user', keycloak.protect(['collaboratore','agricol
       });    
 });
 
+/*
+    Controlla che l'utente loggato sia autorizzato,
+    ovvero che richieda l'id della sua azienda
+*/
 function check_az(token, id_user){
-    /*controllo che l'utente loggato sia autorizzato
-    ovvero che richieda l'id della sua azienda*/
     if(token.sub === id_user)
         return true;
     else
