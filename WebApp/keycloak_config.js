@@ -15,7 +15,7 @@ var keycloakConfig = {
 
 function initKeycloak(memoryStore) { 
     if (_keycloak) { 
-        console.warn("Trying to init Keycloak again!"); 
+        console.warn("Cerco di inizializzare ancora keycloak!"); 
         return _keycloak; 
     } else {
         console.log("Inizializzazione Keycloak in backend..."); 
@@ -26,7 +26,7 @@ function initKeycloak(memoryStore) {
 
 function getKeycloak() {
     if (!_keycloak){
-        console.error('Keycloak has not been initialized. Please called init first.');
+        console.error('Keycloak non e\' stato inizializzato. Chiamare la init.');
     } 
     return _keycloak;
 }
