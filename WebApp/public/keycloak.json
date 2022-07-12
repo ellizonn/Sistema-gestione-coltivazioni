@@ -2,12 +2,9 @@
   "realm": "iserra",
   "auth-server-url": "https://lemur-12.cloud-iam.com/auth/",
   "ssl-required": "external",
-  "resource": "iserra_webapp",
+  "resource": "iserra_webapp_uno",
+  "public-client": true,
   "verify-token-audience": true,
-  "credentials": {
-    "secret": "CZ5GVXj8sQ8sJPWKWZfJF5A0BCjTiZ4l"
-  },
   "use-resource-role-mappings": true,
-  "confidential-port": 0,
-  "policy-enforcer": {}
+  "confidential-port": 0
 }

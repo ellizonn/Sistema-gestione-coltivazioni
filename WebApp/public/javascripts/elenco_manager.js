@@ -1,4 +1,6 @@
-"use strict"
+"use strict" 
+
+import keycloak from './s.js';
 
 class visual_elenco_proprieta_manager{
 
@@ -7,7 +9,15 @@ class visual_elenco_proprieta_manager{
     }
 
     async fetchinfoProprieta(){
-        let response = await fetch(`/v1/aziende/${1}/proprieta`);
+
+        console.log(keycloack);
+        let response = await fetch(`/v1/aziende/${1}/proprieta`,{
+        headers: new Headers({
+            'Authorization': 'Bearer ', 
+          })}
+          
+        );
+
         const infoJson = await response.json();
         if(response.ok){
                 var recupero_id = []; //per tenere traccia degli id_proprieta

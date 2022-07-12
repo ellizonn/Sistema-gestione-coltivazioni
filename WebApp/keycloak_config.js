@@ -4,13 +4,10 @@ var Keycloak = require('keycloak-connect');
 let _keycloak;
 
 var keycloakConfig = {
-    clientId: 'iserra_webapp',
+    clientId: 'iserra_webapp_uno',
     bearerOnly: false,
     serverUrl: 'https://lemur-12.cloud-iam.com/auth',
-    realm: 'iserra',
-    credentials: {
-        secret: 'CZ5GVXj8sQ8sJPWKWZfJF5A0BCjTiZ4l'
-    }
+    realm: 'iserra'
 };
 
 function initKeycloak(memoryStore) { 

@@ -5,6 +5,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!--Keycloak-->
+    <script src="https://lemur-12.cloud-iam.com/auth/js/keycloak.js"></script>
+    <script type="module">
+
+            const keycloak = new Keycloak();
+            keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
+                //alert(authenticated ? 'authenticated' : 'not authenticated');
+            }).catch(function() {
+                //alert('failed to initialize');
+            });
+            console.log(keycloak);
+            export {keycloak};
+
+    </script>
+
     <!-- Optional JavaScript; choose one of the two! -->
     <script defer src="javascripts/navbar_footer.js"></script>
     <script defer src="javascripts/richiedi_modals.js"></script>

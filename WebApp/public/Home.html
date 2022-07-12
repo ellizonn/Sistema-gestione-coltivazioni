@@ -2,22 +2,23 @@
 <html lang="en">
   <head>
 
-    <script src="keycloak.js"></script>
+    <script src="https://lemur-12.cloud-iam.com/auth/js/keycloak.js"></script>
     <script>
-        function initKeycloak() {
+
             const keycloak = new Keycloak();
-            keycloak.init({ onLoad: 'login-required' }).then(function(authenticated) {
-                alert(authenticated ? 'authenticated' : 'not authenticated');
+            keycloak.init({onLoad:'check-sso'}).then(function(authenticated) {
+                //alert(authenticated ? 'authenticated' : 'not authenticated');
+            }).catch(function() {
+                //alert('failed to initialize');
             });
-            keycloak.login();
-        }
+            console.log(keycloak);
+
     </script>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Optional JavaScript; choose one of the two! -->
+    
     <script defer src="javascripts/navbar_footer.js"></script>
 
     <!-- Bootstrap CSS -->
@@ -29,7 +30,7 @@
 
     <title>iSerra</title>
   </head>
-  <body onload="initKeycloak()"> <!-- guarda event listener -->
+  <body> <!-- guarda event listener -->
     
 
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top" id="menu_uniforme"></nav>
