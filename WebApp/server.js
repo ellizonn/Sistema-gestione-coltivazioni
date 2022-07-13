@@ -161,40 +161,68 @@ app.get ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['collaboratore',
 
 
 /*
-        (4)
+        (4) DA TERMINARE AUTORIZZAZIONE E RIVEDERE
     POST /v1/aziende/{id_azienda}/proprieta
     Aggiunge una nuova proprietà.
 */
-app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect('agricoltore'), (req, res) => {
+app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['agricoltore']), (req, res) => {
     gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
         if (id_proprieta.error404){
             res.status(404).json(id_proprieta); 
         } else {
-            res.json(id_proprieta);
-            res.redirect("Visualizza_elenco_proprieta.html"); // Aggiunta da Mattia
+            const token = req.kauth.grant.access_token.content;
+            check_az_more(token, this.db).then ((authorize) => {
+                if(authorize.fk_azienda==req.params.id_azienda){
+                    res.json(id_proprieta);
+                    //res.redirect("Visualizza_elenco_proprieta.html"); 
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi aggiungere proprieta' solo nella tua azienda!");
+            }); 
         }}).catch( (err) => {
            res.status(500).json({ 
                'errors': [{'param': 'Server', 'msg': err}],
             }); 
         }); 
 });
+/*
+    Devo controllare che l'utente loggato (solo agricoltore, gia' controllato da keycloak) sia autorizzato,
+    ovvero devo controllare che chieda di inserire una nuova proprietà per l'azienda in cui lavora (API 4)
+    NOTA: Anche qui per l'autorizzazione riutilizzo la function check_az_more(...)
+*/
+
 
 /*
+        (5) DA RIVEDERE
     DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}
     Elimina una proprietà tra quelle esistenti.
 */
-app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', keycloak.protect('agricoltore'), (req, res) => {
+app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', keycloak.protect(['agricoltore']), (req, res) => {
     gestore_proprieta.elimina_proprieta(req.params.id_propr).then((err) => {
         if (err)
             res.status(404).json(err);
-        else
-            res.status(200).end();
+        else{
+            const token = req.kauth.grant.access_token.content;
+            check_az_more(token, this.db).then ((authorize) => {
+                if(authorize.fk_azienda==req.params.id_azienda)
+                    res.status(200).end();
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare proprieta' solo nella tua azienda!");
+            }); 
+        }
     }).catch((err) =>{
          res.status(500).json({ 
             'errors': [{'param': 'Server', 'msg': err}]
          }); 
     } );
 });
+/*
+    Devo controllare che l'utente loggato (solo agricoltore, gia' controllato da keycloak) sia autorizzato,
+    ovvero devo controllare che chieda di eliminare una nuova proprietà per l'azienda in cui lavora (API 5)
+   
+    check_az_more NON VA BENE: da rifare
+*/
+
 
 /*
     POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/device
