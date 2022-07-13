@@ -30,6 +30,21 @@ app.use(express.json());
 app.use(express.static('public'));
 app.get('/', (req, res) => res.redirect('/home.html'));
 
+//Inizializza il DB, non per le query principali (che sono svolte nei gestori)
+//bensì per le query di supporto (dopo l'autenticazione, serve fare il controllo dell'autorizzazione)
+const sqlite = require('sqlite3').verbose();
+this.DBSOURCE = './iserra.db';
+this.db =  new sqlite.Database(this.DBSOURCE, (err) => {
+    if (err) {
+        //non si riesce ad aprire il db
+        console.err(err.message);
+        throw err;
+    }
+    else{
+        //console.log('Il Database iSerra è stato aperto con successo');
+    } 
+});
+
 
 
 /* INIZIO API REST */
@@ -37,16 +52,18 @@ app.get('/', (req, res) => res.redirect('/home.html'));
 // Paolo's API
 
 /*
+    (1)
   GET /v1/azienda_user/{id_user}
   Trova l’id dell’azienda in cui lavora un utente.
+  Chiama un metodo del gestore_proprieta (ottieni_azienda).
 */
 app.get ('/v1/azienda_user/:id_user', keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
   gestore_proprieta.ottieni_azienda(req.params.id_user).then ((idaz) => {
       if (idaz.error404){
           res.status(404).json(idaz);
       } else {
-        const token = req.kauth.grant.access_token.content;
-        //console.log(token);
+            const token = req.kauth.grant.access_token.content;
+            //console.log(token);
             if(check_az(token, req.params.id_user))
                 res.json(idaz);
             else
@@ -57,10 +74,9 @@ app.get ('/v1/azienda_user/:id_user', keycloak.protect(['collaboratore','agricol
           }); 
       });    
 });
-
 /*
     Controlla che l'utente loggato sia autorizzato,
-    ovvero che richieda l'id della sua azienda
+    ovvero che richieda l'id della sua azienda (API 1)
 */
 function check_az(token, id_user){
     if(token.sub === id_user)
@@ -69,25 +85,53 @@ function check_az(token, id_user){
         return false;
 }
 
+
 /*
+    (2)
   GET /v1/aziende/{id_azienda}
   Fornisce info estese sull’azienda con l’ID specificato.
+  Chiama un metodo del gestore_proprieta (ottieni_info_azienda).
 */
 app.get ('/v1/aziende/:id_azienda', keycloak.protect(['collaboratore','agricoltore']),(req, res) => {
   gestore_proprieta.ottieni_info_azienda(req.params.id_azienda).then ((azienda) => {
       if (azienda.error404){
           res.status(404).json(azienda);
       } else {
-          res.json(azienda); 
+            const token = req.kauth.grant.access_token.content;
+            check_az_more(token, this.db).then ((authorize) => {
+                //console.log(authorize);
+                if(authorize.fk_azienda==req.params.id_azienda)
+                    res.json(azienda);
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi ottenere solo info estesa sulla tua azienda!");
+            }); 
       }}).catch( (err) => {
          res.status(500).json({ 
              'errors': [{'param': 'Server', 'msg': err}],
           }); 
       }); 
 });
+/*
+    Controlla che l'utente loggato sia autorizzato,
+    ovvero che chieda info sull'azienda in cui lavora (API 2)
+*/
+function check_az_more(token, db){
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT fk_azienda FROM utente WHERE id_utente=?";
+        db.get(sql,[token.sub],(err, riga) =>{
+            if (err)
+                reject(err); 
+            else if (riga === undefined)
+                resolve({error404:'Nessuna azienda trovata per questo id utente.'});
+            else
+                resolve(riga);
+        });    
+    });
+}
 
 
 /*
+    (3)
   GET /v1/aziende/{id_azienda}/proprieta
   Mostra l’elenco delle proprietà relativo ad una certa azienda.
 */
@@ -96,15 +140,28 @@ app.get ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['collaboratore',
       if (proprieta.error404){
           res.status(404).json(proprieta);
       } else {
-          res.json(proprieta);
+          const token = req.kauth.grant.access_token.content;
+          check_az_more(token, this.db).then ((authorize) => {
+              if(authorize.fk_azienda==req.params.id_azienda)
+                  res.json(proprieta);
+              else
+                  res.status(401).json("utente correttamente loggato ma non autorizzato: puoi ottenere solo info sulle proprieta della tua azienda!");
+          }); 
       }}).catch( (err) => {
          res.status(500).json({ 
              'errors': [{'param': 'Server', 'msg': err}],
           }); 
       }); 
 });
+/*
+    Devo controllare che l'utente loggato sia autorizzato,
+    ovvero che chieda info sulle proprieta' di un'azienda in cui lavora (API 3)
+    NOTA: Qui per l'autorizzazione riutilizzo la function check_az_more(...)
+*/
+
 
 /*
+        (4)
     POST /v1/aziende/{id_azienda}/proprieta
     Aggiunge una nuova proprietà.
 */
