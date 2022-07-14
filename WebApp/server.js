@@ -161,29 +161,29 @@ app.get ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['collaboratore',
 
 
 /*
-        (4) DA TERMINARE AUTORIZZAZIONE E RIVEDERE
+        (4) 
     POST /v1/aziende/{id_azienda}/proprieta
     Aggiunge una nuova proprietà.
 */
-app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['agricoltore']), (req, res) => {
-    gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
-        if (id_proprieta.error404){
-            res.status(404).json(id_proprieta); 
-        } else {
-            const token = req.kauth.grant.access_token.content;
-            check_az_more(token, this.db).then ((authorize) => {
-                if(authorize.fk_azienda==req.params.id_azienda){
+app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect('agricoltore'), (req, res) => {
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
+                if (id_proprieta.error404){
+                    res.status(404).json(id_proprieta); 
+                } else {
                     res.json(id_proprieta);
                     //res.redirect("Visualizza_elenco_proprieta.html"); 
-                }
-                else
-                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi aggiungere proprieta' solo nella tua azienda!");
+                }}).catch( (err) => {
+                   res.status(500).json({ 
+                       'errors': [{'param': 'Server', 'msg': err}],
+                    }); 
             }); 
-        }}).catch( (err) => {
-           res.status(500).json({ 
-               'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        }); 
+        }
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi aggiungere proprieta' solo nella tua azienda!");
+    }); 
 });
 /*
     Devo controllare che l'utente loggato (solo agricoltore, gia' controllato da keycloak) sia autorizzato,
@@ -193,70 +193,155 @@ app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['agricoltore'])
 
 
 /*
-        (5) DA RIVEDERE
+        (5)
     DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}
     Elimina una proprietà tra quelle esistenti.
 */
-app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', keycloak.protect(['agricoltore']), (req, res) => {
-    gestore_proprieta.elimina_proprieta(req.params.id_propr).then((err) => {
-        if (err)
-            res.status(404).json(err);
-        else{
-            const token = req.kauth.grant.access_token.content;
-            check_az_more(token, this.db).then ((authorize) => {
-                if(authorize.fk_azienda==req.params.id_azienda)
-                    res.status(200).end();
+app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', keycloak.protect('agricoltore'), (req, res) => {
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    gestore_proprieta.elimina_proprieta(req.params.id_propr).then((err) => {
+                        if (err)
+                            res.status(404).json(err);
+                        else{
+                            res.status(200).end();
+                        }
+                    }).catch((err) =>{
+                         res.status(500).json({ 
+                            'errors': [{'param': 'Server', 'msg': err}]
+                         }); 
+                    } );
+                }
                 else
-                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare proprieta' solo nella tua azienda!");
-            }); 
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare proprieta' che appartengono effettivamente alla tua azienda!");
+            });
         }
-    }).catch((err) =>{
-         res.status(500).json({ 
-            'errors': [{'param': 'Server', 'msg': err}]
-         }); 
-    } );
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare proprieta' solo nella tua azienda!");
+    });
 });
 /*
     Devo controllare che l'utente loggato (solo agricoltore, gia' controllato da keycloak) sia autorizzato,
     ovvero devo controllare che chieda di eliminare una nuova proprietà per l'azienda in cui lavora (API 5)
-   
-    check_az_more NON VA BENE: da rifare
+    NOTA: Anche qui per una parte di autorizzazione riutilizzo la function check_az_more(...)
+    --> Inoltre, devo anche controllare che la proprieta' da eliminare sia di quella specifica azienda.
+    Uso allora anche check_prop_on_az(...) per questa ultima parte di autorizzazione
 */
+function check_prop_on_az(id_propr, db){
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT fk_azienda FROM proprieta WHERE id_proprieta=?";
+        db.get(sql,[id_propr],(err, riga) =>{
+            if (err)
+                reject(err); 
+            else if (riga === undefined)
+                resolve({error404:'Nessuna azienda trovata per questa proprieta\'.'});
+            else
+                resolve(riga);
+        });    
+    });
+}
 
 
 /*
+        (6)
     POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/device
     Aggiunge un nuovo device in una data proprietà.
 */
 app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device',  keycloak.protect('agricoltore'), (req, res) => {
-    gestore_devices.nuovo_device(req.body.device, req.params.id_propr).then ((id_device) => {
-        if (id_device.error404){
-            res.status(404).json(id_device);
-        } else {
-            res.json(id_device);
-        }}).catch( (err) => {
-           res.status(500).json({ 
-               'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        }); 
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    gestore_devices.nuovo_device(req.body.device, req.params.id_propr).then ((id_device) => {
+                        if (id_device.error404){
+                            res.status(404).json(id_device);
+                        } else {
+                            res.json(id_device);
+                        }}).catch( (err) => {
+                           res.status(500).json({ 
+                               'errors': [{'param': 'Server', 'msg': err}],
+                            }); 
+                    }); 
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi aggiungere device in proprieta' che appartengono effettivamente alla tua azienda!");
+            });
+        }
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi aggiungere device solo nella tua azienda!");
+    });
 });
+/*
+    Devo controllare che l'utente loggato (solo agricoltore, gia' controllato da keycloak) sia autorizzato,
+    ovvero devo controllare che chieda di aggiungere un device per l'azienda in cui lavora (API 6)
+    NOTA: Anche qui per una parte di autorizzazione riutilizzo la function check_az_more(...)
+    --> Inoltre, devo anche controllare che la proprieta' su cui aggiungere quel device sia di quella specifica azienda.
+        NOTA: riutilizzo allora anche check_prop_on_az(...) per questa ultima parte di autorizzazione
+*/
 
 /*
+        (7)
     DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}
     Elimina un determinato device in una data proprietà.
 */
 app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device', keycloak.protect('agricoltore'), (req, res) => {
-    gestore_devices.elimina_device(req.params.id_device).then((err) => {
-        if (err)
-            res.status(404).json(err);
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    check_device_on_propr(req.params.id_device, this.db).then((moreauth) => {
+                        if(moreauth.fk_proprieta==req.params.id_propr){
+                            gestore_devices.elimina_device(req.params.id_device).then((err) => {
+                                if (err)
+                                    res.status(404).json(err);
+                                else
+                                    res.status(200).end();
+                            }).catch((err) =>{
+                                 res.status(500).json({ 
+                                    'errors': [{'param': 'Server', 'msg': err}]
+                                 }); 
+                            } );
+                        }
+                        else
+                            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare un device solo se e' effettivamente sulla proprieta\' dichiarata!");
+                    });
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare un device solo in proprieta' che appartengono effettivamente alla tua azienda!");
+            });
+        }
         else
-            res.status(200).end();
-    }).catch((err) =>{
-         res.status(500).json({ 
-            'errors': [{'param': 'Server', 'msg': err}]
-         }); 
-    } );
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare un device solo nella tua azienda!");
+    });
 });
+/*
+    Devo controllare che l'utente loggato (solo agricoltore, gia' controllato da keycloak) sia autorizzato,
+    ovvero devo controllare che chieda di eliminare un device per l'azienda in cui lavora (API 7)
+    NOTA: Anche qui per una parte di autorizzazione riutilizzo la function check_az_more(...)
+    --> Inoltre, devo anche controllare che la proprieta' da cui elimina quel device sia di quella specifica azienda.
+        NOTA: riutilizzo allora anche check_prop_on_az(...) per questa parte di autorizzazione
+    --> Inoltre, devo anche controllare che il device da eliminare si trovi effettivamente su quella proprieta'
+        NOTA: uso allora la nuova function check_device_on_propr(...) per questa ultima parte di autorizzazione
+*/
+function check_device_on_propr(id_device, db){
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT fk_proprieta FROM dispositivo_iot WHERE id_device=?";
+        db.get(sql,[id_device],(err, riga) =>{
+            if (err)
+                reject(err); 
+            else if (riga === undefined)
+                resolve({error404:'Nessuna proprieta\' trovata per questo dispositivo iot\'.'});
+            else
+                resolve(riga);
+        });    
+    });
+}
+
 
 
 // Elia's API
