@@ -351,16 +351,29 @@ function check_device_on_propr(id_device, db){
     Ottieni l’elenco degli IoT devices installati in una data proprietà.
 */
 app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
-    gestore_devices.ottieni_iot_proprieta(req.params.id_propr).then ((dispositivi_iot) => {
-        if (dispositivi_iot.error404){
-            res.status(404).json(dispositivi_iot);
-        } else {
-            res.json(dispositivi_iot);
-        }}).catch( (err) => {
-           res.status(500).json({ 
-               'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        }); 
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    gestore_devices.ottieni_iot_proprieta(req.params.id_propr).then ((dispositivi_iot) => {
+                        if (dispositivi_iot.error404){
+                            res.status(404).json(dispositivi_iot);
+                        } else {
+                            res.json(dispositivi_iot);
+                        }}).catch( (err) => {
+                           res.status(500).json({ 
+                               'errors': [{'param': 'Server', 'msg': err}],
+                            }); 
+                        });
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi visualizzare device solo in proprieta' che appartengono effettivamente alla tua azienda!");
+            });
+        }
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi visualizzare device solo nella tua azienda!");
+    }); 
 });//OK
 
 /*
@@ -368,16 +381,29 @@ app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', keycloak.protect(
     Aggiunge un nuovo piano di configurazione relativo ad una certa proprietà.
 */
 app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', keycloak.protect('agricoltore'), (req, res) => {
-    gestore_configurazioni.nuova_configurazione(req.body.piano_configurazione, req.params.id_proprieta, req.params.id_utente).then ((id_piano) => {
-        if (id_piano.error404){
-            res.status(404).json(id_piano);
-        } else {
-            res.json(id_piano);
-        }}).catch( (err) => {
-           res.status(500).json({ 
-               'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        }); 
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    gestore_configurazioni.nuova_configurazione(req.body.piano_configurazione, req.params.id_proprieta, req.params.id_utente).then ((id_piano) => {
+                        if (id_piano.error404){
+                            res.status(404).json(id_piano);
+                        } else {
+                            res.json(id_piano);
+                        }}).catch( (err) => {
+                           res.status(500).json({ 
+                               'errors': [{'param': 'Server', 'msg': err}],
+                            }); 
+                        }); 
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi aggiungere piani in proprieta' che appartengono effettivamente alla tua azienda!");
+            });
+        }
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi aggiungere piani solo nella tua azienda!");
+    });
 });
 
 /*
@@ -385,16 +411,35 @@ app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', keycloak.protect(
     Cambia la modalità di funzionamento (manuale/automatica) di un dato attuatore di una data proprietà.
 */
 app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?manuale={true;false}', keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
-    gestore_configurazioni.cambio_mod_attuatore(req.params.id_device, req.params.manuale).then ((funzionamento_manuale) => {
-        if (funzionamento_manuale.error404){
-            res.status(404).json(funzionamento_manuale);
-        } else {
-            res.json(funzionamento_manuale);
-        }}).catch( (err) => {
-           res.status(500).json({ 
-               'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        }); 
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    check_device_on_propr(req.params.id_device, this.db).then((moreauth) => {
+                        if(moreauth.fk_proprieta==req.params.id_propr){
+                            gestore_configurazioni.cambio_mod_attuatore(req.params.id_device, req.params.manuale).then ((funzionamento_manuale) => {
+                                if (funzionamento_manuale.error404){
+                                    res.status(404).json(funzionamento_manuale);
+                                } else {
+                                    res.json(funzionamento_manuale);
+                                }}).catch( (err) => {
+                                   res.status(500).json({ 
+                                       'errors': [{'param': 'Server', 'msg': err}],
+                                    }); 
+                                });
+                        }
+                        else
+                            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi modificare un atturatore solo se e' effettivamente sulla proprieta\' dichiarata!");
+                    });
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi modificare un atturatore solo in proprieta' che appartengono effettivamente alla tua azienda!");
+            });
+        }
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi modificare un atturatore solo nella tua azienda!");
+    });
 });
 
 /*
@@ -402,33 +447,79 @@ app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?manuale
     Elimina uno specifico piano di configurazione inserito in precedenza.
 */
 app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/piani/:id_piano', keycloak.protect('agricoltore'), (req, res) => {
-    gestore_configurazioni.elimina_configurazione(req.params.id_piano).then((err) => {
-        if (err)
-            res.status(404).json(err);
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    check_piano_on_propr(req.params.id_piano, this.db).then((moreauth) => {
+                        if(moreauth.fk_proprieta==req.params.id_propr){
+                            gestore_configurazioni.elimina_configurazione(req.params.id_piano).then((err) => {
+                                if (err)
+                                    res.status(404).json(err);
+                                else
+                                    res.status(200).end();
+                            }).catch((err) =>{
+                                 res.status(500).json({ 
+                                    'errors': [{'param': 'Server', 'msg': err}]
+                                 }); 
+                            } );
+                        }
+                        else
+                            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare un piano solo se e' effettivamente sulla proprieta\' dichiarata!");
+                    });
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare un piano solo in proprieta' che appartengono effettivamente alla tua azienda!");
+            });
+        }
         else
-            res.status(200).end();
-    }).catch((err) =>{
-         res.status(500).json({ 
-            'errors': [{'param': 'Server', 'msg': err}]
-         }); 
-    } );
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi eliminare un piano solo nella tua azienda!");
+    });
 });
+
+function check_piano_on_propr(id_piano, db){
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT fk_proprieta FROM piano_configurazione WHERE id_piano=?";
+        db.get(sql,[id_piano],(err, riga) =>{
+            if (err)
+                reject(err); 
+            else if (riga === undefined)
+                resolve({error404:'Nessuna proprieta\' trovata per questo piano di configurazione\'.'});
+            else
+                resolve(riga);
+        });    
+    });
+}
 
 /*
     GET /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani
     Ottieni l’elenco di piani di configurazione presenti su una proprietà.
 */
 app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani',  keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
-    gestore_configurazioni.ottieni_configurazioni_proprieta(req.params.id_propr).then ((piano_configurazione) => {
-        if (piano_configurazione.error404){
-            res.status(404).json(piano_configurazione);
-        } else {
-            res.json(piano_configurazione);
-        }}).catch( (err) => {
-           res.status(500).json({ 
-               'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        }); 
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    gestore_configurazioni.ottieni_configurazioni_proprieta(req.params.id_propr).then ((piano_configurazione) => {
+                        if (piano_configurazione.error404){
+                            res.status(404).json(piano_configurazione);
+                        } else {
+                            res.json(piano_configurazione);
+                        }}).catch( (err) => {
+                           res.status(500).json({ 
+                               'errors': [{'param': 'Server', 'msg': err}],
+                            }); 
+                        });
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi visualizzare piani che appartengono effettivamente alla tua azienda!");
+            });
+        }
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi visualizzare piani solo nella tua azienda!");
+    });
 });//OK
 
 /*
@@ -437,16 +528,35 @@ app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani',  keycloak.protect(
     Con “on”/”off” intendiamo se l’attuatore sta funzionando o meno.
 */
 app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?stato={true;false}',  keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
-    gestore_stati.cambio_stato_attuatore(req.params.id_device, req.params.new_stato).then ((stato_attuale) => {
-        if (stato_attuale.error404){
-            res.status(404).json(stato_attuale);
-        } else {
-            res.json(stato_attuale);
-        }}).catch( (err) => {
-           res.status(500).json({ 
-               'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        }); 
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    check_device_on_propr(req.params.id_device, this.db).then((moreauth) => {
+                        if(moreauth.fk_proprieta==req.params.id_propr){
+                            gestore_stati.cambio_stato_attuatore(req.params.id_device, req.params.new_stato).then ((stato_attuale) => {
+                                if (stato_attuale.error404){
+                                    res.status(404).json(stato_attuale);
+                                } else {
+                                    res.json(stato_attuale);
+                                }}).catch( (err) => {
+                                   res.status(500).json({ 
+                                       'errors': [{'param': 'Server', 'msg': err}],
+                                    }); 
+                                });
+                        }
+                        else
+                            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi cambiare lo stato di un device solo se e' effettivamente sulla proprieta\' dichiarata!");
+                    });
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi cambiare lo stato di un device solo in proprieta' che appartengono effettivamente alla tua azienda!");
+            });
+        }
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi cambiare lo stato di un device solo nella tua azienda!");
+    });
 });
 
 /*
@@ -463,7 +573,7 @@ app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/misura'
            res.status(500).json({ 
                'errors': [{'param': 'Server', 'msg': err}],
             }); 
-        }); 
+        });
 });
 
 /*
@@ -471,18 +581,29 @@ app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/misura'
     Ottieni l’elenco degli stati dei device appartenenti ad una determinata proprietà.
 */
 app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/stati_device',  keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
-
-    gestore_stati.ottieni_stato_proprieta(req.params.id_propr).then ((lista_stati) => {   
-        if (lista_stati.error404){
-            res.status(404).json(lista_stati);
-        } else {
-            res.json(lista_stati);
-        }}).catch( (err) => {
-           res.status(500).json({ 
-               'errors': [{'param': 'Server', 'msg': err}],
-            }); 
-        });
-    
+    const token = req.kauth.grant.access_token.content;
+    check_az_more(token, this.db).then ((authorize) => {
+        if(authorize.fk_azienda==req.params.id_azienda){
+            check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
+                if(auth.fk_azienda==req.params.id_azienda){
+                    gestore_stati.ottieni_stato_proprieta(req.params.id_propr).then ((lista_stati) => {   
+                        if (lista_stati.error404){
+                            res.status(404).json(lista_stati);
+                        } else {
+                            res.json(lista_stati);
+                        }}).catch( (err) => {
+                           res.status(500).json({ 
+                               'errors': [{'param': 'Server', 'msg': err}],
+                            }); 
+                        });
+                }
+                else
+                    res.status(401).json("utente correttamente loggato ma non autorizzato: puoi visualizzare stati dei device che appartengono effettivamente alla tua azienda!");
+            });
+        }
+        else
+            res.status(401).json("utente correttamente loggato ma non autorizzato: puoi visualizzare stati dei device solo nella tua azienda!");
+    });
 });
 
 //Attivo definitivamente il server --> ora accetto richieste
