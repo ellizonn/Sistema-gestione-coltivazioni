@@ -10,13 +10,17 @@
     <script type="module">
 
             const keycloak = new Keycloak();
+            const user_id = null;
             keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
                 //alert(authenticated ? 'authenticated' : 'not authenticated');
+                user_id = keycloak.subject;
+                console.log("user_id: ", user_id);
             }).catch(function() {
                 //alert('failed to initialize');
             });
             console.log(keycloak);
             export {keycloak};
+            export {user_id};
 
     </script>
 
