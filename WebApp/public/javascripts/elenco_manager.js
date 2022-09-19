@@ -1,17 +1,47 @@
+
+
 "use strict" 
 
-import keycloak from './s.js';
 
 class visual_elenco_proprieta_manager{
-
-    constructor(){
+    
+    
+    constructor(){  
         this.info_proprieta = [];
     }
 
-    async fetchinfoProprieta(){
 
-        console.log(keycloack);
-        let response = await fetch(`/v1/aziende/${1}/proprieta`,{
+    async fetchinfoProprieta(){
+         
+        const keycloak = new Keycloak();
+       
+               keycloak.init({onLoad:'check-sso'}).then(function(authenticated) {
+                //alert(authenticated ? 'authenticated' : 'not authenticated');
+                 //const id=keycloak.subject;
+                 console.log(keycloak.subject);
+                 
+            }).catch(function() {
+                //alert('failed to initialize');
+            });
+           
+       console.log(keycloak.subject);
+      
+    
+
+    const pippo="87b872df-799a-44a0-bf08-221111b1c2ab";
+       let response_id = await fetch(`/v1/azienda_user/${pippo}`,{
+        headers: new Headers({
+            'Access-Control-Allow-Origin':'no-cors',
+            'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Authorization': 'Bearer ', 
+        })}
+        ); 
+
+        const id_az = await response_id.json();
+        const id_azienda=id_az.fk_azienda;
+       let response = await fetch(`/v1/aziende/${id_azienda}/proprieta`,{
         headers: new Headers({
             'Authorization': 'Bearer ', 
           })}
@@ -29,8 +59,11 @@ class visual_elenco_proprieta_manager{
         }
         else {
             throw infoJson;
-        }
+        } 
+
+        
     }
+
 
     async card(){
 
@@ -64,3 +97,4 @@ class visual_elenco_proprieta_manager{
     }
 
 }
+
