@@ -19,7 +19,7 @@ const x = `
 
 
         <li class="nav-item">
-        <a class="nav-link" href="<----keycloac--->">Login</a>
+        <a class="nav-link" href="login.html">Login</a>
         </li>
 
         <li class="nav-item">
@@ -56,13 +56,35 @@ menu.innerHTML += x;
 let footer = document.getElementById("foot");
 
 const y = `
-          
+      
           `;
 
 footer.innerHTML += y;
 
 
+
+    async function a(){
+Keycloak = new Keycloak();
+  //console.log(keycloak.subject);
+  //{onLoad:'check-sso'}
+        await Keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
+          //alert(authenticated ? 'authenticated' : 'not authenticated');
+          //const id=keycloak.subject;
+           //console.log(Keycloak.subject);
+
+      }).catch(function() {
+          //alert('failed to initialize');
+      });
+      return Keycloak;
+  
+    }
+
+
+    var b=a();
+    console.log(b);
 (async function(){
+    
+
   let log = document.getElementById("elementi");
  // let logged_collab = await fetch('/....');
  // let logged_agric = await fetch('/....');

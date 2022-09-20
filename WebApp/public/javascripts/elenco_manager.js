@@ -24,6 +24,7 @@ class visual_elenco_proprieta_manager{
             });
 
             console.log(Keycloak.subject);
+            console.log(Keycloak.realmAccess.roles[0]);
 
 
        let response_id = await fetch(`/v1/azienda_user/${Keycloak.subject}`,{
