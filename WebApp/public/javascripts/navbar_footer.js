@@ -51,6 +51,8 @@ menu.innerHTML += x;
 
 
 /*FOOTER*/
+
+
 let footer = document.getElementById("foot");
 
 const y = `

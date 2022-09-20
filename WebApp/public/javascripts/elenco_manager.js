@@ -1,52 +1,54 @@
 
 
-"use strict" 
-
 
 class visual_elenco_proprieta_manager{
-    
+   
     
     constructor(){  
         this.info_proprieta = [];
     }
 
-
     async fetchinfoProprieta(){
-         
-        const keycloak = new Keycloak();
-       
-               keycloak.init({onLoad:'check-sso'}).then(function(authenticated) {
+    
+            //console.log(JSON.stringify(Keycloak));
+
+            Keycloak = new Keycloak();
+        //console.log(keycloak.subject);
+        //{onLoad:'check-sso'}
+              await Keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
                 //alert(authenticated ? 'authenticated' : 'not authenticated');
-                 //const id=keycloak.subject;
-                 console.log(keycloak.subject);
-                 
+                //const id=keycloak.subject;
+                 //console.log(Keycloak.subject);
             }).catch(function() {
                 //alert('failed to initialize');
             });
-           
-       console.log(keycloak.subject);
-      
-    
 
-    const pippo="87b872df-799a-44a0-bf08-221111b1c2ab";
-       let response_id = await fetch(`/v1/azienda_user/${pippo}`,{
+            console.log(Keycloak.subject);
+
+
+       let response_id = await fetch(`/v1/azienda_user/${Keycloak.subject}`,{
         headers: new Headers({
             'Access-Control-Allow-Origin':'no-cors',
-            'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+           //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
             'Access-Control-Allow-Methods': 'GET',
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Authorization': 'Bearer ', 
+            'Authorization': 'Bearer '+Keycloak.token, 
         })}
         ); 
-
+        
         const id_az = await response_id.json();
         const id_azienda=id_az.fk_azienda;
        let response = await fetch(`/v1/aziende/${id_azienda}/proprieta`,{
         headers: new Headers({
-            'Authorization': 'Bearer ', 
+            'Access-Control-Allow-Origin':'no-cors',
+           //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Authorization': 'Bearer '+Keycloak.token, 
           })}
           
         );
+
 
         const infoJson = await response.json();
         if(response.ok){
@@ -57,11 +59,10 @@ class visual_elenco_proprieta_manager{
                  }
                 return this.info_proprieta;
         }
+
         else {
             throw infoJson;
         } 
-
-        
     }
 
 
