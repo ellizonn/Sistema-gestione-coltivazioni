@@ -2,8 +2,71 @@
 
 const sqlite = require('sqlite3').verbose();
 const gestore_devices = require('./gestore_devices');
+const gestore_conf = require('./gestore_configurazioni');
+const gestore_configurazioni = new gestore_conf(); 
 const iot = require('./obj_dispositivo_iot');
 const misura = require('./obj_misura');
+const mqtt = require('mqtt')
+const options = {
+    // Clean session
+    clean: true,
+    connectTimeout: 4000,
+    // Auth - non ci serve autenticazione per test.mosquitto.org
+    //clientId: 'emqx_test',
+    //username: 'emqx_test',
+    //password: 'emqx_test',
+}
+
+//inserisce misura in arrivo da mqtt
+async function support_measure(misura, id_device){
+    await more_support_measure(id_device);
+    let DBSOURCE = './iserra.db';
+        let db =  new sqlite.Database(DBSOURCE, (err) => {
+            if (err) {
+                //non si riesce ad aprire il db
+                console.err(err.message);
+                throw err;
+            }
+            else{
+                //console.log('Il Database iSerra è stato aperto con successo');
+            } 
+    });
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO misura(data_misurazione,ora_misurazione,valore_misurato,unita_misura,fk_device) VALUES (?, ?, ?, ?, ?)';
+        db.run(sql, [misura.data_misurazione,misura.ora_misurazione,misura.valore_misurato,misura.unita_misura,id_device], function(err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(this.lastID);
+            }
+        });
+    });
+}
+
+//rimuove tutte le misure precedenti a quella dell'inserimento
+async function more_support_measure(id_device){
+    let DBSOURCE = './iserra.db';
+        let db =  new sqlite.Database(DBSOURCE, (err) => {
+            if (err) {
+                //non si riesce ad aprire il db
+                console.err(err.message);
+                throw err;
+            }
+            else{
+                //console.log('Il Database iSerra è stato aperto con successo');
+            } 
+    });
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE from misura WHERE fk_device=?';
+        db.run(sql, [id_device], function(err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(this.lastID);
+            }
+        });
+    });
+}
 
 class gestore_stati{
 
@@ -19,6 +82,34 @@ class gestore_stati{
                 //console.log('Il Database iSerra è stato aperto con successo');
             } 
         });
+
+
+        const client  = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
+        client.on('connect', function () {
+        console.log('gestore_stati connesso al server mqtt');
+            client.subscribe('azienda/+/proprieta/+/misure', function (err) {
+                //if (!err) {
+                //client.publish('test', 'Hello mqtt')
+                //}
+            })
+        })
+
+
+        //FORMATO CORRETTO ACCETTATO
+        // {"id_device": 1, "data_misurazione": "08-06-2022", "ora_misurazione": "15:50", "valore_misurato": 23, "unita_misura": "Celsius"}
+        client.on('message', function (topic, message) {
+            //console.log(message.toString())
+            //client.end() - no, altrimenti me lo spegne
+            let msg;
+            topic = topic.split('/');
+            topic = topic[3];
+            msg = JSON.parse(message.toString());
+            (async function(){
+                await support_measure(msg,msg.id_device);
+                gestore_configurazioni.measure_alarm(topic);
+            }());
+        })
+      
     }
 
 
@@ -42,7 +133,7 @@ class gestore_stati{
         });
     }
 
-    nuova_misura(misura, id_device) {
+    static nuova_misura(misura, id_device) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO misura(data_misurazione,ora_misurazione,valore_misurato,unita_misura,fk_device) VALUES (?, ?, ?, ?, ?)';
             this.db.run(sql, [misura.data_misurazione,misura.ora_misurazione,misura.valore_misurato,misura.unita_misura,id_device], function(err) {

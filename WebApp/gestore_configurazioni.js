@@ -2,6 +2,7 @@
 
 const sqlite = require('sqlite3').verbose();
 const piano_configurazione = require ('./obj_piano_configurazione');
+const misura = require('./obj_misura');
 
 class gestore_configurazioni{
 
@@ -86,6 +87,76 @@ class gestore_configurazioni{
             });
         });
     }//OK
+
+    //Per accorgersi che gestore_stati ha registrato una nuova misura: si controllano quindi le configurazioni
+    measure_alarm(propr_measure_changed){
+        this.measure_alarm_conf(propr_measure_changed).then ((configs) => {
+            //console.log(configs);
+            this.measure_alarm_mis(propr_measure_changed).then ((misure) =>{
+
+                //console.log(misure);
+                
+                for(let i=0; i<configs.length; i++){
+                    let config=configs[i];                    
+                    switch(String(config.tipo_piano)){
+                        case "piano_irrigazione":
+                            break;
+                        case "piano_illuminazione":
+                            break;
+                        case "piano_riscaldamento":
+                            console.log(config.temperatura_a);
+                            let da = config.temperatura_da;
+                            let a = config.temperatura_a;
+                            for(let j=0;j<misure.length;j++){
+                                let mis=misure[i];
+                                console.log(da);
+                                if(mis.unita_misura=="°C" && (mis.valore_misurato<da || mis.valore_misurato>a))
+                                    console.log("condizionamento attivo");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                }
+
+            });
+        });      
+    }
+
+    //Ottiene tutte le configurazioni automatiche della proprieta' utili al metodo precedente
+    measure_alarm_conf(id_propr){
+        return new Promise((resolve, reject) => {
+            const sql = "SELECT id_piano,condizioni_misure,attuatori_coinvolti,conseguenze,tipo_piano,umidita_min,temperatura_max,tempo_funzionamento,temperatura_da,temperatura_a,luminosita_da,luminosita_a,orario_da,orario_a FROM piano_configurazione WHERE fk_proprieta=?";
+            this.db.all(sql, [id_propr], (err, rows) => {
+                if (err) 
+                    reject(err);
+                else if (rows.length === 0)
+                    resolve({error404: 'Nessun piano configurazione trovato'});
+                else {
+                    let lista_configurazioni_proprieta = rows.map((row) => {return new piano_configurazione(row.id_piano,row.condizioni_misure,row.attuatori_coinvolti,row.conseguenze,row.tipo_piano,row.umidita_min,row.temperatura_max,row.tempo_funzionamento,row.temperatura_da,row.temperatura_a,row.luminosita_da,row.luminosita_a,row.orario_da,row.orario_a)});
+                    resolve(lista_configurazioni_proprieta);
+                }
+            });
+        });
+    }
+
+    //Ottiene tutte le misure (recenti) della proprieta' utili al metodo precedente
+    measure_alarm_mis(id_propr){
+        return new Promise((resolve, reject) => {
+            const sql = "SELECT id_misura,data_misurazione,ora_misurazione,valore_misurato,misura.unita_misura FROM misura,dispositivo_iot WHERE fk_device=id_device AND fk_proprieta=?";
+            this.db.all(sql, [id_propr], (err, rows) => {
+                if (err) 
+                    reject(err);
+                else if (rows.length === 0)
+                    resolve({error404: 'Nessuna misura trovata per la proprieta\' in questione'});
+                else {
+                    let lista_misure_proprieta = rows.map((row) => {return new misura(row.id_misura,row.data_misurazione,row.ora_misurazione,row.valore_misurato,row.unita_misura)});
+                    resolve(lista_misure_proprieta);
+                }
+            });
+        });
+    }
 
 }
 
