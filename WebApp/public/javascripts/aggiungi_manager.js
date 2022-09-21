@@ -1,14 +1,14 @@
 
 
 
-class visual_elenco_proprieta_manager{
+class nuova_proprieta_manager{
    
     
     constructor(){  
         this.info_proprieta = [];
     }
 
-    async fetchinfoProprieta(){
+    async fetchnuovaProprieta(){
     
             //console.log(JSON.stringify(Keycloak));
 
@@ -39,31 +39,11 @@ class visual_elenco_proprieta_manager{
         
         const id_az = await response_id.json();
         const id_azienda=id_az.fk_azienda;
-       let response = await fetch(`/v1/aziende/${id_azienda}/proprieta`,{
-        headers: new Headers({
-            'Access-Control-Allow-Origin':'no-cors',
-           //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
-            'Access-Control-Allow-Methods': 'GET',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Authorization': 'Bearer '+Keycloak.token, 
-          })}
-          
-        );
-
-
-        const infoJson = await response.json();
-        if(response.ok){
-                var recupero_id = []; //per tenere traccia degli id_proprieta
-                for(let i=0; i<infoJson.length; i++){
-                this.info_proprieta.push(new my_info_proprieta(infoJson[i].id_proprieta, infoJson[i].estensione_ettari, infoJson[i].coltura, infoJson[i].data_semina, infoJson[i].lat, infoJson[i].long, infoJson[i].tipo_proprieta, infoJson[i].copertura_mobile));
-                recupero_id[i]=infoJson[i].id_proprieta;
-                 }
-                return this.info_proprieta;
-        }
-
-        else {
-            throw infoJson;
-        } 
+        if(response_id.ok){
+            this.info_proprieta.fk_azienda=id_azienda;
+            return this.info_proprieta;
+        }else {}
+       
     }
 
 

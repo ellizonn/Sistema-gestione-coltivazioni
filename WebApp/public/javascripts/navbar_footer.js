@@ -1,5 +1,4 @@
 "use strict";
-
 /*NAVBAR*/
 let menu = document.getElementById("menu_uniforme");
 
@@ -18,17 +17,6 @@ const x = `
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="elementi">
 
 
-        <li class="nav-item">
-        <a class="nav-link" href="login.html">Login</a>
-        </li>
-
-        <li class="nav-item">
-        <a class="nav-link" href="Visualizza_elenco_proprieta.html">Visualizza elenco proprieta</a>
-        </li>
-
-        <li class="nav-item">
-        <a class="nav-link" href="Aggiungi_proprieta.html">Aggiungi proprieta'</a>
-        </li>
 
           <script>
             let log = document.getEle
@@ -61,30 +49,9 @@ const y = `
 
 footer.innerHTML += y;
 
-
-
-    async function a(){
-Keycloak = new Keycloak();
-  //console.log(keycloak.subject);
-  //{onLoad:'check-sso'}
-        await Keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
-          //alert(authenticated ? 'authenticated' : 'not authenticated');
-          //const id=keycloak.subject;
-           //console.log(Keycloak.subject);
-
-      }).catch(function() {
-          //alert('failed to initialize');
-      });
-      return Keycloak;
-  
-    }
-
-
-    var b=a();
-    console.log(b);
+/*
 (async function(){
     
-
   let log = document.getElementById("elementi");
  // let logged_collab = await fetch('/....');
  // let logged_agric = await fetch('/....');
@@ -125,4 +92,82 @@ Keycloak = new Keycloak();
     const json = await ilnome.json();
     document.getElementById("ilnome").innerText = "Logout [Collaboratore: " + json.ilnome + "]";
   }
-})
+})*/
+
+
+//NB NB
+//SISTEMARE COME USARE LA VARIABILE DI LOG NELLA NAVBAR, vedi a riga 131 che cosa ho messo a var_log
+(async function(){
+
+  Keycloak = new Keycloak();
+  await Keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
+    //alert(authenticated ? 'authenticated' : 'not authenticated');
+    //const id=keycloak.subject;
+     //console.log(Keycloak.realmAccess.roles[0]);
+     console.log('keycloak',Keycloak);
+  
+}).catch(function() {
+    //alert('failed to initialize');
+});
+
+});
+
+   
+     
+let log = document.getElementById("elementi");
+// let logged_collab = await fetch('/....');
+// let logged_agric = await fetch('/....');
+// const lcjson = await logged_collab.json();
+//  const lajson = await logged_agric.json();
+
+   //const var_log=Keycloak.realmAccess.roles[0];
+   
+  // var var_log=Keycloak.realmAccess.roles[0];
+  var var_log='agricoltore';
+
+ let m;
+
+ //if(!lcjson.log && !lajson.log){ //l'utente non è loggato
+ if(!var_log){
+   m = `
+   <li class="nav-item">
+   <a class="nav-link" href="log.html">Login</a>
+   </li>
+   `;
+   log.innerHTML += m;
+ }
+ else if(var_log=='agricoltore'){  //loggato come agricoltore
+    m = `
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#">AGRICOLTORE</a>
+        </li>
+    <li class="nav-item">
+        <a class="nav-link" href="logoff">LogOff</a>
+        </li>
+    <li class="nav-item">
+   <a class="nav-link" href="Visualizza_elenco_proprieta.html">Visualizza elenco proprieta'</a>
+   </li>
+   <li class="nav-item">
+       <a class="nav-link" href="Aggiungi_proprieta.html">Aggiungi proprieta'</a>
+     </li>
+    `;
+    log.innerHTML += m;
+
+    //let ilnome = await fetch(''); //mi servirebbe il nome dell'agricoltore con cui sono loggato
+    //const json = await ilnome.json();
+    //document.getElementById("ilnome").innerText="Logout [Agricoltore: " + json.ilnome + "]";
+ }
+ else if(var_log=='collaboratore'){ //loggato come collaboratore
+   m = `
+   <li class="nav-item">
+        <a class="nav-link disabled" href="#">COLLABORATORE</a>
+        </li>
+   `;
+   log.innerHTML += m;
+
+   //let ilnome = await fetch(''); //ottengo il nome del collaboratore
+   //const json = await ilnome.json();
+  // document.getElementById("ilnome").innerText = "Logout [Collaboratore: " + json.ilnome + "]";
+ }
+
+

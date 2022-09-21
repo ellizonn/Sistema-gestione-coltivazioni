@@ -1,19 +1,22 @@
 "use strict"
 
 class visual_elenco_proprieta_app{
+    
     constructor(proprietaContainer){
         this.proprietaContainer = proprietaContainer;
         this.visual_manager = new visual_elenco_proprieta_manager();
         this.info_proprieta = this.visual_manager.info_proprieta;
 
         //controllo tipo utente
-
+        
         let utente=false;
         (async function(){
                 utente=true;
             })().then( () => {
                 if(utente==true){
+                    
                     this.visual_manager.fetchinfoProprieta().then(() => {
+                        
                         this.info_proprieta = this.visual_manager.info_proprieta;
                         this.showProprieta(this.info_proprieta);
                 });
