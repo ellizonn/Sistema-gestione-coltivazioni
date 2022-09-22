@@ -56,7 +56,10 @@ class visual_elenco_proprieta_app{
                     div1.appendChild(a);
                     a.toggleAttribute = "modal"
                     a.textContent = id;
-
+                    a.setAttribute("id",id);
+                    console.log(a.id);
+                   
+                    
 
             this.proprietaContainer.append(div);
      }

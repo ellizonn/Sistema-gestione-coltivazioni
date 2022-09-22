@@ -115,10 +115,6 @@ footer.innerHTML += y;
    
      
 let log = document.getElementById("elementi");
-// let logged_collab = await fetch('/....');
-// let logged_agric = await fetch('/....');
-// const lcjson = await logged_collab.json();
-//  const lajson = await logged_agric.json();
 
    //const var_log=Keycloak.realmAccess.roles[0];
    

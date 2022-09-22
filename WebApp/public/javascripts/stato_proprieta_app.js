@@ -26,6 +26,7 @@ class visual_stato_proprieta_app{
 
     showstatoProprieta(stato_proprieta, IOT_proprieta){
 
+        /*
         let table_1 = `
         <table class="table table-success table-striped">
                         <thead>
@@ -145,6 +146,6 @@ class visual_stato_proprieta_app{
         }
 
        
-  
+  */
     }
 }
