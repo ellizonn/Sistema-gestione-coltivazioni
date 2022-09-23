@@ -25,6 +25,7 @@ class visual_stato_proprieta_app{
     }
 
     showstatoProprieta(stato_proprieta, IOT_proprieta){
+        
 
         /*
         let table_1 = `

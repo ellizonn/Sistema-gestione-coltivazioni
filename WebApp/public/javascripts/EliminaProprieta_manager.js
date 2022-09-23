@@ -1,7 +1,7 @@
 
 
 
-class visual_elenco_proprieta_manager{
+class elimina_proprieta_manager{
    
     
     constructor(){  
@@ -38,7 +38,7 @@ class visual_elenco_proprieta_manager{
         ); 
         
         const id_az = await response_id.json();
-        const id_azienda=id_az.fk_azienda;
+        const id_azienda=id_az.fk_azienda; //Id dell'azienda dove lavora
        let response = await fetch(`/v1/aziende/${id_azienda}/proprieta`,{
         headers: new Headers({
             'Access-Control-Allow-Origin':'no-cors',
@@ -50,13 +50,11 @@ class visual_elenco_proprieta_manager{
           
         );
 
-
+        
         const infoJson = await response.json();
         if(response.ok){
-                var recupero_id = []; //per tenere traccia degli id_proprieta
                 for(let i=0; i<infoJson.length; i++){
-                this.info_proprieta.push(new my_info_proprieta(infoJson[i].id_proprieta, infoJson[i].estensione_ettari, infoJson[i].coltura, infoJson[i].data_semina, infoJson[i].lat, infoJson[i].long, infoJson[i].tipo_proprieta, infoJson[i].copertura_mobile));
-                recupero_id[i]=infoJson[i].id_proprieta;
+                this.info_proprieta.push(new my_info_proprieta_elimina(infoJson[i].id_proprieta,id_azienda));
                  }
                 return this.info_proprieta;
         }
@@ -67,7 +65,7 @@ class visual_elenco_proprieta_manager{
     }
 
 
-    async card(){
+ /*   async card(){
 
         var myModal = new bootstrap.Modal(document.getElementById("azione_modal"),{backdrop: 'static', keyboard: false});
         myModal.toggle();
@@ -77,9 +75,9 @@ class visual_elenco_proprieta_manager{
             document.location.reload();
         });
         
-        
+        return a;
 
-    /*    if(response.ok){
+        if(response.ok){
             
             return;
         }
@@ -98,7 +96,6 @@ class visual_elenco_proprieta_manager{
                     throw 'Errore: non riesco a parsificare la risposta del server';
             }
         } */
-    }
+   // }
 
 }
-

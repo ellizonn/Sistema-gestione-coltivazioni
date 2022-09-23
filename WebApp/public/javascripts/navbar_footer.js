@@ -146,6 +146,9 @@ let log = document.getElementById("elementi");
    <li class="nav-item">
        <a class="nav-link" href="Aggiungi_proprieta.html">Aggiungi proprieta'</a>
      </li>
+     <li class="nav-item">
+       <a class="nav-link" href="Elimina_proprieta.html">Elimina proprieta'</a>
+     </li>
     `;
     log.innerHTML += m;
 

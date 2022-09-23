@@ -9,6 +9,7 @@ class visual_stato_proprieta_manager{
 
     async fetchstatoProprieta(){
 
+        
 
         Keycloak = new Keycloak();
         //{onLoad:'check-sso'}

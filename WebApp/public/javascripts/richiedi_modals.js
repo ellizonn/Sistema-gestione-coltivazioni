@@ -39,12 +39,6 @@ const plus = `
            <a href="Elimina_IoT_devices.html">Elimina IoT devices</a>
          </div>
        </div>
- 
-       <div class="card">
-         <div class="card-body">
-           <a href="Elimina_proprieta.html">Elimina proprieta'</a>
-         </div>
-       </div>
 
       </div>
       <div class="modal-footer">
@@ -95,12 +89,6 @@ mod.innerHTML += plus;
       <div class="card">
         <div class="card-body">
           <a href="Elimina_IoT_devices.html">Elimina IoT devices</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <a href="Elimina_proprieta.html">Elimina proprieta'</a>
         </div>
       </div>
      `;
