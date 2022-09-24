@@ -26,19 +26,12 @@ class elimina_proprieta_app{
     }
 
 
-    showProprieta(info_proprieta){
+   async  showProprieta(info_proprieta){
+    
+        if(info_proprieta.length !=0){
+
         for(const info of info_proprieta){  
-      /*  let all_data_of_propieta = `
-                                <div class="card">
-                                    <div class="card-body">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#azione_modal">
-                                            ${info.id_proprieta}
-                                        </button>
-                                    </div>
-                                </div>
-                             `;*/
-            
-            console.log(info.id_proprieta, info.id_azienda);
+           // console.log(info.id_proprieta, info.id_azienda);
 
             let x =            ` <div class="col">
                                     <h5>Id proprieta'</h5>
@@ -46,10 +39,12 @@ class elimina_proprieta_app{
                                   </div>
 
                                  <div class="col">
-                                    <h5>Elimina</h5>
+                                    <h5>ID azienda</h5>
                                     <p>${info.id_azienda}</p>
                                  </div>
-                                 `
+                                 `;
+                                 
+
             let elimina = ` 
                                  <div class="col">
                                   <h5>Elimina</h5>
@@ -57,9 +52,10 @@ class elimina_proprieta_app{
                                   <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                   <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                                 </svg>
-                            `
+                                </div>
+                            `;
 
-            let riga = `<div class="row">
+           let riga = `<div class="row">
                         <hr>
                         ${x}
                         ${elimina}
@@ -67,29 +63,13 @@ class elimina_proprieta_app{
                         <hr><br></hr>
                         </div>
                              `;
+            
 
-    var h = document.getElementById('elimina_proprieta');
-      h.appendChild(riga);
-     //   $("#elimina_proprieta").append(riga); 
-
-/*
-            const div = document.createElement("div");
-            div.className = "card";
-            div.addEventListener("click",this.visual_manager.card,false)
-                const div1 = document.createElement("div");
-                div.appendChild(div1)
-                div1.className = "card-body";
-                    const a = document.createElement("a");
-                    div1.appendChild(a);
-                    a.toggleAttribute = "modal"
-                    a.textContent = id;
-                    a.setAttribute("id",id);
-                    console.log(a.id);
-                   
-                    
-
-            this.proprietaContainer.append(div);*/
+       // let z=document.getElementById('elimina-proprieta');
+        //z.append(riga);
+        $('#elimina-proprieta').append(riga);
      }
+    } else { }
     }
 
 
