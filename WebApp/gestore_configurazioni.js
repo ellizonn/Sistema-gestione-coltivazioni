@@ -112,8 +112,12 @@ class gestore_configurazioni{
                                 console.log(da);
                                 if(mis.unita_misura=="°C" && (mis.valore_misurato<da || mis.valore_misurato>a))
                                     console.log("condizionamento attivo");
+                                    //differenziare risc/raffresc
+                                    //controllare se l'attuatore/gli attuatori previsti dalla conf. sono in mod auto
+                                    //se in automatico --> inviare msg mqtt per accendere --> aggiornare stato nel db dell'attuatore
                             }
                             break;
+                            
                         default:
                             break;
                     }
