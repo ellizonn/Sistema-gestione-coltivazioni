@@ -30,9 +30,11 @@ class elimina_proprieta_app{
     
         if(info_proprieta.length !=0){
 
+            
+            var z=document.getElementById('elimina-proprieta');
         for(const info of info_proprieta){  
            // console.log(info.id_proprieta, info.id_azienda);
-
+          // var z = document.createElement('div'); // is a node
             let x =            ` <div class="col">
                                     <h5>Id proprieta'</h5>
                                     <p>${info.id_proprieta}</p>
@@ -63,11 +65,22 @@ class elimina_proprieta_app{
                         <hr><br></hr>
                         </div>
                              `;
-            
+        z.innerHTML+=riga;
 
-       // let z=document.getElementById('elimina-proprieta');
-        //z.append(riga);
-        $('#elimina-proprieta').append(riga);
+
+        // PERCHE' DA PROBLEMI [Uncaught (in promise) ReferenceError: $ is not defined at elimina_proprieta_app.showProprieta (EliminaProprieta_app.js:71:9) at EliminaProprieta_app.js:21:30]
+      /*  $(`#${info.id_azienda}`).click(function(){
+            //tramite gli endpoints richiamo funzione server.js ...
+            fetch(`/v1/aziende/${info.id_azienda}/proprieta/${info.id_proprieta}`,{ //endpoint
+                method: 'DELETE',
+               // headers:{
+               // 'Content-Type':'application/json'
+                //},
+                //body: JSON.stringify(DATA_WHICH_WE_WANT_TO_SEND) non mi serve 
+            })
+            
+        }) */
+        
      }
     } else { }
     }

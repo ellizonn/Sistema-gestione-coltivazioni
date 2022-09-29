@@ -92,7 +92,7 @@ class nuova_proprieta_app{
       h.appendChild(z);
       console.log(info_proprieta.fk_azienda);
 
-      
+      //Qui bisogna aggiungere l'aggiunta dei dispositivi
         }
        
     }
