@@ -132,6 +132,7 @@ class gestore_stati{
             })
         });
     }
+    //TODO: aggiungere MQTTs
 
     static nuova_misura(misura, id_device) {
         return new Promise((resolve, reject) => {

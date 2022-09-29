@@ -74,6 +74,20 @@ class gestore_devices{
         });
     }
 
+    //Fornisce info estese sul device con l’ID specificato.
+    ottieni_info_device(id_device) {
+        return new Promise((resolve, reject) => {
+            const sql = "SELECT mod_interazione,parametri_connessione,tipo,unita_misura,funzione,stato,manuale,fk_proprieta FROM dispositivo_iot WHERE id_device=?";
+            this.db.get(sql,[id_device],(err, riga) =>{
+                if (err)
+                    reject(err); 
+                else if (riga === undefined)
+                    resolve({error404:'Nessun dispositivo trovato con questo id.'});
+                else
+                    resolve(new device(riga.id_device,riga.mod_interazione,riga.parametri_connessione,riga.tipo,riga.unita_misura,riga.funzione,riga.stato,riga.manuale,riga.fk_proprieta));
+            });        
+        });
+    }
    
 }
 

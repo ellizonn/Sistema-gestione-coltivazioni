@@ -3,6 +3,7 @@
 const sqlite = require('sqlite3').verbose();
 const piano_configurazione = require ('./obj_piano_configurazione');
 const misura = require('./obj_misura');
+const gestore_devices = require('./gestore_devices');
 
 class gestore_configurazioni{
 
@@ -97,7 +98,8 @@ class gestore_configurazioni{
                 //console.log(misure);
                 
                 for(let i=0; i<configs.length; i++){
-                    let config=configs[i];                    
+                    let config=configs[i];
+                    let topic = 'azienda/+/proprieta/+/misure';
                     switch(String(config.tipo_piano)){
                         case "piano_irrigazione":
                             break;
@@ -112,6 +114,49 @@ class gestore_configurazioni{
                                 console.log(da);
                                 if(mis.unita_misura=="°C" && (mis.valore_misurato<da || mis.valore_misurato>a))
                                     console.log("condizionamento attivo");
+
+                                    let array_id_devices = config.attuatori_coinvolti.split(',');
+                                    for(k=0; k<array_id_devices.length; k++) {
+                                        let id_device = array_id_devices[k];
+                                        gestore_devices.ottieni_info_device(id_device).then ((device) => {
+                                            if(
+                                                id_device == device
+                                                && device.mod_interazione == "mqtt"
+                                                && device.tipo == "Attuatore"
+                                                && device.unita_misura == "°C"
+                                                && device.manuale === false
+                                            ) {
+                                                
+                                            }
+                                        })
+                                    }
+
+                                    //if attuatore auto
+                                    const client  = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
+                                    client.on('connect', function () {
+                                    console.log('gestore_configurazioni connesso al server mqtt');
+                                        
+                                        if(mis.valore_misurato<da) {
+                                            client.publish(topic, '{"id_device": '+id_device+', "stato": TRUE', function (err) {
+                                                //if (!err) {
+                                                //client.publish('test', 'Hello mqtt')
+                                                //}
+                                            })
+                                        }
+                                        
+                                        if(mis.valore_misurato>a) {
+                                            client.publish(topic, '{"id_device": '+id_device+', "stato": FALSE', function (err) {
+                                                //if (!err) {
+                                                //client.publish('test', 'Hello mqtt')
+                                                //}
+                                            })
+                                        }
+                                        
+                                    })
+
+                                    if(mis.valore_misurato<da) {
+
+                                    }
                                     //differenziare risc/raffresc
                                     //controllare se l'attuatore/gli attuatori previsti dalla conf. sono in mod auto
                                     //se in automatico --> inviare msg mqtt per accendere --> aggiornare stato nel db dell'attuatore
