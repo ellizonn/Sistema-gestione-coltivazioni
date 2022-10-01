@@ -11,29 +11,21 @@ class visual_elenco_proprieta_manager{
     async fetchinfoProprieta(){
     
             //console.log(JSON.stringify(Keycloak));
-
-            Keycloak = new Keycloak();
-        //console.log(keycloak.subject);
-        //{onLoad:'check-sso'}
-              await Keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
-                //alert(authenticated ? 'authenticated' : 'not authenticated');
-                //const id=keycloak.subject;
-                //console.log(Keycloak.subject);
-            }).catch(function() {
-                //alert('failed to initialize');
-            });
-
-            //console.log(Keycloak.subject);
+          let sub=sessionStorage.getItem("chiave");
+          let tok=sessionStorage.getItem("token");
+         
+          
+            
             //console.log(Keycloak.realmAccess.roles[0]);
 
 
-       let response_id = await fetch(`/v1/azienda_user/${Keycloak.subject}`,{
+       let response_id = await fetch(`/v1/azienda_user/${sub}`,{
         headers: new Headers({
             'Access-Control-Allow-Origin':'no-cors',
            //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
             'Access-Control-Allow-Methods': 'GET',
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Authorization': 'Bearer '+Keycloak.token, 
+            'Authorization': 'Bearer '+tok, 
         })}
         ); 
         
@@ -45,10 +37,11 @@ class visual_elenco_proprieta_manager{
            //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
             'Access-Control-Allow-Methods': 'GET',
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Authorization': 'Bearer '+Keycloak.token, 
+            'Authorization': 'Bearer '+tok, 
           })}
           
         );
+
 
 
         const infoJson = await response.json();
@@ -64,16 +57,22 @@ class visual_elenco_proprieta_manager{
         else {
             throw infoJson;
         } 
+
+    
     }
 
 
-    async card(){
-
+    async card(info){
+        
         var myModal = new bootstrap.Modal(document.getElementById("azione_modal"),{backdrop: 'static', keyboard: false});
         myModal.toggle();
-    
+        
+        let c=document.getElementsByClassName("pippo");
+        console.log(c);
+        
         
         document.getElementById("azione_modal").addEventListener("hidePrevented.bs.modal",function(){
+            
             document.location.reload();
         });
         
@@ -100,5 +99,9 @@ class visual_elenco_proprieta_manager{
         } */
     }
 
+
+   
 }
+
+
 

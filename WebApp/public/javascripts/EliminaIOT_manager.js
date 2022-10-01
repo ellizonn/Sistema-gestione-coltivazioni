@@ -7,6 +7,8 @@ class elimina_manager{
     }
 
     async fetchEliminaIOT(){
+
+        
         let response1 = await fetch(`/v1/aziende/${1}/proprieta/${1}/device`);
         const IOTJson = await response1.json();
         if(response1.ok){

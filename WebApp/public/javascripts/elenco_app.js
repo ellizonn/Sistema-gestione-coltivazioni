@@ -6,7 +6,7 @@ class visual_elenco_proprieta_app{
         this.proprietaContainer = proprietaContainer;
         this.visual_manager = new visual_elenco_proprieta_manager();
         this.info_proprieta = this.visual_manager.info_proprieta;
-
+        
         //controllo tipo utente
         
         let utente=false;
@@ -37,31 +37,24 @@ class visual_elenco_proprieta_app{
                                     </div>
                                 </div>
                              `;*/
-            const id = info.id_proprieta;
-
+           
+           
             const div = document.createElement("div");
             div.className = "card";
-            div.addEventListener("click",this.visual_manager.card,false)
-                const div1 = document.createElement("div");
+            
+            
+              const div1 = document.createElement("div");
                 div.appendChild(div1)
                 div1.className = "card-body";
-                    /* const button = document.createElement("button");
-                    div1.appendChild(button);
-                    button.type="button";
-                    button.className="btn btn-primary";
-                    button.toggleAttribute = "modal"
-                    button.formTarget="#azione_modal";
-                    button.textContent = id; */
-                    const a = document.createElement("a");
-                    div1.appendChild(a);
-                    a.toggleAttribute = "modal"
-                    a.textContent = id;
-                    a.setAttribute("id",id);
-                    console.log(a.id);
-                   
-                    
-
-            this.proprietaContainer.append(div);
+                const a = document.createElement("a");
+                a.className="pippo";
+                div1.appendChild(a);
+                a.toggleAttribute = "modal";
+                a.textContent = info.id_proprieta;
+                a.id=info.id_proprieta;
+                a.addEventListener("click",this.visual_manager.card,false);
+            
+            this.proprietaContainer.append(div); 
      }
     }
 
