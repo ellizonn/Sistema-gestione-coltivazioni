@@ -3,7 +3,10 @@
 const sqlite = require('sqlite3').verbose();
 const piano_configurazione = require ('./obj_piano_configurazione');
 const misura = require('./obj_misura');
-const gestore_devices = require('./gestore_devices');
+const g_d = require('./gestore_devices');
+const gestore_devices = new g_d();
+const g_s = require('./gestore_stati');
+const gestore_stati = new g_s();
 
 class gestore_configurazioni{
 
@@ -92,77 +95,21 @@ class gestore_configurazioni{
     //Per accorgersi che gestore_stati ha registrato una nuova misura: si controllano quindi le configurazioni
     measure_alarm(propr_measure_changed){
         this.measure_alarm_conf(propr_measure_changed).then ((configs) => {
-            //console.log(configs);
             this.measure_alarm_mis(propr_measure_changed).then ((misure) =>{
-
-                //console.log(misure);
                 
                 for(let i=0; i<configs.length; i++){
                     let config=configs[i];
-                    let topic = 'azienda/+/proprieta/+/misure';
+                    let array_id_devices = config.attuatori_coinvolti.split(',');
                     switch(String(config.tipo_piano)){
                         case "piano_irrigazione":
+                            this.case_default(misure, array_id_devices, config.umidita_da, config.umidita_a, "%");
                             break;
                         case "piano_illuminazione":
+                            this.case_default(misure, array_id_devices, config.luminosita_da, config.luminosita_a, "lx");
                             break;
                         case "piano_riscaldamento":
-                            console.log(config.temperatura_a);
-                            let da = config.temperatura_da;
-                            let a = config.temperatura_a;
-                            for(let j=0;j<misure.length;j++){
-                                let mis=misure[i];
-                                console.log(da);
-                                if(mis.unita_misura=="°C" && (mis.valore_misurato<da || mis.valore_misurato>a))
-                                    console.log("condizionamento attivo");
-
-                                    let array_id_devices = config.attuatori_coinvolti.split(',');
-                                    for(k=0; k<array_id_devices.length; k++) {
-                                        let id_device = array_id_devices[k];
-                                        gestore_devices.ottieni_info_device(id_device).then ((device) => {
-                                            if(
-                                                id_device == device
-                                                && device.mod_interazione == "mqtt"
-                                                && device.tipo == "Attuatore"
-                                                && device.unita_misura == "°C"
-                                                && device.manuale === false
-                                            ) {
-                                                
-                                            }
-                                        })
-                                    }
-
-                                    //if attuatore auto
-                                    const client  = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
-                                    client.on('connect', function () {
-                                    console.log('gestore_configurazioni connesso al server mqtt');
-                                        
-                                        if(mis.valore_misurato<da) {
-                                            client.publish(topic, '{"id_device": '+id_device+', "stato": TRUE', function (err) {
-                                                //if (!err) {
-                                                //client.publish('test', 'Hello mqtt')
-                                                //}
-                                            })
-                                        }
-                                        
-                                        if(mis.valore_misurato>a) {
-                                            client.publish(topic, '{"id_device": '+id_device+', "stato": FALSE', function (err) {
-                                                //if (!err) {
-                                                //client.publish('test', 'Hello mqtt')
-                                                //}
-                                            })
-                                        }
-                                        
-                                    })
-
-                                    if(mis.valore_misurato<da) {
-
-                                    }
-                                    //differenziare risc/raffresc
-                                    //controllare se l'attuatore/gli attuatori previsti dalla conf. sono in mod auto
-                                    //se in automatico --> inviare msg mqtt per accendere --> aggiornare stato nel db dell'attuatore
-                            }
-                            break;
-                            
+                            this.case_default(misure, array_id_devices, config.temperatura_da, config.temperatura_a, "°C");
+                            break;  
                         default:
                             break;
                     }
@@ -205,6 +152,37 @@ class gestore_configurazioni{
                 }
             });
         });
+    }
+
+    //Implementazione degli switch case del metodo measure_alarm
+    case_default(misure, array_id_devices, da, a, unita_misura) {
+        for(let i=0; i<misure.length; i++) {
+            let mis=misure[i];
+            if(mis.unita_misura==unita_misura && (mis.valore_misurato<da || mis.valore_misurato>a)) {
+                for(let j=0; j<array_id_devices.length; j++) {
+                    let id_device = array_id_devices[j];
+                    gestore_devices.ottieni_info_device(id_device).then ((device) => {
+                        if(
+                            id_device == device
+                            && device.mod_interazione == "mqtt"
+                            && device.tipo == "Attuatore"
+                            && device.unita_misura == unita_misura
+                            && device.manuale == 0 //TODO: occhio questa condizione
+                        ) {
+                            //if attuatore auto
+                            let new_stato;
+                            if(mis.valore_misurato < da) {
+                                new_stato = 1; //TODO: occhio
+                            }
+                            if(mis.valore_misurato > a) {
+                                new_stato = 0;
+                            }
+                            gestore_stati.cambio_stato_attuatore(id_device, new_stato);
+                        }
+                    })
+                }
+            }
+        }
     }
 
 }

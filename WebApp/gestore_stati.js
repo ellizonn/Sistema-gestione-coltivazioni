@@ -86,7 +86,7 @@ class gestore_stati{
 
         const client  = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
         client.on('connect', function () {
-        console.log('gestore_stati connesso al server mqtt');
+            console.log('gestore_stati connesso al server mqtt');
             client.subscribe('azienda/+/proprieta/+/misure', function (err) {
                 //if (!err) {
                 //client.publish('test', 'Hello mqtt')
@@ -130,9 +130,24 @@ class gestore_stati{
                     }
                 }
             })
+            this.publish_mqtt(id_device, new_stato);
         });
     }
-    //TODO: aggiungere MQTTs
+
+    publish_mqtt(id_device, new_stato) {
+        let topic = 'azienda/+/proprieta/+/misure';
+        const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
+        client.on('connect', function () {
+            console.log('gestore_stati connesso al server mqtt');
+            client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato, function (err) {
+                //if (!err) {
+                //client.publish('test', 'Hello mqtt')
+                //}
+            })
+        })
+    }
+
+    //TODO: si potrebbere mettere client e topic global
 
     static nuova_misura(misura, id_device) {
         return new Promise((resolve, reject) => {
