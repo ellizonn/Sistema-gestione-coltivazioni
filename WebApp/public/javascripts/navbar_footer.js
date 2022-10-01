@@ -94,32 +94,30 @@ footer.innerHTML += y;
   }
 })*/
 
-
-//NB NB
-//SISTEMARE COME USARE LA VARIABILE DI LOG NELLA NAVBAR, vedi a riga 131 che cosa ho messo a var_log
+let k_navbar;
 (async function(){
-
-  Keycloak = new Keycloak();
-  await Keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
+  
+  k_navbar = new Keycloak();
+  await k_navbar.init({onLoad:'login-required'}).then(function(authenticated) {
     //alert(authenticated ? 'authenticated' : 'not authenticated');
     //const id=keycloak.subject;
      //console.log(Keycloak.realmAccess.roles[0]);
-     console.log('keycloak',Keycloak);
+     //console.log('keycloak',Keycloak);
   
 }).catch(function() {
     //alert('failed to initialize');
 });
 
-});
 
-   
-     
+sessionStorage.setItem("chiave",k_navbar.subject);
+sessionStorage.setItem("token",k_navbar.token);
+ 
 let log = document.getElementById("elementi");
 
    //const var_log=Keycloak.realmAccess.roles[0];
    
   // var var_log=Keycloak.realmAccess.roles[0];
-  var var_log='agricoltore';
+  var var_log=k_navbar.realmAccess.roles[0];
 
  let m;
 
@@ -161,6 +159,13 @@ let log = document.getElementById("elementi");
    <li class="nav-item">
         <a class="nav-link disabled" href="#">COLLABORATORE</a>
         </li>
+        <li class="nav-item">
+        <a class="nav-link" href="logoff">LogOff</a>
+        </li>
+    <li class="nav-item">
+   <a class="nav-link" href="Visualizza_elenco_proprieta.html">Visualizza elenco proprieta'</a>
+   </li>
+   <li class="nav-item">
    `;
    log.innerHTML += m;
 
@@ -169,4 +174,4 @@ let log = document.getElementById("elementi");
   // document.getElementById("ilnome").innerText = "Logout [Collaboratore: " + json.ilnome + "]";
  }
 
-
+})();

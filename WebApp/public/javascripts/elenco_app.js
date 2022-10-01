@@ -6,7 +6,7 @@ class visual_elenco_proprieta_app{
         this.proprietaContainer = proprietaContainer;
         this.visual_manager = new visual_elenco_proprieta_manager();
         this.info_proprieta = this.visual_manager.info_proprieta;
-
+        
         //controllo tipo utente
         
         let utente=false;
