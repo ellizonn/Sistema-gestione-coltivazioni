@@ -117,8 +117,9 @@ let log = document.getElementById("elementi");
    //const var_log=Keycloak.realmAccess.roles[0];
    
   // var var_log=Keycloak.realmAccess.roles[0];
+  
   var var_log=k_navbar.realmAccess.roles[0];
-
+  console.log(k_navbar);
  let m;
 
  //if(!lcjson.log && !lajson.log){ //l'utente non è loggato

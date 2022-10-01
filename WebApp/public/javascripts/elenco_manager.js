@@ -14,6 +14,7 @@ class visual_elenco_proprieta_manager{
           let sub=sessionStorage.getItem("chiave");
           let tok=sessionStorage.getItem("token");
          
+          
             
             //console.log(Keycloak.realmAccess.roles[0]);
 
@@ -55,6 +56,8 @@ class visual_elenco_proprieta_manager{
         else {
             throw infoJson;
         } 
+
+    
     }
 
 
@@ -91,5 +94,9 @@ class visual_elenco_proprieta_manager{
         } */
     }
 
+
+   
 }
+
+
 
