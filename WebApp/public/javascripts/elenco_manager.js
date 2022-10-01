@@ -43,6 +43,7 @@ class visual_elenco_proprieta_manager{
         );
 
 
+
         const infoJson = await response.json();
         if(response.ok){
                 var recupero_id = []; //per tenere traccia degli id_proprieta
@@ -61,13 +62,17 @@ class visual_elenco_proprieta_manager{
     }
 
 
-    async card(){
-
+    async card(info){
+        
         var myModal = new bootstrap.Modal(document.getElementById("azione_modal"),{backdrop: 'static', keyboard: false});
         myModal.toggle();
-    
+        
+        let c=document.getElementsByClassName("pippo");
+        console.log(c);
+        
         
         document.getElementById("azione_modal").addEventListener("hidePrevented.bs.modal",function(){
+            
             document.location.reload();
         });
         

@@ -11,30 +11,25 @@ class visual_stato_proprieta_manager{
 
         
 
-        Keycloak = new Keycloak();
-        //{onLoad:'check-sso'}
-              await Keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
-                //alert(authenticated ? 'authenticated' : 'not authenticated');
-            }).catch(function() {
-                //alert('failed to initialize');
-            });
+        let sub=sessionStorage.getItem("chiave");
+        let tok=sessionStorage.getItem("token");
 
-            let response_id = await fetch(`/v1/azienda_user/${Keycloak.subject}`,{
+            let response_id = await fetch(`/v1/azienda_user/${sub}`,{
                 headers: new Headers({
                     'Access-Control-Allow-Origin':'no-cors',
                    //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
                     'Access-Control-Allow-Methods': 'GET',
                     'Access-Control-Allow-Headers': 'Content-Type',
-                    'Authorization': 'Bearer '+Keycloak.token, 
+                    'Authorization': 'Bearer '+tok, 
                 })}
                 ); 
-                console.log(Keycloak);
+                
                 const id_az = await response_id.json();
                 const id_azienda=id_az.fk_azienda;  //id azienda ce l'ho
 
-
+                
         
-    /*    let response1 = await fetch(`/v1/aziende/${id_azienda}/proprieta/${1}/device`);
+        let response1 = await fetch(`/v1/aziende/${id_azienda}/proprieta/${1}/device`);
         const IOTJson = await response1.json();
         if(response.ok && response1.ok){
             for(let i=0; i<statoJson.length; i++){
@@ -49,7 +44,7 @@ class visual_stato_proprieta_manager{
             }
         return this.stato_proprieta, this.IOT_proprieta;
         }
-        else throw statoJson, IOTJson; */
+        else throw statoJson, IOTJson; 
     }
 
 }

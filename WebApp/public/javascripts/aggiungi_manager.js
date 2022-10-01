@@ -10,30 +10,17 @@ class nuova_proprieta_manager{
 
     async fetchnuovaProprieta(){
     
-            //console.log(JSON.stringify(Keycloak));
-
-            Keycloak = new Keycloak();
-        //console.log(keycloak.subject);
-        //{onLoad:'check-sso'}
-              await Keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
-                //alert(authenticated ? 'authenticated' : 'not authenticated');
-                //const id=keycloak.subject;
-                //console.log(Keycloak.subject);
-            }).catch(function() {
-                //alert('failed to initialize');
-            });
-
-            //console.log(Keycloak.subject);
-            //console.log(Keycloak.realmAccess.roles[0]);
+        let sub=sessionStorage.getItem("chiave");
+        let tok=sessionStorage.getItem("token");
 
 
-       let response_id = await fetch(`/v1/azienda_user/${Keycloak.subject}`,{
+       let response_id = await fetch(`/v1/azienda_user/${sub}`,{
         headers: new Headers({
             'Access-Control-Allow-Origin':'no-cors',
            //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
             'Access-Control-Allow-Methods': 'GET',
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Authorization': 'Bearer '+Keycloak.token, 
+            'Authorization': 'Bearer '+tok, 
         })}
         ); 
         
