@@ -25,10 +25,11 @@ class visual_stato_proprieta_app{
     }
 
     showstatoProprieta(stato_proprieta, IOT_proprieta){
+
         
 
-        console.log(stato_proprieta);
-        let table_1 = `
+        console.log("in APP",stato_proprieta);
+        let table_1 = `<br><br><br>
         <table class="table table-success table-striped">
                         <thead>
                             <tr>
@@ -44,21 +45,23 @@ class visual_stato_proprieta_app{
                         </thead>
                         <tbody>
                 <tr>
-                    <th scope="row">${stato_proprieta.id_proprieta}</th>
-                    <td>${stato_proprieta.estensione_ettari}</td>
-                    <td>${stato_proprieta.coltura}</td>
-                    <td>${stato_proprieta.data_semina}</td>
-                    <td>${stato_proprieta.lat}</td>
-                    <td>${stato_proprieta.long}</td>
-                    <td>${stato_proprieta.tipo}</td>
-                    <td>${stato_proprieta.copertura_mobile}</td>
+                    <th scope="row">${stato_proprieta[0].id_proprieta}</th>
+                    <td>${stato_proprieta[0].estensione_ettari}</td>
+                    <td>${stato_proprieta[0].coltura}</td>
+                    <td>${stato_proprieta[0].data_semina}</td>
+                    <td>${stato_proprieta[0].lat}</td>
+                    <td>${stato_proprieta[0].long}</td>
+                    <td>${stato_proprieta[0].tipo_proprieta}</td>
+                    <td>${stato_proprieta[0].copertura_mobile}</td>
                 </tr>
             </tbody>
         </table>
 
         `;
 
-
+        if(IOT_proprieta.length==0){
+            //NESSUN DISPOSITIVO TROVATO
+        } else{
        // $("#stato_proprieta").append(riga);
        let tabella = document.getElementById("stato_proprieta");
        tabella.innerHTML+=table_1;
@@ -145,6 +148,7 @@ class visual_stato_proprieta_app{
 
             tbody.appendChild(rowX);
         }
+    }
 
        
   
