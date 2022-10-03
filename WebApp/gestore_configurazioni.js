@@ -5,8 +5,6 @@ const piano_configurazione = require ('./obj_piano_configurazione');
 const misura = require('./obj_misura');
 const g_d = require('./gestore_devices');
 const gestore_devices = new g_d();
-const g_s = require('./gestore_stati');
-const gestore_stati = new g_s();
 
 class gestore_configurazioni{
 
@@ -177,6 +175,8 @@ class gestore_configurazioni{
                             if(mis.valore_misurato > a) {
                                 new_stato = 0;
                             }
+                            const g_s = require('./gestore_stati');
+                            const gestore_stati = new g_s();
                             gestore_stati.cambio_stato_attuatore(id_device, new_stato);
                         }
                     })
