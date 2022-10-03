@@ -1,0 +1,13 @@
+[Note di Paolo per amministrare il server Keycloak. NON MODIFICARE]
+
+Gestione del servizio:
+
+https://iam.cloud-iam.com/auth/realms/cloud-iam/protocol/openid-connect/auth?client_id=cloud-iam-ui&redirect_uri=https%3A%2F%2Fapp.cloud-iam.com%2Fdeployments%3Forganization_id%3D1ec348a5-3d64-44fe-bde4-47d63af6cdfa&state=e58909f3-8467-4eb0-9072-67e35b4b8ab7&response_mode=fragment&response_type=code&scope=openid&nonce=3391647c-d3ab-420e-9396-cc201ad763a1
+20034882@studenti.uniupo.it
+PissirUpo2022!
+
+
+Credenziali di acesso come admin (control panel):
+
+admin
+nITDD2KZ6ydZj4NPHMbH
