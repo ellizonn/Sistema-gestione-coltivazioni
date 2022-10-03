@@ -3,7 +3,7 @@
 const sqlite = require('sqlite3').verbose();
 const gestore_devices = require('./gestore_devices');
 const gestore_conf = require('./gestore_configurazioni');
-//const gestore_configurazioni = new gestore_conf(); 
+const gestore_configurazioni = new gestore_conf(); 
 const iot = require('./obj_dispositivo_iot');
 const misura = require('./obj_misura');
 const mqtt = require('mqtt');
