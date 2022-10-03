@@ -62,7 +62,7 @@ class visual_elenco_proprieta_manager{
     }
 
 
-    async card(info){
+    async card(){
         
         var myModal = new bootstrap.Modal(document.getElementById("azione_modal"),{backdrop: 'static', keyboard: false});
         myModal.toggle();

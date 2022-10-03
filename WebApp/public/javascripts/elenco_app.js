@@ -27,6 +27,10 @@ class visual_elenco_proprieta_app{
 
 
     showProprieta(info_proprieta){
+
+        const pippo= document.getElementById("elenco_proprieta");
+
+
         for(const info of info_proprieta){  
       /*  let all_data_of_propieta = `
                                 <div class="card">
@@ -38,7 +42,7 @@ class visual_elenco_proprieta_app{
                                 </div>
                              `;*/
            
-           
+           /*
             const div = document.createElement("div");
             div.className = "card";
             
@@ -54,7 +58,25 @@ class visual_elenco_proprieta_app{
                 a.id=info.id_proprieta;
                 a.addEventListener("click",this.visual_manager.card,false);
             
-            this.proprietaContainer.append(div); 
+            this.proprietaContainer.append(div); */
+
+           let a= `<div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ${info.id_proprieta}
+                </button>
+                    <ul class="dropdown-menu">
+                        <li><a id="id_scelta" class="dropdown-item" href="Visualizza_stato_proprieta.html" onClick="crea(${info.id_proprieta})">Visualizza stato proprieta'</a></li>
+                        <li><a id="id_scelta"  class="dropdown-item" href="Gestione_manuale_attuatori.html" onClick="crea(${info.id_proprieta})">Gestione manuale attuatori</a></li>
+                        <li><a id="id_scelta" class="dropdown-item" href="Pianificazione_attuatori_proprieta.html" onClick="crea(${info.id_proprieta})">Pianificazione attuatori proprieta'</a></li>
+                        <li><a id="id_scelta"  class="dropdown-item" href="Elimina_IoT_devices.html" onClick="crea(${info.id_proprieta})">Elimina IoT devices</a></li>
+                    </ul>
+            </div> <hr>`;
+
+            
+            pippo.innerHTML+=a;
+
+
+            
      }
     }
 
