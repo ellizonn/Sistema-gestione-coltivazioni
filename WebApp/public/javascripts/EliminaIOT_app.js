@@ -74,9 +74,15 @@ class elimina_app{
 
             let rowXdata4 = document.createElement('td');
             let button_elimina = document.createElement('button');
+           // button_elimina.addEventListener('onclick',crea_elimina(IOT.id_device),false); // onclick(crea_elimina(IOT.id_device));
+           button_elimina.addEventListener("click", function () {
+            sessionStorage.setItem("id_elimina",IOT.id_device);
+            console.log('ho cliccato');
+           //this.elimina_manager.eliminaDispositivo(); PERCHE NON VA?
+            });
             button_elimina.innerText = "X";  //  collegarlo alla query per manuale/automatico
             //rowXdata7.innerHTML = `${IOT.manuale}`;
-            button_elimina.addEventListener("click",this.elimina_manager.eliminaDispositivo,false)
+          //  button_elimina.addEventListener("click",this.elimina_manager.eliminaDispositivo,false)
             rowXdata4.appendChild(button_elimina);
             rowX.appendChild(rowXdata4);
 

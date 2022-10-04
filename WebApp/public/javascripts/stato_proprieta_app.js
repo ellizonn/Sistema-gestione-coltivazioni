@@ -6,6 +6,7 @@ class visual_stato_proprieta_app{
         this.stato_manager = new visual_stato_proprieta_manager();
         this.stato_proprieta = this.stato_manager.stato_proprieta; //per info proprieta
         this.IOT_proprieta = this.stato_manager.IOT_proprieta; // per IOT
+        this.ultime_misure=this.stato_manager.ultime_misure; //per misure
 
         //controllo tipo utente
 
@@ -17,14 +18,15 @@ class visual_stato_proprieta_app{
                     this.stato_manager.fetchstatoProprieta().then(() => {
                         this.stato_proprieta = this.stato_manager.stato_proprieta;
                         this.IOT_proprieta = this.stato_manager.IOT_proprieta;
-                        this.showstatoProprieta(this.stato_proprieta, this.IOT_proprieta);
+                        this.ultime_misure=this.stato_manager.ultime_misure;
+                        this.showstatoProprieta(this.stato_proprieta, this.IOT_proprieta, this.ultime_misure);
                 });
                 }
             }); 
 
     }
 
-    showstatoProprieta(stato_proprieta, IOT_proprieta){
+    showstatoProprieta(stato_proprieta, IOT_proprieta, ultime_misure){
 
         
 

@@ -5,6 +5,7 @@ class visual_stato_proprieta_manager{
     constructor(){
         this.stato_proprieta = [];
         this.IOT_proprieta = [];
+        this.ultime_misure=[];
     }
 
     async fetchstatoProprieta(){
@@ -46,7 +47,6 @@ class visual_stato_proprieta_manager{
                 for(const P of P_I){
                     if(P.id_proprieta==kok)  app=P;
                 }
-                console.log(app);
                 //FINE
         
         //RITORNA GLI IOT DI UNA PROPRIETA
@@ -62,6 +62,11 @@ class visual_stato_proprieta_manager{
         const IOTJson = await response1.json();
         //FINE
         
+        //RECUPERO LE ULTIME MISURE
+        //let last_mis=
+        //FINE
+
+
         if(response_id.ok && response1.ok && proprieta_info.ok){
            /*for(let i=0; i<id_az.length; i++){
                   if(id_az[i].id_proprieta == kok) { //devo comprendere solo una determinata proprieta
@@ -70,13 +75,16 @@ class visual_stato_proprieta_manager{
                      }
                  }*/
                  this.stato_proprieta.push(new my_stato_proprieta(app.id_proprieta, app.estensione_ettari, app.coltura, app.data_semina, app.lat, app.long, app.tipo_proprieta, app.copertura_mobile));
-                 
+            
             for(let i=0; i<IOTJson.length; i++){
-                this.IOT_proprieta.push(new my_IOT_proprieta(IOTJson[i].id_device, IOTJson[i].mod_interazione, IOTJson[i].parametri_connessione, IOTJson[i].tipo, IOTJson[i].unita_misura, IOTJson[i].funzione, IOTJson[i].stato, IOTJson[i].manuale))
-                console.log(this.IOT_proprieta[i]);
+                if(IOTJson[i].tipo=='Attuatore') this.IOT_proprieta.push(new my_IOT_proprieta(IOTJson[i].id_device, IOTJson[i].mod_interazione, IOTJson[i].parametri_connessione, IOTJson[i].tipo, IOTJson[i].unita_misura, IOTJson[i].funzione, IOTJson[i].stato, IOTJson[i].manuale));
             }
         return this.stato_proprieta, this.IOT_proprieta;
         }
+
+
+
+
         else throw /*statoJson,*/ IOTJson; 
     }
 
