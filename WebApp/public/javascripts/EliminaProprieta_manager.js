@@ -57,10 +57,17 @@ class elimina_proprieta_manager{
 
      let az=sessionStorage.getItem("id_elimina_az");
      let prop=sessionStorage.getItem("id_elimina_pr");
+     let tok=sessionStorage.getItem("token");
 
      let elim_prop=await fetch (`/v1/aziende/${az}/proprieta/${prop}`,{
         method:'DELETE',
-    }); 
+        headers: new Headers({
+            'Access-Control-Allow-Origin':'no-cors',
+           //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Authorization': 'Bearer '+tok, 
+          })});
 
         console.log(elim_prop);
             if(elim_prop.ok) window.location.href = 'Elimina_proprieta.html';
