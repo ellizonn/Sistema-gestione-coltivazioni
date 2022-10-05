@@ -27,8 +27,19 @@ class elimina_manager{
             const id_azienda=id_az.fk_azienda;  //id azienda ce l'ho
     //FINE
         
-        let response1 = await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/device`);
+    //TROVA GLI IOT
+        let response1 = await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/device`,{
+            headers: new Headers({
+                'Access-Control-Allow-Origin':'no-cors',
+               //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+                'Access-Control-Allow-Methods': 'GET',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Authorization': 'Bearer '+tok, 
+            })}
+            ); 
         const IOTJson = await response1.json();
+    //FINE
+
         if(response1.ok){
             for(let i=0; i<IOTJson.length; i++){
                 this.elimina.push(new my_elimina(IOTJson[i].id_device, IOTJson[i].mod_interazione, IOTJson[i].parametri_connessione, IOTJson[i].tipo, IOTJson[i].unita_misura, IOTJson[i].funzione, IOTJson[i].stato, IOTJson[i].manuale))
@@ -42,7 +53,37 @@ class elimina_manager{
     async eliminaDispositivo(){
 
         let el=sessionStorage.getItem("id_elimina");
-        console.log('ELIMINA', el);
+        let sub=sessionStorage.getItem("chiave");
+        let tok=sessionStorage.getItem("token");
+        let kok=sessionStorage.getItem("elenco");
+        
+
+        //TROVA L'ID DELL'AZIENDA IN CUI LAVORA L'UTENTE
+        let response_id = await fetch(`/v1/azienda_user/${sub}`,{
+            headers: new Headers({
+                'Access-Control-Allow-Origin':'no-cors',
+               //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+                'Access-Control-Allow-Methods': 'GET',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Authorization': 'Bearer '+tok, 
+            })}
+            ); 
+            const id_az = await response_id.json();
+            const id_azienda=id_az.fk_azienda;  //id azienda ce l'ho
+        //FINE
+
+        console.log('azienda + proprieta + device', id_azienda, kok, el);
+
+        //ELIMINO L'IOT 
+        let elim=await fetch (`/v1/aziende/${id_azienda}/proprieta/${kok}/device/${el}`,{
+            method:'DELETE',
+        }); 
+            //const result_elim=await elim.json();
+            console.log(elim);
+            if(elim.ok) window.location.href = 'Elimina_IoT_devices.html';
+            else throw elim;
+        //FINE
+
 /*
         let response = await fetch(`/v1/aziende/${1}/proprieta/${1}/device/${3}`, {  //Stesso discorso del passaggio dei valori, qui funziona l'eliminazione
             method: 'DELETE',

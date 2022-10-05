@@ -17,6 +17,7 @@ class elimina_app{
                     this.elimina_manager.fetchEliminaIOT().then(() => {
                         this.elimina = this.elimina_manager.elimina;
                         this.showEliminaIOT(this.elimina);
+                        document.addEventListener('click',this.elimina_manager.eliminaDispositivo);
                 });
                 }
             }); 
@@ -77,8 +78,8 @@ class elimina_app{
            // button_elimina.addEventListener('onclick',crea_elimina(IOT.id_device),false); // onclick(crea_elimina(IOT.id_device));
            button_elimina.addEventListener("click", function () {
             sessionStorage.setItem("id_elimina",IOT.id_device);
-            console.log('ho cliccato');
-           //this.elimina_manager.eliminaDispositivo(); PERCHE NON VA?
+            console.log('ho cliccato, IOT cliccato : ',IOT.id_device);
+           //this.elimina_manager.eliminaDispositivo();
             });
             button_elimina.innerText = "X";  //  collegarlo alla query per manuale/automatico
             //rowXdata7.innerHTML = `${IOT.manuale}`;
