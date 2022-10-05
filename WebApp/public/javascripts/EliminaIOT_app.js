@@ -38,7 +38,7 @@ class elimina_app{
         table.appendChild(thead);
         table.appendChild(tbody);
 
-        document.getElementById("elimina_dispositivi1").appendChild(table)
+        document.getElementById("elimina_dispositivi1").appendChild(table);
 
             let row = document.createElement('tr');
             let heading = document.createElement('th');

@@ -51,6 +51,22 @@ class elimina_proprieta_manager{
         } 
     }
 
+    async eliminaProprieta(){
+
+     //   /v1/aziende/:id_azienda/proprieta/:id_propr
+
+     let az=sessionStorage.getItem("id_elimina_az");
+     let prop=sessionStorage.getItem("id_elimina_pr");
+
+     let elim_prop=await fetch (`/v1/aziende/${az}/proprieta/${prop}`,{
+        method:'DELETE',
+    }); 
+
+        console.log(elim_prop);
+            if(elim_prop.ok) window.location.href = 'Elimina_proprieta.html';
+            else throw elim;
+
+    }
 
  /*   async card(){
 
