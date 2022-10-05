@@ -82,6 +82,7 @@ class gestore_stati{
                 //console.log('Il Database iSerra è stato aperto con successo');
             } 
         });
+        this.db.run("PRAGMA foreign_keys=ON");
 
 
         const client  = mqtt.connect('mqtt://test.mosquitto.org:1883', options);

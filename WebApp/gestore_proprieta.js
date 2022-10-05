@@ -22,6 +22,7 @@ class gestore_proprieta{
                 //console.log('Il Database iSerra è stato aperto con successo');
             } 
         });
+        this.db.run("PRAGMA foreign_keys=ON");
     }
 
 
@@ -92,6 +93,7 @@ class gestore_proprieta{
     elimina_proprieta(id_proprieta){
         return new Promise((resolve, reject) => {
             const sql = 'DELETE from proprieta WHERE id_proprieta=?';
+            //console.log(sql+id_proprieta);
             this.db.run(sql,  [id_proprieta], 
             function (err) {
                 if(err){
