@@ -30,7 +30,7 @@ class visual_stato_proprieta_app{
 
         
 
-        console.log("in APP",stato_proprieta);
+        //console.log("in APP",stato_proprieta);
         let table_1 = `<br><br><br>
         <table class="table table-success table-striped">
                         <thead>

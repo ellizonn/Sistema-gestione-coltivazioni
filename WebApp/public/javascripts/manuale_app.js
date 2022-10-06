@@ -13,14 +13,16 @@ class manuale_app{
                 if(utente==true){
                     this.manuale_manager.fetchManualeProprieta().then(() => {
                         this.manuale = this.manuale_manager.manuale;
-                        this.showManualeProprieta(this.manuale);
+                        this.showManualeProprieta(this.manuale, this.manuale_manager);
+                    //    button_stato.addEventListener('click',this.manuale_manager.C_stato);
+                     //   button_manuale.addEventListener('click',this.manuale_manager.C_manuale);
                 });
                 }
             }); 
     }
 
 
-    showManualeProprieta(manuale){
+    showManualeProprieta(manuale, manuale_manager){
 
         let tabella = document.getElementById("gestione_manuale");
         //tabella.innerHTML+=table_1;
@@ -98,18 +100,42 @@ class manuale_app{
              rowX.appendChild(rowXdata5);
  
              let rowXdata6 = document.createElement('td');
-             let button_manuale0 = document.createElement('button');
-             button_manuale0 = document.createElement('button');
-             button_manuale0.innerText = `${IOT.stato}`;  // collegarlo alla query di cambio stato
-             rowXdata6.appendChild(button_manuale0);
+             let button_stato = document.createElement('button');
+             button_stato = document.createElement('button');
+
+
+             
+             button_stato.addEventListener("click", function () {
+               sessionStorage.setItem("device_id",IOT.id_device);
+               sessionStorage.setItem("stato",IOT.stato);
+              
+               // console.log('ho cliccato stato, IOT cliccato : ',IOT.id_device);
+              
+                });
+                button_stato.addEventListener('click',this.manuale_manager.C_stato);
+                
+
+             button_stato.innerText = `${IOT.stato}`;  // collegarlo alla query di cambio stato
+             rowXdata6.appendChild(button_stato);
              //rowXdata6.innerHTML = `${IOT.stato}`;
              rowX.appendChild(rowXdata6);
  
              let rowXdata7 = document.createElement('td');
-            let button_manuale1 = document.createElement('button');
-            button_manuale1.innerText = `${IOT.manuale}`;  //  collegarlo alla query per manuale/automatico
+            let button_manuale = document.createElement('button');
+
+            button_manuale.addEventListener("click", function () {
+                //  sessionStorage.setItem("id_elimina_az",info.id_azienda);
+                 // sessionStorage.setItem("id_elimina_pr",info.id_proprieta);
+                 sessionStorage.setItem("device_id",IOT.id_device);
+                 sessionStorage.setItem("manuale",IOT.manuale);
+    
+                 //this.elimina_manager.eliminaDispositivo();
+                  });
+                  button_manuale.addEventListener('click',this.manuale_manager.C_manuale);
+
+            button_manuale.innerText = `${IOT.manuale}`;  //  collegarlo alla query per manuale/automatico
             //rowXdata7.innerHTML = `${IOT.manuale}`;
-            rowXdata7.appendChild(button_manuale1);
+            rowXdata7.appendChild(button_manuale);
             rowX.appendChild(rowXdata7);
  
              tbody.appendChild(rowX);

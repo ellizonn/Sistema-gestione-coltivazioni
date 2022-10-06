@@ -71,7 +71,7 @@ class elimina_proprieta_manager{
 
         console.log(elim_prop);
             if(elim_prop.ok) window.location.href = 'Elimina_proprieta.html';
-            else throw elim;
+            else throw elim_prop;
 
     }
 

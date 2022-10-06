@@ -5,9 +5,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <!--Keycloak-->
+   <script src="https://lemur-12.cloud-iam.com/auth/js/keycloak.js"></script>
+   <script type="module">
+/*
+           const keycloak = new Keycloak();
+           const user_id = null;
+           keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
+               //alert(authenticated ? 'authenticated' : 'not authenticated');
+               //user_id = keycloak.subject;
+               //console.log("keycloak dentro init",keycloak);
+               //console.log("keycloak.subject dentro init",keycloak.subject);
+               user_id = keycloak.subject;
+             //  console.log("user_id dentro init: ", user_id); //NON VA
+           }).catch(function() {
+               //alert('failed to initialize');
+           });
+           //console.log("keycloak fuori init",keycloak);
+           //user_id = keycloak.subject;
+           //console.log("keycloack subject fuori init", keycloak.subject);
+          // console.log("user_id fuori init: ", user_id);
+           export {keycloak};
+           export {user_id};
+*/
+   </script>
+
     <!-- Optional JavaScript; choose one of the two! -->
     <script defer src="javascripts/navbar_footer.js"></script>
-    <script defer src="javascripts/richiedi_modals.js"></script>
     <script defer src="javascripts/manuale_manager.js"></script>
     <script defer src="javascripts/manuale_app.js"></script>
     <script defer src="javascripts/manuale_main.js"></script>
