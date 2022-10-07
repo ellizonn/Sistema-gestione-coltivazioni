@@ -168,8 +168,20 @@ app.get ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['collaboratore',
 app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect('agricoltore'), (req, res) => {
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
+       /* const proprieta_app={
+            estensione_ettari : req.body.estensione_ettari,
+            coltura : req.body.coltura,
+            data_semina : req.body.data_semina,
+            tipo_proprieta : req.body.tipo_proprieta,
+            lat : req.body.lat,
+            long : req.body.long,
+            copertura_mobile : req.body.copertura_mobile
+        };
+       let az=sessionStorage.getItem("id_azienda"); */
         if(authorize.fk_azienda==req.params.id_azienda){
-            gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
+       // if(authorize.fk_azienda==az){
+           // gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
+            gestore_proprieta.nuova_proprieta(proprieta_app, az).then ((id_proprieta) => {
                 if (id_proprieta.error404){
                     res.status(404).json(id_proprieta); 
                 } else {

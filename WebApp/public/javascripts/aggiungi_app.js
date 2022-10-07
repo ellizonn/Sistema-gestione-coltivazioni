@@ -36,7 +36,7 @@ class nuova_proprieta_app{
       
       var z = document.createElement('div'); // is a node
       z.innerHTML = `
-      <form encType="multipart/form-data" id="nuova_proprieta" class="row g-3" action="http://localhost:3000/v1/aziende/${info_proprieta.fk_azienda}/proprieta" method="post"> <!--Serve l'id dell'azienda qui, come ce lo metto-->
+      <form encType="multipart/form-data" id="proprieta" class="row g-3" action="http://localhost:3000/v1/aziende/${info_proprieta.fk_azienda}/proprieta" method="post"> 
         <div class="col-md-6">
           <label for="inputEstensione" class="form-label">Estensione ettari</label>
           <input type="text" class="form-control" id="estensione_ettari" placeholder="Inserire..." required>
@@ -91,7 +91,7 @@ class nuova_proprieta_app{
   
       var h = document.getElementById('form-aggiungi');
       h.appendChild(z);
-      console.log(info_proprieta.fk_azienda);
+     // console.log(info_proprieta.fk_azienda);
 
       //Qui bisogna aggiungere l'aggiunta dei dispositivi
       

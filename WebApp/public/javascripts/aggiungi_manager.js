@@ -33,37 +33,5 @@ class nuova_proprieta_manager{
        
     }
 
-
-    async card(){
-
-        var myModal = new bootstrap.Modal(document.getElementById("azione_modal"),{backdrop: 'static', keyboard: false});
-        myModal.toggle();
-    
-        
-        document.getElementById("azione_modal").addEventListener("hidePrevented.bs.modal",function(){
-            document.location.reload();
-        });
-
-        if(response.ok){
-            
-            return;
-        }
-        else{
-            try{
-                const errDetail = await response.json();
-                throw errDetail.errors;
-            }
-            catch(err){
-                if(Array.isArray(err)) {
-                    let errors = '';
-                    err.forEach((e, i) => errors += `${i}. ${e.msg} for '${e.param}', `);
-                    throw `Errore: ${errors}`;
-                }
-                else
-                    throw 'Errore: non riesco a parsificare la risposta del server';
-            }
-        }
-    }
-
 }
 

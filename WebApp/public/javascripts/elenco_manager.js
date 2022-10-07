@@ -13,6 +13,7 @@ class visual_elenco_proprieta_manager{
             //console.log(JSON.stringify(Keycloak));
           let sub=sessionStorage.getItem("chiave");
           let tok=sessionStorage.getItem("token");
+          
          
           
             

@@ -31,7 +31,19 @@ class new_manuale_manager{
             sessionStorage.setItem("id_az",id_azienda);
     //FINE
 
-    
+    //PROVA ritorna i piani di configurazione
+    let prova_piani=await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/piani`,{
+        headers: new Headers({
+            'Access-Control-Allow-Origin':'no-cors',
+           //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Authorization': 'Bearer '+tok, 
+        })}
+        ); 
+        const prova_pianiJson=await prova_piani.json();
+        console.log("provo la stampa dei piani",prova_pianiJson);
+    //FINE
 
         let response = await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/device`,{
      
@@ -46,6 +58,7 @@ class new_manuale_manager{
         const manJson = await response.json();
         if(response.ok){
                 for(let i=0; i<manJson.length; i++){
+                    //console.log("manJson",manJson[i]);
                     if(manJson[i].tipo=='Attuatore') this.manuale.push(new my_manuale(manJson[i].id_device, manJson[i].mod_interazione, manJson[i].parametri_connessione, manJson[i].tipo, manJson[i].unita_misura, manJson[i].funzione, manJson[i].stato, manJson[i].manuale));
                  }
                 return this.manuale;

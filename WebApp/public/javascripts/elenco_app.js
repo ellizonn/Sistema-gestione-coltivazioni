@@ -29,6 +29,8 @@ class visual_elenco_proprieta_app{
     showProprieta(info_proprieta){
 
         const pippo= document.getElementById("elenco_proprieta");
+        let tipo=sessionStorage.getItem("tipo_utente");
+        
 
 
         for(const info of info_proprieta){  
@@ -59,7 +61,7 @@ class visual_elenco_proprieta_app{
                 a.addEventListener("click",this.visual_manager.card,false);
             
             this.proprietaContainer.append(div); */
-
+            if(tipo=='agricoltore'){
            let a= `<div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     ${info.id_proprieta}
@@ -71,9 +73,22 @@ class visual_elenco_proprieta_app{
                         <li><a id="id_scelta"  class="dropdown-item" href="Elimina_IoT_devices.html" onClick="crea(${info.id_proprieta})">Elimina IoT devices</a></li>
                     </ul>
             </div> <hr>`;
+            pippo.innerHTML+=a;
+            } else {
+                let a= `<div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ${info.id_proprieta}
+                </button>
+                    <ul class="dropdown-menu">
+                        <li><a id="id_scelta" class="dropdown-item" href="Visualizza_stato_proprieta.html" onClick="crea(${info.id_proprieta})">Visualizza stato proprieta'</a></li>
+                        <li><a id="id_scelta"  class="dropdown-item" href="Gestione_manuale_attuatori.html" onClick="crea(${info.id_proprieta})">Gestione manuale attuatori</a></li>
+                    </ul>
+            </div> <hr>`;
+            pippo.innerHTML+=a;
+            }
 
             
-            pippo.innerHTML+=a;
+            
 
 
             

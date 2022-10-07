@@ -111,6 +111,7 @@ let k_navbar;
 
 sessionStorage.setItem("chiave",k_navbar.subject);
 sessionStorage.setItem("token",k_navbar.token);
+sessionStorage.setItem("tipo_utente",k_navbar.realmAccess.roles[0]);
  
 let log = document.getElementById("elementi");
 
