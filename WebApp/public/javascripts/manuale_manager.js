@@ -30,7 +30,7 @@ class new_manuale_manager{
 
             sessionStorage.setItem("id_az",id_azienda);
     //FINE
-
+/*
     //PROVA ritorna i piani di configurazione
     let prova_piani=await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/piani`,{
         headers: new Headers({
@@ -43,6 +43,7 @@ class new_manuale_manager{
         ); 
         const prova_pianiJson=await prova_piani.json();
         console.log("provo la stampa dei piani",prova_pianiJson);
+        */
     //FINE
 
         let response = await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/device`,{
@@ -79,12 +80,13 @@ class new_manuale_manager{
         let kok=sessionStorage.getItem("elenco"); //ID PROPRIETA
         let stato_dev=sessionStorage.getItem("stato"); //STATO DEVICE
         let tok=sessionStorage.getItem("token"); // TOKEN
-
+        let man_dev=sessionStorage.getItem("manuale");
         
+        if(man_dev==0){
         if(stato_dev==1){
             //CAMBIO LO STATO A 0
             let zero=0;
-            let result_of_change_stato=await fetch (`/v1/aziende/${id_azi}/proprieta/${kok}/device/${id_dev}/${zero}`,{
+            let result_of_change_stato=await fetch (`/v1/aziende/${id_azi}/proprieta/${kok}/device/${id_dev}/stato/${zero}`,{
                 method:'PUT',
                 headers: new Headers({
                     'Access-Control-Allow-Origin':'no-cors',
@@ -94,13 +96,14 @@ class new_manuale_manager{
                     'Authorization': 'Bearer '+tok, 
                 })}
                 ); 
+                window.location.href = 'Gestione_manuale_attuatori.html';
                 console.log(result_of_change_stato);
                 if(result_of_change_stato.ok) window.location.href = 'Gestione_manuale_attuatori.html';
                 else throw result_of_change_stato;
         }else{
             //CAMBIO LO STATO A 1
             let uno=1;
-            let result_of_change_stato=await fetch (`/v1/aziende/${id_azi}/proprieta/${kok}/device/${id_dev}/${uno}`,{
+            let result_of_change_stato=await fetch (`/v1/aziende/${id_azi}/proprieta/${kok}/device/${id_dev}/stato/${uno}`,{
                 method:'PUT',
                 headers: new Headers({
                     'Access-Control-Allow-Origin':'no-cors',
@@ -110,9 +113,11 @@ class new_manuale_manager{
                     'Authorization': 'Bearer '+tok, 
                 })}
                 ); 
+                window.location.href = 'Gestione_manuale_attuatori.html';
                 console.log(result_of_change_stato);
                 if(result_of_change_stato.ok) window.location.href = 'Gestione_manuale_attuatori.html';
                 else throw result_of_change_stato;
+        }
         }
 
         //console.log('sono in manager stato ',id);
@@ -133,7 +138,7 @@ class new_manuale_manager{
         if(man_dev==0){
             //CAMBIO MANUALE A 1
             let uno=1;
-            let result_of_change_man=await fetch(`/v1/aziende/${id_azi}/proprieta/${kok}/device/${id_dev}/${uno}`,{
+            let result_of_change_man=await fetch(`/v1/aziende/${id_azi}/proprieta/${kok}/device/${id_dev}/manuale/${uno}`,{
                 method:'PUT',
                 headers: new Headers({
                     'Access-Control-Allow-Origin':'no-cors',
@@ -143,13 +148,15 @@ class new_manuale_manager{
                     'Authorization': 'Bearer '+tok, 
                 })}
                 ); 
-                console.log('risultato',result_of_change_man);
+                window.location.href = 'Gestione_manuale_attuatori.html';
+                let a=await result_of_change_man.json();
+                
                 if(result_of_change_man.ok) window.location.href = 'Gestione_manuale_attuatori.html';
                 else throw result_of_change_man;
         }else {
             //CAMBIO MANUALE A 0
             let zero=0;
-            let result_of_change_man=await fetch(`/v1/aziende/${id_azi}/proprieta/${kok}/device/${id_dev}/${zero}`,{
+            let result_of_change_man=await fetch(`/v1/aziende/${id_azi}/proprieta/${kok}/device/${id_dev}/manuale/${zero}`,{
                 method:'PUT',
                 headers: new Headers({
                     'Access-Control-Allow-Origin':'no-cors',
@@ -159,7 +166,7 @@ class new_manuale_manager{
                     'Authorization': 'Bearer '+tok, 
                 })}
                 ); 
-                console.log(result_of_change_man);
+                window.location.href = 'Gestione_manuale_attuatori.html';
                 if(result_of_change_man.ok) window.location.href = 'Gestione_manuale_attuatori.html';
                 else throw result_of_change_man;
         }

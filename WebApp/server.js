@@ -548,7 +548,7 @@ app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/stato/:s
                 if(auth.fk_azienda==req.params.id_azienda){
                     check_device_on_propr(req.params.id_device, this.db).then((moreauth) => {
                         if(moreauth.fk_proprieta==req.params.id_propr){
-                            gestore_stati.cambio_stato_attuatore(req.params.id_device, req.params.new_stato).then ((stato_attuale) => {
+                            gestore_stati.cambio_stato_attuatore(req.params.id_device, req.params.stato).then ((stato_attuale) => {
                                 if (stato_attuale.error404){
                                     res.status(404).json(stato_attuale);
                                 } else {
