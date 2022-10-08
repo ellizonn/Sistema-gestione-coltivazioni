@@ -77,14 +77,14 @@ class gestore_configurazioni{
 
     ottieni_configurazioni_proprieta(id_proprieta) {
         return new Promise((resolve, reject) => {
-            const sql = "SELECT id_piano,condizioni_misure,attuatori_coinvolti,conseguenze,tipo_piano,umidita_min,temperatura_max,tempo_funzionamento,temperatura_da,temperatura_a,luminosita_da,luminosita_a,orario_da,orario_a FROM piano_configurazione WHERE fk_proprieta = ?";
+            const sql = "SELECT id_piano,condizioni_misure,attuatori_coinvolti,conseguenze,tipo_piano,umidita_da,umidita_a,tempo_funzionamento,temperatura_da,temperatura_a,luminosita_da,luminosita_a,orario_da,orario_a FROM piano_configurazione WHERE fk_proprieta = ?";
             this.db.all(sql, [id_proprieta], (err, rows) => {
                 if (err) 
                     reject(err);
                 else if (rows.length === 0)
                     resolve({error404: 'Nessun piano configurazione trovato per questa proprieta, o la proprieta non esiste'});
                 else {
-                    let lista_configurazioni_proprieta = rows.map((row) => {return new piano_configurazione(row.id_piano,row.condizioni_misure,row.attuatori_coinvolti,row.conseguenze,row.tipo_piano,row.umidita_min,row.temperatura_max,row.tempo_funzionamento,row.temperatura_da,row.temperatura_a,row.luminosita_da,row.luminosita_a,row.orario_da,row.orario_a)});
+                    let lista_configurazioni_proprieta = rows.map((row) => {return new piano_configurazione(row.id_piano,row.condizioni_misure,row.attuatori_coinvolti,row.conseguenze,row.tipo_piano,row.umidita_da,row.umidita_a,row.tempo_funzionamento,row.temperatura_da,row.temperatura_a,row.luminosita_da,row.luminosita_a,row.orario_da,row.orario_a)});
                     resolve(lista_configurazioni_proprieta);
                 }
             });
