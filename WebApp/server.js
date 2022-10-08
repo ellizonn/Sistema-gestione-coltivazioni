@@ -575,7 +575,7 @@ app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/stato/:s
 
 /*
     POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/misura
-    TODO: aggiungere descrizione (anche su file WORD!!!!!!!!) - PARLA CON PAOLO
+    Aggiunge una nuova misura.
 */
 app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/misura', (req, res) => {
     gestore_stati.nuova_misura(req.body.nuova_misura, req.params.id_device).then ((id_misura) => {

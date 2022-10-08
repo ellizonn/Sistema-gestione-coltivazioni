@@ -118,20 +118,27 @@ class gestore_stati{
 
     cambio_stato_attuatore(id_device, new_stato) {
         return new Promise((resolve, reject) => {
-            const sql = 'UPDATE dispositivo_iot SET stato = ? WHERE id_device = ?';
-            this.db.run(sql,  [new_stato, id_device], 
-            function (err) {
-                if(err){
-                    reject(err);
-                } else { 
-                    if (this.changes === 0)
-                        resolve({error404: 'Attuatore richiesto non trovato, oppure la proprietà o l\'azienda non esistono.'});
-                    else {
-                        resolve();
-                    }
+            this.ottieni_mod_singolo_attuatore(id_device).then ((manuale) => {
+                if(manuale==0) {
+                    resolve({error404: 'Non è possibile cambiare lo stato del attuatore se questo è in modalità automatica: impostare modalità manuale.'});
+                }
+                else {
+                    const sql = 'UPDATE dispositivo_iot SET stato = ? WHERE id_device = ?';
+                    this.db.run(sql,  [new_stato, id_device], 
+                    function (err) {
+                        if(err){
+                            reject(err);
+                        } else { 
+                            if (this.changes === 0)
+                                resolve({error404: 'Attuatore richiesto non trovato, oppure la proprietà o l\'azienda non esistono.'});
+                            else {
+                                resolve();
+                            }
+                        }
+                    })
+                    this.publish_mqtt(id_device, new_stato);
                 }
             })
-            this.publish_mqtt(id_device, new_stato);
         });
     }
 

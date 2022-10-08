@@ -166,12 +166,12 @@ class gestore_configurazioni{
                             && device.mod_interazione == "mqtt"
                             && device.tipo == "Attuatore"
                             && device.unita_misura == unita_misura
-                            && device.manuale == 0 //TODO: occhio questa condizione
+                            && device.manuale == 0
                         ) {
                             //if attuatore auto
                             let new_stato;
                             if(mis.valore_misurato < da) {
-                                new_stato = 1; //TODO: occhio
+                                new_stato = 1;
                             }
                             if(mis.valore_misurato > a) {
                                 new_stato = 0;

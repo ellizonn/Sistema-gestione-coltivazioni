@@ -101,7 +101,7 @@ class new_manuale_manager{
         let tok=sessionStorage.getItem("token"); // TOKEN
         let man_dev=sessionStorage.getItem("manuale");
         
-        if(man_dev==0){
+        //if(man_dev==0){
         if(stato_dev==1){
             //CAMBIO LO STATO A 0
             let zero=0;
@@ -137,7 +137,7 @@ class new_manuale_manager{
                 if(result_of_change_stato.ok) window.location.href = 'Gestione_manuale_attuatori.html';
                 else throw result_of_change_stato;
         }
-        }
+        //}
 
         //console.log('sono in manager stato ',id);
     }
