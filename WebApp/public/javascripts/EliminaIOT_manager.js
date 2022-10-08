@@ -77,6 +77,13 @@ class elimina_manager{
         //ELIMINO L'IOT 
         let elim=await fetch (`/v1/aziende/${id_azienda}/proprieta/${kok}/device/${el}`,{
             method:'DELETE',
+            headers: new Headers({
+                'Access-Control-Allow-Origin':'no-cors',
+               //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+                'Access-Control-Allow-Methods': 'DELETE',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Authorization': 'Bearer '+tok, 
+            })
         }); 
             //const result_elim=await elim.json();
             console.log(elim);
