@@ -38,8 +38,8 @@ class nuova_proprieta_app{
       z.innerHTML = `
       <form encType="multipart/form-data" id="proprieta" class="row g-3" action="http://localhost:3000/v1/aziende/${info_proprieta.fk_azienda}/proprieta" method="post"> 
         <div class="col-md-6">
-          <label for="inputEstensione" class="form-label">Estensione ettari</label>
-          <input type="text" class="form-control" id="estensione_ettari" placeholder="Inserire..." required>
+          <label for="estensione_ettari" class="form-label">Estensione ettari</label>
+          <input type="text" class="form-control" name="estensione_ettari" id="estensione_ettari" placeholder="Inserire..." required>
         </div>
         <div class="col-md-6">
           <label for="inputColtura" class="form-label">Coltura</label>
@@ -60,19 +60,19 @@ class nuova_proprieta_app{
         </div>
         <div class="col-md-6">
           <label for="inputLat" class="form-label">Latitudine</label>
-          <input type="text" class="form-control" id="lat" placeholder="0° N" required>
+          <input type="text" class="form-control" id="lat" placeholder="0" required>
         </div>
         <div class="col-md-6">
           <label for="inputLong" class="form-label">Longitudine</label>
-          <input type="text" class="form-control" id="long" placeholder="0° N" required>
+          <input type="text" class="form-control" id="long" placeholder="0" required>
         </div>
           <center>
         <div class="col-md-6">
           <label for="inputCopertura" class="form-label">Copertura mobile</label>
           <select id="copertura_mobile" class="form-select" required>
           <option selected>Scegli...</option>
-          <option>True</option>
-          <option>False</option>
+          <option>1</option>
+          <option>0</option>
           </select>
         </div>
           </center>

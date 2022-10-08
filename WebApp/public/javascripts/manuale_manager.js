@@ -30,8 +30,9 @@ class new_manuale_manager{
 
             sessionStorage.setItem("id_az",id_azienda);
     //FINE
-/*
+
     //PROVA ritorna i piani di configurazione
+    /*
     let prova_piani=await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/piani`,{
         headers: new Headers({
             'Access-Control-Allow-Origin':'no-cors',
@@ -43,6 +44,24 @@ class new_manuale_manager{
         ); 
         const prova_pianiJson=await prova_piani.json();
         console.log("provo la stampa dei piani",prova_pianiJson);
+        */
+    //FINE
+    
+    //PROVA il ritorno misure
+    /*
+    let prova_misure=await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/stati_device`,{
+     
+        headers: new Headers({
+            'Access-Control-Allow-Origin':'no-cors',
+           //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+            'Access-Control-Allow-Methods': 'PUT',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Authorization': 'Bearer '+tok, 
+        })}
+        ); 
+        //console.log('Sto provando le misure',prova_misure);
+        const prova=await prova_misure.json();
+        console.log('Sto provando le misure',prova.lista_stati_misure_proprieta);
         */
     //FINE
 
