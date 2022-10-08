@@ -422,7 +422,7 @@ app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', keycloak.protect(
     PUT /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}/?manuale={true;false}
     Cambia la modalità di funzionamento (manuale/automatica) di un dato attuatore di una data proprietà.
 */
-app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?manuale={1;0}', keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
+app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/manuale/:manuale', keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){
@@ -539,8 +539,8 @@ app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani',  keycloak.protect(
     Cambia lo stato (“on”/”off”) di un certo attuatore.
     Con “on”/”off” intendiamo se l’attuatore sta funzionando o meno.
 */
-//TODO: cambiare true false in 1 0
-app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?stato={1;0}',  keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
+//'/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/?stato={1;0}'
+app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/stato/:stato',  keycloak.protect(['collaboratore','agricoltore']), (req, res) => {
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){
