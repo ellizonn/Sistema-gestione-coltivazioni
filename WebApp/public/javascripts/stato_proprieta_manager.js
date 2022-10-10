@@ -76,7 +76,7 @@ class visual_stato_proprieta_manager{
         ); 
         //console.log('Sto provando le misure',ritorno_misure);
         const misure=await ritorno_misure.json();
-       // console.log('Sto provando le misure',misure);
+        console.log('Sto provando le misure',misure);
          //FINE
         
         //RECUPERO LE ULTIME MISURE

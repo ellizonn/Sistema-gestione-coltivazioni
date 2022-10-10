@@ -71,6 +71,7 @@ class visual_elenco_proprieta_app{
                         <li><a id="id_scelta"  class="dropdown-item" href="Gestione_manuale_attuatori.html" onClick="crea(${info.id_proprieta})">Gestione manuale attuatori</a></li>
                         <li><a id="id_scelta" class="dropdown-item" href="Pianificazione_attuatori_proprieta.html" onClick="crea(${info.id_proprieta})">Pianificazione attuatori proprieta'</a></li>
                         <li><a id="id_scelta"  class="dropdown-item" href="Elimina_IoT_devices.html" onClick="crea(${info.id_proprieta})">Elimina IoT devices</a></li>
+                        <li><a id="id_scelta"  class="dropdown-item" href="Elimina_piano.html" onClick="crea(${info.id_proprieta})">Elimina piano di configurazione</a></li>
                     </ul>
             </div> <hr>`;
             pippo.innerHTML+=a;

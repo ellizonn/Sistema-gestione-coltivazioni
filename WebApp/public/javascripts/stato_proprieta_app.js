@@ -235,7 +235,7 @@ class visual_stato_proprieta_app{
     }
 
     if(piano.length==0){
-
+        
     } else {
         let tabella = document.getElementById("stato_proprieta");
         tabella.innerHTML+=table_1;
