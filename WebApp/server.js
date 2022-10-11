@@ -21,6 +21,8 @@ const keycloak = require('./keycloak_config.js').initKeycloak(memoryStore);
 app.use(keycloak.middleware());
 app.use( keycloak.middleware( { logout: '/logoff' } ));
 
+
+
 //Oggetti per creare i JSON
 const azienda = require('./obj_azienda');
 const proprieta = require('./obj_proprieta');
@@ -29,6 +31,11 @@ const dispositivo_iot = require ('./obj_dispositivo_iot');
 app.use(express.json());
 app.use(express.static('public'));
 app.get('/', (req, res) => res.redirect('/home.html'));
+
+const cors = require('cors');
+app.use(cors({
+  origin: '*'
+}));
 
 //Inizializza il DB, non per le query principali (che sono svolte nei gestori)
 //bensì per le query di supporto (dopo l'autenticazione, serve fare il controllo dell'autorizzazione)
@@ -165,10 +172,11 @@ app.get ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['collaboratore',
     POST /v1/aziende/{id_azienda}/proprieta
     Aggiunge una nuova proprietà.
 */
-app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect('agricoltore'), (req, res) => {
+app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect(['agricoltore']), (req, res) => {
+    console.log("SONO NELLA POST");
+    console.log(req.body);
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
-        console.log(req.body.estensione_ettari);
        /* const proprieta_app={
             estensione_ettari : req.body.estensione_ettari,
             coltura : req.body.coltura,
@@ -181,7 +189,6 @@ app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect('agricoltore'), 
        let az=sessionStorage.getItem("id_azienda"); */
         if(authorize.fk_azienda==req.params.id_azienda){
        // if(authorize.fk_azienda==az){
-        console.log(req.body);
             gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
            // gestore_proprieta.nuova_proprieta(proprieta_app, az).then ((id_proprieta) => {
                 if (id_proprieta.error404){
@@ -211,7 +218,7 @@ app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect('agricoltore'), 
     DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}
     Elimina una proprietà tra quelle esistenti.
 */
-app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', keycloak.protect('agricoltore'), (req, res) => {
+app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr', keycloak.protect(['agricoltore']), (req, res) => {
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){
@@ -264,7 +271,7 @@ function check_prop_on_az(id_propr, db){
     POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/device
     Aggiunge un nuovo device in una data proprietà.
 */
-app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device',  keycloak.protect('agricoltore'), (req, res) => {
+app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device',  keycloak.protect(['agricoltore']), (req, res) => {
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){
@@ -302,7 +309,7 @@ app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device',  keycloak.protec
     DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}/device/{id_device}
     Elimina un determinato device in una data proprietà.
 */
-app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device', keycloak.protect('agricoltore'), (req, res) => {
+app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device', keycloak.protect(['agricoltore']), (req, res) => {
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){
@@ -394,7 +401,7 @@ app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', keycloak.protect(
     POST /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani
     Aggiunge un nuovo piano di configurazione relativo ad una certa proprietà.
 */
-app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', keycloak.protect('agricoltore'), (req, res) => {
+app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', keycloak.protect(['agricoltore']), (req, res) => {
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){
@@ -460,7 +467,7 @@ app.put ('/v1/aziende/:id_azienda/proprieta/:id_propr/device/:id_device/manuale/
     DELETE /v1/aziende/{id_azienda}/proprieta/{id_propr}/piani/{id_piano}
     Elimina uno specifico piano di configurazione inserito in precedenza.
 */
-app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/piani/:id_piano', keycloak.protect('agricoltore'), (req, res) => {
+app.delete('/v1/aziende/:id_azienda/proprieta/:id_propr/piani/:id_piano', keycloak.protect(['agricoltore']), (req, res) => {
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){

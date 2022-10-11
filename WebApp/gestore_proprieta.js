@@ -77,6 +77,8 @@ class gestore_proprieta{
 
     //Aggiunge una nuova proprietà.
     nuova_proprieta(proprieta, id_azienda) {
+        console.log("SONO NELLA NUOVA PROPR in gestore propr");
+        console.log(proprieta);
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO proprieta(estensione_ettari,coltura,data_semina,lat,long,tipo_proprieta,copertura_mobile,fk_azienda) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
             this.db.run(sql, [proprieta.estensione_ettari,proprieta.coltura,proprieta.data_semina,proprieta.lat,proprieta.long,proprieta.tipo_proprieta,proprieta.copertura_mobile,id_azienda], function(err) {
