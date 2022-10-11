@@ -185,7 +185,7 @@ class gestore_stati{
                         //resolve(lista_stati_attuatori_proprieta);
                     }
                 });
-            const sql1 = 'SELECT id_misura,data_misurazione,ora_misurazione,valore_misurato,unita_misura FROM misura WHERE ora_misurazione = (SELECT MAX(ora_misurazione) FROM misura WHERE data_misurazione = (SELECT MAX(data_misurazione) FROM misura WHERE fk_device = (SELECT id_device FROM dispositivo_iot WHERE fk_proprieta=? AND tipo=\'Sensore\')))';
+            const sql1 = 'SELECT id_misura,data_misurazione,ora_misurazione,valore_misurato,unita_misura FROM misura WHERE fk_device IN (SELECT id_device FROM dispositivo_iot WHERE fk_proprieta=? AND tipo=\'Sensore\')';
                 this.db.all(sql1, [id_proprieta], (err, rows) => {
                     if (err) 
                         reject(err);
