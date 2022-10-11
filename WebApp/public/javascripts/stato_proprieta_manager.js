@@ -65,11 +65,10 @@ class visual_stato_proprieta_manager{
 
          //RITORNO ULTIME MISURE
     let ritorno_misure=await fetch(`/v1/aziende/${id_azienda}/proprieta/${kok}/stati_device`,{
-     
         headers: new Headers({
             'Access-Control-Allow-Origin':'no-cors',
            //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
-            'Access-Control-Allow-Methods': 'PUT',
+            'Access-Control-Allow-Methods': 'GET',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Authorization': 'Bearer '+tok, 
         })}

@@ -36,7 +36,7 @@ class nuova_proprieta_app{
       
       var z = document.createElement('div'); // is a node
       z.innerHTML = `
-      <form encType="multipart/form-data" id="proprieta" class="row g-3" action="http://localhost:3000/v1/aziende/${info_proprieta.fk_azienda}/proprieta" method="post"> 
+      <form encType="multipart/form-data" id="form_proprieta" class="row g-3"> 
         <div class="col-md-6">
           <label for="estensione_ettari" class="form-label">Estensione ettari</label>
           <input type="text" class="form-control" name="estensione_ettari" id="estensione_ettari" placeholder="Inserire..." required>
@@ -88,10 +88,52 @@ class nuova_proprieta_app{
       </form>
 
    `;
-  
+
       var h = document.getElementById('form-aggiungi');
       h.appendChild(z);
-     // console.log(info_proprieta.fk_azienda);
+     
+
+      const form=document.getElementById('form_proprieta');
+/*
+      let a=new my_info_proprieta();
+
+      let proprieta_app='{"proprieta":{'+
+        '"estensione_ettari":'+Document.getElementById('estensione_ettari')
+        '}}';*/
+      
+
+/*
+estensione_ettari : Document.getElementById('estensione_ettari'),
+        coltura : Document.getElementById('coltura'),
+        data_semina : Document.getElementById('data_semina'),
+        tipo_proprieta : Document.getElementById('tipo_proprieta'),
+        lat : Document.getElementById('lat'),
+        long : Document.getElementById('long'),
+         copertura_mobile : Document.getElementById('copertura_mobile')*/
+
+
+
+      form.addEventListener('submit',async function(){
+       let proprieta_app=new my_info_proprieta(document.getElementById('estensione_ettari').value, document.getElementById('coltura').value, document.getElementById('data_semina').value, document.getElementById('lat').value, document.getElementById('long').value, document.getElementById('tipo_proprieta').value, document.getElementById('copertura_mobile').value, 0);
+       let proprieta_json=JSON.parse(proprieta_app); 
+       console.log(proprieta_json);
+       console.log(proprieta_app);
+       // method="post" action="http://localhost:3000/v1/aziende/${info_proprieta.fk_azienda}/proprieta"
+       let tok=sessionStorage.getItem("token");
+       let response_id = await fetch(`http://localhost:3000/v1/aziende/${info_proprieta.fk_azienda}/proprieta`,{
+        method : "POST",
+        headers: new Headers({
+            'Access-Control-Allow-Origin':'no-cors',
+           //'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Authorization': 'Bearer '+tok, 
+        }),
+        body : proprieta_json
+        }
+        ); 
+
+      });
 
       //Qui bisogna aggiungere l'aggiunta dei dispositivi
       

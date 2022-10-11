@@ -8,10 +8,10 @@
     <!--Keycloak-->
    <script src="https://lemur-12.cloud-iam.com/auth/js/keycloak.js"></script>
     <script type="module">
-/*
+
             const keycloak = new Keycloak();
             const user_id = null;
-            keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
+           await keycloak.init({onLoad:'login-required'}).then(function(authenticated) {
                 //alert(authenticated ? 'authenticated' : 'not authenticated');
                 //user_id = keycloak.subject;
                 //console.log("keycloak dentro init",keycloak);
@@ -25,9 +25,8 @@
             //user_id = keycloak.subject;
             //console.log("keycloack subject fuori init", keycloak.subject);
            // console.log("user_id fuori init: ", user_id);
-            export {keycloak};
-            export {user_id};
-*/
+            window.location.href="http://localhost:3000/home.html";
+
     </script>
 
     <!-- Optional JavaScript; choose one of the two! -->

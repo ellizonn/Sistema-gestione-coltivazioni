@@ -181,13 +181,14 @@ app.post ('/v1/aziende/:id_azienda/proprieta', keycloak.protect('agricoltore'), 
        let az=sessionStorage.getItem("id_azienda"); */
         if(authorize.fk_azienda==req.params.id_azienda){
        // if(authorize.fk_azienda==az){
+        console.log(req.body);
             gestore_proprieta.nuova_proprieta(req.body.proprieta, req.params.id_azienda).then ((id_proprieta) => {
            // gestore_proprieta.nuova_proprieta(proprieta_app, az).then ((id_proprieta) => {
                 if (id_proprieta.error404){
                     res.status(404).json(id_proprieta); 
                 } else {
                     res.json(id_proprieta);
-                    res.redirect("Visualizza_elenco_proprieta.html"); //QUI CAMBIO POI LA PAGINA DI DESTINAZIONE
+                    //res.redirect("Visualizza_elenco_proprieta.html"); //QUI CAMBIO POI LA PAGINA DI DESTINAZIONE
                 }}).catch( (err) => {
                    res.status(500).json({ 
                        'errors': [{'param': 'Server', 'msg': err}],

@@ -98,7 +98,7 @@ let k_navbar;
 (async function(){
   
   k_navbar = new Keycloak();
-  await k_navbar.init({onLoad:'login-required'}).then(function(authenticated) {
+  await k_navbar.init({onLoad:'check-sso'}).then(function(authenticated) {
     //alert(authenticated ? 'authenticated' : 'not authenticated');
     //const id=keycloak.subject;
      //console.log(Keycloak.realmAccess.roles[0]);
@@ -111,7 +111,7 @@ let k_navbar;
 
 sessionStorage.setItem("chiave",k_navbar.subject);
 sessionStorage.setItem("token",k_navbar.token);
-sessionStorage.setItem("tipo_utente",k_navbar.realmAccess.roles[0]);
+
  
 let log = document.getElementById("elementi");
 
@@ -119,15 +119,20 @@ let log = document.getElementById("elementi");
    
   // var var_log=Keycloak.realmAccess.roles[0];
   
-  var var_log=k_navbar.realmAccess.roles[0];
-  console.log(k_navbar);
+  var var_log;
+  if(typeof(k_navbar.realmAccess)=="undefined") var_log='pippo';
+  else {
+    var_log=k_navbar.realmAccess.roles[0];
+    sessionStorage.setItem("tipo_utente",k_navbar.realmAccess.roles[0]);
+  }
+  //console.log(var_log);
  let m;
 
  //if(!lcjson.log && !lajson.log){ //l'utente non è loggato
- if(!var_log){
+ if(var_log=='pippo'){
    m = `
    <li class="nav-item">
-   <a class="nav-link" href="log.html">Login</a>
+   <a class="nav-link" href="login.html">Login</a>
    </li>
    `;
    log.innerHTML += m;
