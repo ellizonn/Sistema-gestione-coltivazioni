@@ -31,7 +31,6 @@ class nuova_proprieta_app{
 
       // per non farlo inviare prima che sia tutto a posto
       sessionStorage.setItem("id_azienda",info_proprieta.fk_azienda);
-      sessionStorage.setItem("n_IOT",propr.proprieta.n_iot);
       
       var z = document.createElement('div'); // is a node
       z.innerHTML = `
@@ -128,7 +127,7 @@ class nuova_proprieta_app{
             fk_azienda:info_proprieta.fk_azienda
           }
         }
-        
+        sessionStorage.setItem("n_IOT",propr.proprieta.n_iot);
         
         //const propr='"estensione_ettari": 75,"coltura": "girasole","data_semina": "2022-07-10","lat": 150,"long": 12,"tipo_proprieta": "campo","copertura_mobile": false,"fk_azienda":2';
         let tok=sessionStorage.getItem("token");
