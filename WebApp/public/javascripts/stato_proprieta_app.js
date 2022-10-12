@@ -289,23 +289,23 @@ class visual_stato_proprieta_app{
 
              let heading10 = document.createElement('th');
              row.appendChild(heading10);
-             heading10.innerHTML = "LTemperatura da";
-
+             heading10.innerHTML = "Temperatura da";
+             
              let heading11 = document.createElement('th');
              row.appendChild(heading11);
-             heading11.innerHTML = "Temperatura max";
-             
+             heading11.innerHTML = "Tempo funzionamento";
+
              let heading12 = document.createElement('th');
              row.appendChild(heading12);
-             heading12.innerHTML = "Tempo funzionamento";
+             heading12.innerHTML = "Tipo piano";
 
              let heading13 = document.createElement('th');
              row.appendChild(heading13);
-             heading13.innerHTML = "Tipo piano";
+             heading13.innerHTML = "Umidita da";
 
              let heading14 = document.createElement('th');
              row.appendChild(heading14);
-             heading14.innerHTML = "Umidita min";
+             heading14.innerHTML = "Umidita a";
               
              thead.appendChild(row);
 
@@ -352,22 +352,20 @@ class visual_stato_proprieta_app{
                 rowX.appendChild(rowXdata9);
 
                 let rowXdata10 = document.createElement('td');
-                rowXdata10.innerHTML = `${p.temperatura_max}`;
+                rowXdata10.innerHTML = `${p.tempo_funzionamento}`;
                 rowX.appendChild(rowXdata10);
 
                 let rowXdata11 = document.createElement('td');
-                rowXdata11.innerHTML = `${p.tempo_funzionamento}`;
+                rowXdata11.innerHTML = `${p.tipo_piano}`;
                 rowX.appendChild(rowXdata11);
 
                 let rowXdata12 = document.createElement('td');
-                rowXdata12.innerHTML = `${p.tipo_piano}`;
+                rowXdata12.innerHTML = `${p.umidita_da}`;
                 rowX.appendChild(rowXdata12);
-
-                let rowXdata13 = document.createElement('td');
-                rowXdata13.innerHTML = `${p.umidita_min}`;
-                rowX.appendChild(rowXdata13);
     
-                
+                let rowXdata13 = document.createElement('td');
+                rowXdata13.innerHTML = `${p.umidita_a}`;
+                rowX.appendChild(rowXdata13);
     
                 tbody.appendChild(rowX);
             }
