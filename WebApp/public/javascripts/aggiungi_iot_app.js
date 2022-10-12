@@ -77,9 +77,10 @@ class nuovi_iot_app{
           </label>
         </div>
         <div class="col-12">
-        <type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Aggiungi
-      </button>
+        <button type="submit" class="btn btn-primary">Aggiungi altro IoT</button>
+      </div>
+      <div class="col-12">
+      <button type="button" class="btn btn-secondary" onclick="location.href='Visualizza_elenco_proprieta.html'">Non aggiungi altri IoT</button>
       </div>
       </form>
       </div>
@@ -87,10 +88,10 @@ class nuovi_iot_app{
 
 
    `;
-   /* <!-- <button type="submit" class="btn btn-primary">Aggiungi</button>
-        </div> -->
-
-        <button */
+   /*  
+        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Aggiungi
+      </button>*/
 
       var h = document.getElementById('form-aggiungi-iot');
       h.appendChild(z);
@@ -152,7 +153,7 @@ class nuovi_iot_app{
             });;
             
           /*  if(c) window.location.href="Aggiungi_iot.html";
-           else */window.location.href="Visualizza_elenco_proprieta.html";
+           else */window.location.href="Aggiungi_iot.html";
       }));
 
        
