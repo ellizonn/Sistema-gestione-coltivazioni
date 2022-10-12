@@ -1,9 +1,8 @@
 "use strict";
 
 const sqlite = require('sqlite3').verbose();
-const gestore_devices = require('./gestore_devices');
-const gestore_conf = require('./gestore_configurazioni');
-const gestore_configurazioni = new gestore_conf(); 
+const g_f = require('./gestore_configurazioni');
+const gestore_configurazioni = new g_f();
 const iot = require('./obj_dispositivo_iot');
 const misura = require('./obj_misura');
 const mqtt = require('mqtt');
@@ -132,27 +131,23 @@ class gestore_stati{
                             if (this.changes === 0)
                                 resolve({error404: 'Attuatore richiesto non trovato, oppure la proprietà o l\'azienda non esistono.'});
                             else {
+                                let topic = 'azienda/+/proprieta/+/misure';
+                                const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
+                                client.on('connect', function () {
+                                    console.log('gestore_stati connesso al server mqtt');
+                                    client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato, function (err) {
+                                        //if (!err) {
+                                        //client.publish('test', 'Hello mqtt')
+                                        //}
+                                    })
+                                })
                                 resolve();
                             }
                         }
                     })
-                    this.publish_mqtt(id_device, new_stato);
                 }
             })
         });
-    }
-
-    publish_mqtt(id_device, new_stato) {
-        let topic = 'azienda/+/proprieta/+/misure';
-        const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
-        client.on('connect', function () {
-            console.log('gestore_stati connesso al server mqtt');
-            client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato, function (err) {
-                //if (!err) {
-                //client.publish('test', 'Hello mqtt')
-                //}
-            })
-        })
     }
 
     //TODO: si potrebbere mettere client e topic global
