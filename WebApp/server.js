@@ -272,12 +272,14 @@ function check_prop_on_az(id_propr, db){
     Aggiunge un nuovo device in una data proprietà.
 */
 app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/device',  keycloak.protect(['agricoltore']), (req, res) => {
+    console.log("SONO NELLA POST DI UN IOT");
+    console.log(req.body);
     const token = req.kauth.grant.access_token.content;
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){
             check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
                 if(auth.fk_azienda==req.params.id_azienda){
-                    gestore_devices.nuovo_device(req.body.device, req.params.id_propr).then ((id_device) => {
+                    gestore_devices.nuovo_device(req.body, req.params.id_propr).then ((id_device) => {
                         if (id_device.error404){
                             res.status(404).json(id_device);
                         } else {

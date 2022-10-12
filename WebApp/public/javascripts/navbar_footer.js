@@ -132,8 +132,10 @@ let log = document.getElementById("elementi");
  if(var_log=='pippo'){
    m = `
    <li class="nav-item">
-   <a class="nav-link" href="login.html">Login</a>
-   </li>
+   <a class="nav-link" href="login.html">Login</a></li>
+   <li class="nav-item"> <a class="nav-link" href="Contatti.html">Contatti</a></li>
+   <li class="nav-item"> <a class="nav-link" href="Dove_siamo.html">Dove siamo</a></li>
+   
    `;
    log.innerHTML += m;
  }
@@ -154,6 +156,8 @@ let log = document.getElementById("elementi");
      <li class="nav-item">
        <a class="nav-link" href="Elimina_proprieta.html">Elimina proprieta'</a>
      </li>
+     <li class="nav-item"> <a class="nav-link" href="Contatti.html">Contatti</a></li>
+   <li class="nav-item"> <a class="nav-link" href="Dove_siamo.html">Dove siamo</a></li>
     `;
     log.innerHTML += m;
 
@@ -173,6 +177,8 @@ let log = document.getElementById("elementi");
    <a class="nav-link" href="Visualizza_elenco_proprieta.html">Visualizza elenco proprieta'</a>
    </li>
    <li class="nav-item">
+   <li class="nav-item"> <a class="nav-link" href="Contatti.html">Contatti</a></li>
+   <li class="nav-item"> <a class="nav-link" href="Dove_siamo.html">Dove siamo</a></li>
    `;
    log.innerHTML += m;
 

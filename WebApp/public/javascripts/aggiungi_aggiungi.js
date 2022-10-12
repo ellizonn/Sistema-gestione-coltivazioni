@@ -2,7 +2,7 @@
 
 class my_info_proprieta{
 
-    constructor(estensione_ettari,coltura,data_semina,lat,long,tipo_proprieta,copertura_mobile,fk_azienda){
+    constructor(estensione_ettari,coltura,data_semina,lat,long,tipo_proprieta,copertura_mobile,n_iot,fk_azienda){
         //this.id_proprieta=id_proprieta;
         this.estensione_ettari=estensione_ettari;
         this.coltura=coltura;
@@ -11,6 +11,7 @@ class my_info_proprieta{
         this.long=long;
         this.tipo_proprieta=tipo_proprieta;
         this.copertura_mobile=copertura_mobile;
+        this.n_iot=n_iot;
         this.fk_azienda=fk_azienda;
     }
 

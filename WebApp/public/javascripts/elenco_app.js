@@ -31,6 +31,7 @@ class visual_elenco_proprieta_app{
         const pippo= document.getElementById("elenco_proprieta");
         let tipo=sessionStorage.getItem("tipo_utente");
         
+        
 
 
         for(const info of info_proprieta){  

@@ -31,6 +31,7 @@ class nuova_proprieta_app{
 
       // per non farlo inviare prima che sia tutto a posto
       sessionStorage.setItem("id_azienda",info_proprieta.fk_azienda);
+      sessionStorage.setItem("n_IOT",propr.proprieta.n_iot);
       
       var z = document.createElement('div'); // is a node
       z.innerHTML = `
@@ -73,6 +74,17 @@ class nuova_proprieta_app{
           <option>0</option>
           </select>
         </div>
+        <div class="col-md-6">
+          <label for="n_IOT" class="form-label">Numero dispositivi IoT</label>
+          <select id="n_IOT"" class="form-select" required>
+          <option selected>Scegli...</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          </select>
+        </div>
           </center>
         <div class="col-12">
           <input class="form-check-input" type="checkbox" id="gridCheck" required>
@@ -96,7 +108,13 @@ class nuova_proprieta_app{
       
       
       form.addEventListener('submit',(async function(e){
-        e.preventDefault()
+        e.preventDefault();
+/*
+        const N_IOT={ dispo:{
+                             n_IOT:docuemnt.getElementById('n_IOT').value
+                            }
+                    }
+        console.log("Numero dispositivi IOT: ",N_IOT);*/
         const propr={
           proprieta:{
             estensione_ettari:document.getElementById('estensione_ettari').value,
@@ -106,11 +124,12 @@ class nuova_proprieta_app{
             lat:document.getElementById('lat').value,
             long:document.getElementById('long').value,
             copertura_mobile:document.getElementById('copertura_mobile').value,
+            n_iot:document.getElementById('n_IOT').value,
             fk_azienda:info_proprieta.fk_azienda
           }
         }
-        console.log(propr);
-        var name=document.getElementById('estensione_ettari').value
+        
+        
         //const propr='"estensione_ettari": 75,"coltura": "girasole","data_semina": "2022-07-10","lat": 150,"long": 12,"tipo_proprieta": "campo","copertura_mobile": false,"fk_azienda":2';
         let tok=sessionStorage.getItem("token");
         let response1 =  await fetch(`/v1/aziende/${info_proprieta.fk_azienda}/proprieta`,{
@@ -129,14 +148,11 @@ class nuova_proprieta_app{
             'Content-Type': 'application/json',
           }),
         }
-          ).then(data => {
-             //return data.json();
-            })
-            .then(post => {
-             //console.log(post.title);
-            });;
-   
-            window.location.href="Visualizza_elenco_proprieta.html";
+
+          );
+          const rit = await response1.json()
+             sessionStorage.setItem("id_prop",rit);
+            window.location.href="Aggiungi_iot.html";
       }));
 
        
