@@ -10,6 +10,8 @@ const options = {
     // Clean session
     clean: true,
     connectTimeout: 4000,
+    username: 'pissir',
+    password: 'pissir2020'
     // Auth - non ci serve autenticazione per test.mosquitto.org
     //clientId: 'emqx_test',
     //username: 'emqx_test',
@@ -84,9 +86,9 @@ class gestore_stati{
         this.db.run("PRAGMA foreign_keys=ON");
 
 
-        const client  = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
+        const client  = mqtt.connect('tcp://193.206.52.98:1883', options);
         client.on('connect', function () {
-            //console.log('gestore_stati connesso al server mqtt');
+            console.log('gestore_stati connesso al server mqtt');
             client.subscribe('azienda/+/proprieta/+/misure', function (err) {
                 
             })
@@ -122,31 +124,17 @@ class gestore_stati{
                 }
                 else {
                     const sql = 'UPDATE dispositivo_iot SET stato = ? WHERE id_device = ?';
-                    this.db.run(sql,  [new_stato, id_device], 
-                    function (err) {
-                        if(err){
-                            reject(err);
-                        } else { 
-                            if (this.changes === 0)
-                                resolve({error404: 'Attuatore richiesto non trovato, oppure la proprietà o l\'azienda non esistono.'});
-                            else {
+                    this.db.run(sql,  [new_stato, id_device]);
                                 let topic = 'azienda/1/proprieta/2/attuatori';
-                                const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
-                                client.on('message', function () {
-                                    //console.log('gestore_stati connesso al server mqtt');
-                                    client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato, function (err) {
-                                        //if (!err) {
-                                        //client.publish('test', 'Hello mqtt')
-                                        //}
-                                    })
-                                })
+                                const client = mqtt.connect('tcp://193.206.52.98:1883', options);
+                                //console.log("scatto")
+                                client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato+'}');
+                              
                                 resolve();
-                            }
-                        }
-                    })
+                            
                 }
             })
-            
+    
         });
     }
 
