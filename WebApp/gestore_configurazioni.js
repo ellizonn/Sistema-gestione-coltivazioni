@@ -5,6 +5,16 @@ const piano_configurazione = require ('./obj_piano_configurazione');
 const misura = require('./obj_misura');
 const g_d = require('./gestore_devices');
 const gestore_devices = new g_d();
+const mqtt = require('mqtt');
+const options = {
+    // Clean session
+    clean: true,
+    connectTimeout: 4000,
+    // Auth - non ci serve autenticazione per test.mosquitto.org
+    //clientId: 'emqx_test',
+    //username: 'emqx_test',
+    //password: 'emqx_test',
+}
 
 class gestore_configurazioni{
 
@@ -96,12 +106,12 @@ class gestore_configurazioni{
 
         this.measure_alarm_conf(propr_measure_changed).then ((configs) => {
             this.measure_alarm_mis(propr_measure_changed).then ((misure) =>{
-                
+                //console.log(misure);
                 for(let i=0; i<configs.length; i++){
                     let config=configs[i];
                     let x = config.attuatori_coinvolti.toString();
                     let array_id_devices = x.split(',');
-                    console.log(config.tipo_piano.toString())
+                    //console.log(config.tipo_piano.toString())
                     switch(config.tipo_piano.toString()){
                         case "piano_irrigazione":
                             //console.log("irrig")
@@ -163,34 +173,50 @@ class gestore_configurazioni{
     case_default(misure, array_id_devices, da, a, unita_misura) {
         for(let i=0; i<misure.length; i++) {
             let mis=misure[i];
-            if((mis.valore_misurato<da || mis.valore_misurato>a)) {
+            console.log("val mis  "+mis.valore_misurato);
+            console.log("da   "+da);
+           
+                //console.log("dentro")
                 for(let j=0; j<array_id_devices.length; j++) {
                     let id_device = array_id_devices[j];
                     gestore_devices.ottieni_info_device(id_device).then ((device) => {
-                        
-                            //if attuatore auto
-                            let new_stato;
 
-                            console.log("xcf")
+                        if(
+                            /*
+                            id_device == device.id_device
+                            && */device.manuale == 0
+                            &&(mis.valore_misurato<da || mis.valore_misurato>a)
+                        ) {
+ 
+                            //if attuatore auto
+                            let new_stato=1;
+                            console.log("my")
+
                             if(device.stato==0) {
+                                //console.log("a")
                                 new_stato = 1;
-                                console.log("z")
                             }
                             else if(device.stato==1) {
+                                //console.log("b")
                                 new_stato = 0;
-                                console.log("xxxx")
                             }
-                            else{
-                                new_stato=1;
-                                console.log("x")
-                            }
+                            const sql = 'UPDATE dispositivo_iot SET stato = ? WHERE id_device = ?';
+                            this.db.run(sql,  [new_stato, id_device]);
+                                
+                            let topic = 'azienda/1/proprieta/2/attuatori';
+                            const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
+                            client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato);
+                        }
+                            /*
                             const g_s = require('./gestore_stati');
                             const gestore_stati = new g_s();
-                            gestore_stati.cambio_stato_attuatore(id_device, new_stato);
+                            gestore_stati.cambio_stato_attuatore(id_device, new_stato); */
+                    
+                        
                         
                     })
                 }
-            }
+            
         }
     }
 

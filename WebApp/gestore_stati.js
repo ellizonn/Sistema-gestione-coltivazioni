@@ -86,11 +86,9 @@ class gestore_stati{
 
         const client  = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
         client.on('connect', function () {
-            console.log('gestore_stati connesso al server mqtt');
+            //console.log('gestore_stati connesso al server mqtt');
             client.subscribe('azienda/+/proprieta/+/misure', function (err) {
-                //if (!err) {
-                //client.publish('test', 'Hello mqtt')
-                //}
+                
             })
         })
 
@@ -117,6 +115,7 @@ class gestore_stati{
 
     cambio_stato_attuatore(id_device, new_stato) {
         return new Promise((resolve, reject) => {
+            
             this.ottieni_mod_singolo_attuatore(id_device).then ((manuale) => {
                 if(manuale==0) {
                     resolve({error404: 'Non è possibile cambiare lo stato del attuatore se questo è in modalità automatica: impostare modalità manuale.'});
@@ -131,10 +130,10 @@ class gestore_stati{
                             if (this.changes === 0)
                                 resolve({error404: 'Attuatore richiesto non trovato, oppure la proprietà o l\'azienda non esistono.'});
                             else {
-                                let topic = 'azienda/+/proprieta/+/attuatori';
+                                let topic = 'azienda/1/proprieta/2/attuatori';
                                 const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
-                                client.on('connect', function () {
-                                    console.log('gestore_stati connesso al server mqtt');
+                                client.on('message', function () {
+                                    //console.log('gestore_stati connesso al server mqtt');
                                     client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato, function (err) {
                                         //if (!err) {
                                         //client.publish('test', 'Hello mqtt')
@@ -147,6 +146,7 @@ class gestore_stati{
                     })
                 }
             })
+            
         });
     }
 
