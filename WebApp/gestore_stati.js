@@ -131,7 +131,7 @@ class gestore_stati{
                             if (this.changes === 0)
                                 resolve({error404: 'Attuatore richiesto non trovato, oppure la proprietà o l\'azienda non esistono.'});
                             else {
-                                let topic = 'azienda/+/proprieta/+/misure';
+                                let topic = 'azienda/+/proprieta/+/attuatori';
                                 const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
                                 client.on('connect', function () {
                                     console.log('gestore_stati connesso al server mqtt');

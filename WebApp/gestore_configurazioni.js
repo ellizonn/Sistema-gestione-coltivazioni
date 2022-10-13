@@ -93,20 +93,26 @@ class gestore_configurazioni{
 
     //Per accorgersi che gestore_stati ha registrato una nuova misura: si controllano quindi le configurazioni
     measure_alarm(propr_measure_changed){
+
         this.measure_alarm_conf(propr_measure_changed).then ((configs) => {
             this.measure_alarm_mis(propr_measure_changed).then ((misure) =>{
                 
                 for(let i=0; i<configs.length; i++){
                     let config=configs[i];
-                    let array_id_devices = config.attuatori_coinvolti.split(',');
-                    switch(String(config.tipo_piano)){
+                    let x = config.attuatori_coinvolti.toString();
+                    let array_id_devices = x.split(',');
+                    console.log(config.tipo_piano.toString())
+                    switch(config.tipo_piano.toString()){
                         case "piano_irrigazione":
+                            //console.log("irrig")
                             this.case_default(misure, array_id_devices, config.umidita_da, config.umidita_a, "%");
                             break;
                         case "piano_illuminazione":
+                            //console.log("illum")
                             this.case_default(misure, array_id_devices, config.luminosita_da, config.luminosita_a, "lx");
                             break;
                         case "piano_riscaldamento":
+                            //console.log("riscald")
                             this.case_default(misure, array_id_devices, config.temperatura_da, config.temperatura_a, "°C");
                             break;  
                         default:
@@ -157,29 +163,31 @@ class gestore_configurazioni{
     case_default(misure, array_id_devices, da, a, unita_misura) {
         for(let i=0; i<misure.length; i++) {
             let mis=misure[i];
-            if(mis.unita_misura==unita_misura && (mis.valore_misurato<da || mis.valore_misurato>a)) {
+            if((mis.valore_misurato<da || mis.valore_misurato>a)) {
                 for(let j=0; j<array_id_devices.length; j++) {
                     let id_device = array_id_devices[j];
                     gestore_devices.ottieni_info_device(id_device).then ((device) => {
-                        if(
-                            id_device == device
-                            && device.mod_interazione == "mqtt"
-                            && device.tipo == "Attuatore"
-                            && device.unita_misura == unita_misura
-                            && device.manuale == 0
-                        ) {
+                        
                             //if attuatore auto
                             let new_stato;
-                            if(mis.valore_misurato < da) {
+
+                            console.log("xcf")
+                            if(device.stato==0) {
                                 new_stato = 1;
+                                console.log("z")
                             }
-                            if(mis.valore_misurato > a) {
+                            else if(device.stato==1) {
                                 new_stato = 0;
+                                console.log("xxxx")
+                            }
+                            else{
+                                new_stato=1;
+                                console.log("x")
                             }
                             const g_s = require('./gestore_stati');
                             const gestore_stati = new g_s();
                             gestore_stati.cambio_stato_attuatore(id_device, new_stato);
-                        }
+                        
                     })
                 }
             }
