@@ -7,7 +7,7 @@ class nuovo_piano_app{
     constructor(proprietaContainer){
         this.proprietaContainer = proprietaContainer;
         this.nuovo1_manager = new nuovo_piano_manager();
-        this.piano = this.nuovo1_manager.piano;
+        this.iot = this.nuovo1_manager.iot;
 
         //controllo tipo utente
         
@@ -19,8 +19,8 @@ class nuovo_piano_app{
                     
                     this.nuovo1_manager.fetchnuovopiano().then(() => {
                         
-                        this.piano = this.nuovo1_manager.piano;
-                        this.show1Proprieta(this.piano);
+                        this.iot = this.nuovo1_manager.iot;
+                        this.show1Proprieta(this.iot);
                 });
                 }
             }); 
@@ -28,9 +28,9 @@ class nuovo_piano_app{
     }
 
 
-    show1Proprieta(piano){
+    show1Proprieta(iot){
 
-
+        console.log(iot);
         var z = document.createElement('div'); // is a node
         z.innerHTML = 
         `
@@ -40,10 +40,19 @@ class nuovo_piano_app{
             <label for="condizioni_misure" class="form-label">Condizioni misure</label>
             <input type="text" class="form-control" name="condizioni_misure" id="condizioni_misure" placeholder="..." required>
           </div>
+
+
+
           <div class="col-md-6">
             <label for="attuatori_coinvolti" class="form-label">Attuatori coinvolti</label>
-            <input type="text" class="form-control" id="attuatori_coinvolti" placeholder="12,13,14" required>
-          </div>
+            <select id="attuatori_coinvolti" class="form-select" required>
+            <option selected>Scegli...</option>
+            
+            </select>
+            </div>
+
+
+
           <div class="col-md-6">
             <label for="conseguenze" class="form-label">Conseguenze</label>
             <input type="text" class="form-control" id="conseguenze" required>
@@ -113,8 +122,16 @@ class nuovo_piano_app{
         </div>
      `;
 
+    
+
      var h = document.getElementById('form-aggiungi-piano');
       h.appendChild(z);
+
+ let esempio_select_1 = document.getElementById('attuatori_coinvolti');
+                    for(let i of iot ) {
+                    esempio_select_1.add( new Option( i.id_device ) ); 
+                    }
+
 
       const form=document.getElementById('form_piano');
 

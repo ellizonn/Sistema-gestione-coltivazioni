@@ -85,7 +85,7 @@ class gestore_devices{
                 else if (riga === undefined)
                     resolve({error404:'Nessun dispositivo trovato con questo id.'});
                 else
-                    resolve(new iot(riga.id_device,riga.mod_interazione,riga.parametri_connessione,riga.tipo,riga.unita_misura,riga.funzione,riga.stato,riga.manuale,riga.fk_proprieta));
+                    resolve(new iot(id_device,riga.mod_interazione,riga.parametri_connessione,riga.tipo,riga.unita_misura,riga.funzione,riga.stato,riga.manuale,riga.fk_proprieta));
             });        
         });
     }

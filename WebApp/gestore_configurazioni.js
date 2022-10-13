@@ -10,6 +10,8 @@ const options = {
     // Clean session
     clean: true,
     connectTimeout: 4000,
+    username: 'pissir',
+    password: 'pissir2020'
     // Auth - non ci serve autenticazione per test.mosquitto.org
     //clientId: 'emqx_test',
     //username: 'emqx_test',
@@ -38,11 +40,8 @@ class gestore_configurazioni{
 
     nuova_configurazione(piano_configurazione, id_proprieta, id_utente) {
         return new Promise((resolve, reject) => {
-            console.log("Sono in gestore piano conf",piano_configurazione);
-            console.log("id proprieta", id_proprieta);
-            console.log("id utente", id_utente);
             const sql = 'INSERT INTO piano_configurazione(condizioni_misure,attuatori_coinvolti,conseguenze,tipo_piano,umidita_da,umidita_a,tempo_funzionamento,temperatura_da,temperatura_a,luminosita_da,luminosita_a,orario_da,orario_a,fk_proprieta,fk_utente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            this.db.run(sql, [/*piano_configurazione.id_proprieta, piano_configurazione.id_utente, */piano_configurazione.condizioni_misure, piano_configurazione.attuatori_coinvolti, piano_configurazione.conseguenze, piano_configurazione.tipo_piano, piano_configurazione.umidita_da, piano_configurazione.umidita_a, piano_configurazione.tempo_funzionamento, piano_configurazione.temperatura_da, piano_configurazione.temperatura_a, piano_configurazione.luminosita_da, piano_configurazione.luminosita_a, piano_configurazione.orario_da, piano_configurazione.orario_a, id_proprieta, id_utente], function(err) {
+            this.db.run(sql, [piano_configurazione.id_proprieta, piano_configurazione.id_utente, piano_configurazione.condizioni_misure, piano_configurazione.attuatori_coinvolti, piano_configurazione.conseguenze, piano_configurazione.tipo_piano, piano_configurazione.umidita_da, piano_configurazione.umidita_a, piano_configurazione.tempo_funzionamento, piano_configurazione.temperatura_da, piano_configurazione.temperatura_a, piano_configurazione.luminosita_da, piano_configurazione.luminosita_a, piano_configurazione.orario_da, piano_configurazione.orario_a, id_proprieta, id_utente], function(err) {
                 if (err) {
                     reject(err);
                 } else {
@@ -126,6 +125,7 @@ class gestore_configurazioni{
                             break;
                         case "piano_riscaldamento":
                             //console.log("riscald")
+                            //console.log(array_id_devices)
                             this.case_default(misure, array_id_devices, config.temperatura_da, config.temperatura_a, "°C");
                             break;  
                         default:
@@ -174,41 +174,45 @@ class gestore_configurazioni{
 
     //Implementazione degli switch case del metodo measure_alarm
     case_default(misure, array_id_devices, da, a, unita_misura) {
+        
         for(let i=0; i<misure.length; i++) {
             let mis=misure[i];
-            console.log("val mis  "+mis.valore_misurato);
-            console.log("da   "+da);
-           
-                //console.log("dentro")
+            //console.log("val mis  "+mis.valore_misurato);
+            //console.log("da   "+da);
                 for(let j=0; j<array_id_devices.length; j++) {
                     let id_device = array_id_devices[j];
                     gestore_devices.ottieni_info_device(id_device).then ((device) => {
-
+                        //console.log(device.id_device)
                         if(
-                            /*
                             id_device == device.id_device
-                            && */device.manuale == 0
-                            &&(mis.valore_misurato<da || mis.valore_misurato>a)
+                            && device.manuale == 0
+                            && (mis.valore_misurato<da || mis.valore_misurato>a)
+                            && device.tipo == "Attuatore"
+                            && device.unita_misura == unita_misura
                         ) {
  
-                            //if attuatore auto
                             let new_stato=1;
-                            console.log("my")
 
-                            if(device.stato==0) {
+                            if(mis.valore_misurato<da) {
                                 //console.log("a")
                                 new_stato = 1;
                             }
-                            else if(device.stato==1) {
+                            else if(mis.valore_misurato>a) {
                                 //console.log("b")
                                 new_stato = 0;
                             }
+
                             const sql = 'UPDATE dispositivo_iot SET stato = ? WHERE id_device = ?';
                             this.db.run(sql,  [new_stato, id_device]);
                                 
                             let topic = 'azienda/1/proprieta/2/attuatori';
-                            const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
-                            client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato);
+                            const client = mqtt.connect('tcp://193.206.52.98:1883', options);
+                            
+                            console.log("scatto dell'automatismo per il device "+id_device+" con il nuovo stato "+new_stato)
+
+                            client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato + '}');
+
+                           
                         }
                             /*
                             const g_s = require('./gestore_stati');
