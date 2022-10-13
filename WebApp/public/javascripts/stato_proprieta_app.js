@@ -31,7 +31,6 @@ class visual_stato_proprieta_app{
     showstatoProprieta(stato_proprieta, IOT_proprieta, ultime_misure, piano){
 
         
-        
         //console.log("in APP",stato_proprieta);
         let table_1 = `<br><br><br>
         <table class="table table-success table-striped">
@@ -62,15 +61,15 @@ class visual_stato_proprieta_app{
         </table>
 
         `;
-        
-
+        let tabella = document.getElementById("stato_proprieta");
+       tabella.innerHTML+=table_1;
     //PER IOT
         if(IOT_proprieta.length==0){
             //NESSUN DISPOSITIVO TROVATO
         } else{
        // $("#stato_proprieta").append(riga);
-       let tabella = document.getElementById("stato_proprieta");
-       tabella.innerHTML+=table_1;
+       let tabella1 = document.getElementById("IOT");
+       //tabella1.innerHTML+=table_1;
 
         let table = document.createElement('table');
         table.className="table table-success table-striped";
@@ -160,8 +159,8 @@ class visual_stato_proprieta_app{
     if(ultime_misure.length==0){
         //NON HO MISURE
     } else {
-        let tabella = document.getElementById("stato_proprieta");
-        tabella.innerHTML+=table_1;
+        let tabella3 = document.getElementById("misure");
+        //tabella.innerHTML+=table_1;
  
          let table = document.createElement('table');
          table.className="table table-success table-striped";
@@ -237,8 +236,8 @@ class visual_stato_proprieta_app{
     if(piano.length==0){
         
     } else {
-        let tabella = document.getElementById("stato_proprieta");
-        tabella.innerHTML+=table_1;
+        let tabella3 = document.getElementById("piano");
+       // tabella.innerHTML+=table_1;
  
          let table = document.createElement('table');
          table.className="table table-success table-striped";

@@ -127,10 +127,19 @@ class nuovo_piano_app{
      var h = document.getElementById('form-aggiungi-piano');
       h.appendChild(z);
 
- let esempio_select_1 = document.getElementById('attuatori_coinvolti');
+      let esempio_select_1 = document.getElementById('attuatori_coinvolti');
                     for(let i of iot ) {
                     esempio_select_1.add( new Option( i.id_device ) ); 
                     }
+
+     /*   let piano_tipo = document.getElementById("tipo_piano");
+        if(piano_tipo=='piano_illuminazione'){
+            console.log('ciao');
+        } else if(piano_tipo=='piano_irrigazione'){
+          console.log('ciao1');
+        }else if(piano_tipo=='piano_riscaldamento'){
+          console.log('ciao2');
+        } else console.log("cacca");*/
 
 
       const form=document.getElementById('form_piano');
