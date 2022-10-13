@@ -405,11 +405,14 @@ app.get ('/v1/aziende/:id_azienda/proprieta/:id_propr/device', keycloak.protect(
 */
 app.post ('/v1/aziende/:id_azienda/proprieta/:id_propr/piani', keycloak.protect(['agricoltore']), (req, res) => {
     const token = req.kauth.grant.access_token.content;
+    console.log("SONO NELLA POST DI UN PIANO");
+    console.log(req.body);
     check_az_more(token, this.db).then ((authorize) => {
         if(authorize.fk_azienda==req.params.id_azienda){
             check_prop_on_az(req.params.id_propr, this.db).then ((auth) => {
                 if(auth.fk_azienda==req.params.id_azienda){
-                    gestore_configurazioni.nuova_configurazione(req.body.piano_configurazione, req.params.id_proprieta, req.params.id_utente).then ((id_piano) => {
+                    console.log("SONO NELLA POST DI UN PIANO1");
+                    gestore_configurazioni.nuova_configurazione(req.body.piano_configurazione, req.body.piano_configurazione.fk_proprieta, req.body.piano_configurazione.fk_utente).then ((id_piano) => {
                         if (id_piano.error404){
                             res.status(404).json(id_piano);
                         } else {

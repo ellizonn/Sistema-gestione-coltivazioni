@@ -30,10 +30,6 @@ class nuovo_piano_app{
 
     show1Proprieta(piano){
 
-        let id_azienda=sessionStorage.getItem("id_azienda_piano"); //id azienda
-        let id_proprieta=sessionStorage.getItem("elenco"); //id proprieta
-        console.log("L'id dell'azienda è", id_azienda);
-        console.log("L'id della proprietà è", id_proprieta);
 
         var z = document.createElement('div'); // is a node
         z.innerHTML = 
@@ -119,6 +115,75 @@ class nuovo_piano_app{
 
      var h = document.getElementById('form-aggiungi-piano');
       h.appendChild(z);
+
+      const form=document.getElementById('form_piano');
+
+
+      let id_azienda=sessionStorage.getItem("id_azienda_piano"); //id azienda
+      let id_proprieta=sessionStorage.getItem("elenco"); //id proprieta
+      let sub=sessionStorage.getItem("chiave"); //utente
+      
+
+      form.addEventListener('submit',(async function(e){
+
+        e.preventDefault();
+
+    // console.log("L'id dell'azienda è", id_azienda);
+     // console.log("L'id della proprietà è", id_proprieta);
+
+
+        const piano={
+            piano_configurazione:{ 
+            condizioni_misure:document.getElementById('condizioni_misure').value,
+            attuatori_coinvolti:document.getElementById('attuatori_coinvolti').value,
+            conseguenze:document.getElementById('conseguenze').value,
+            tipo_piano:document.getElementById('tipo_piano').value,
+            umidita_da:document.getElementById('umidita_da').value,
+            umidita_a:document.getElementById('umidita_a').value,
+            tempo_funzionamento:document.getElementById('tempo_funzionamento').value,
+            temperatura_da:document.getElementById('temperatura_da').value,
+            temperatura_a:document.getElementById('temperatura_a').value,
+            luminosita_da:document.getElementById('luminosita_da').value,
+            luminosita_a:document.getElementById('luminosita_a').value,
+            orario_da:document.getElementById('orario_da').value,
+            orario_a:document.getElementById('orario_a').value,
+            fk_proprieta:id_proprieta,
+            fk_utente:sub
+          }
+        }
+
+        //sessionStorage.setItem("n_IOT",propr.proprieta.n_iot); //PRENDO IL N DI IOT CHE DEVO INSERIRE DA QUA
+        
+        //const propr='"estensione_ettari": 75,"coltura": "girasole","data_semina": "2022-07-10","lat": 150,"long": 12,"tipo_proprieta": "campo","copertura_mobile": false,"fk_azienda":2';
+        let tok=sessionStorage.getItem("token");
+    //  /v1/aziende/:id_azienda/proprieta/:id_propr/piani
+        let response2 =  await fetch(`/v1/aziende/${id_azienda}/proprieta/${id_proprieta}/piani`,{
+          method: 'POST',
+          /*body: JSON.stringify({
+            proprieta:propr,
+        FUNGE
+          }),*/
+          body: JSON.stringify(piano),
+          headers: new Headers({
+           // 'Access-Control-Allow-Origin':'no-cors',
+           'Access-Control-Allow-Origin':  'http://127.0.0.1:3000',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Authorization': 'Bearer '+tok, 
+            'Content-Type': 'application/json',
+          }),
+        }
+          ).then(data => {
+             //return data.json();
+            })
+            .then(post => {
+             //console.log(post.title);
+            });;
+            
+          /*  if(c) window.location.href="Aggiungi_iot.html";
+           else */window.location.href="Visualizza_elenco_proprieta.html";
+      }));
+
 
     }
   }
