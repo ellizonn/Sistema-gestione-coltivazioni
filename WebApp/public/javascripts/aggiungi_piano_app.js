@@ -223,6 +223,12 @@ class nuovo_piano_app{
           }
         }
 
+        if(piano.piano_configurazione.tipo_piano=='piano_illuminazione'){
+            piano.piano_configurazione.umidita_da='0';
+            piano.piano_configurazione.umidita_a='0';
+            piano.piano_configurazione.temperatura_da='0';
+            piano.piano_configurazione.temperatura_a='0';
+        }
         //sessionStorage.setItem("n_IOT",propr.proprieta.n_iot); //PRENDO IL N DI IOT CHE DEVO INSERIRE DA QUA
         
         //const propr='"estensione_ettari": 75,"coltura": "girasole","data_semina": "2022-07-10","lat": 150,"long": 12,"tipo_proprieta": "campo","copertura_mobile": false,"fk_azienda":2';
