@@ -157,7 +157,46 @@ class visual_stato_proprieta_app{
 
     //PER MISURE
     if(ultime_misure.length==0){
-        //NON HO MISURE
+        let tabella3 = document.getElementById("misure");
+        //tabella.innerHTML+=table_1;
+ 
+         let table = document.createElement('table');
+         table.className="table table-success table-striped";
+         let thead = document.createElement('thead')
+         let tbody = document.createElement('tbody');
+ 
+         table.appendChild(thead);
+         table.appendChild(tbody);
+ 
+         document.getElementById("misure").appendChild(table)
+ 
+             let row = document.createElement('tr');
+             let heading = document.createElement('th');
+             row.appendChild(heading);
+             heading.innerHTML = "ID misura";
+ 
+             let heading2 = document.createElement('th');
+             row.appendChild(heading2);
+             heading2.innerHTML = "Data misurazione";
+ 
+             let heading3 = document.createElement('th');
+             row.appendChild(heading3);
+             heading3.innerHTML = "Ora misurazione";
+ 
+             let heading4 = document.createElement('th');
+             row.appendChild(heading4);
+             heading4.innerHTML = "Valore misurato";
+ 
+             let heading5 = document.createElement('th');
+             row.appendChild(heading5);
+             heading5.innerHTML = "Unita' di misura";
+ /*
+             let heading6 = document.createElement('th');
+             row.appendChild(heading6);
+             heading6.innerHTML = "FK DEVICE";
+ */
+             
+              thead.appendChild(row);
     } else {
         let tabella3 = document.getElementById("misure");
         //tabella.innerHTML+=table_1;
