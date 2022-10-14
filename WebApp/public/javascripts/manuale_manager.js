@@ -191,4 +191,8 @@ class new_manuale_manager{
         }
     }
 
+    async avviso(){
+        console.log("AVVISOOOOO");
+    }
+
 }

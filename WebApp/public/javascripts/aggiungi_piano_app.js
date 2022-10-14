@@ -2,6 +2,8 @@
 
 "use strict"
 
+//const { options } = require("../../routes");
+
 class nuovo_piano_app{
     
     constructor(proprietaContainer){
@@ -132,14 +134,57 @@ class nuovo_piano_app{
                     esempio_select_1.add( new Option( i.id_device ) ); 
                     }
 
-     /*   let piano_tipo = document.getElementById("tipo_piano");
-        if(piano_tipo=='piano_illuminazione'){
-            console.log('ciao');
-        } else if(piano_tipo=='piano_irrigazione'){
-          console.log('ciao1');
-        }else if(piano_tipo=='piano_riscaldamento'){
-          console.log('ciao2');
-        } else console.log("cacca");*/
+
+        let piano_tipo = document.getElementById("tipo_piano");
+        piano_tipo.addEventListener('change',(async function(e){
+          e.preventDefault();
+          var indiceSelezionato = piano_tipo.selectedIndex;
+          //console.log("indice",indiceSelezionato);
+          //console.log(tipo_piano.options[indiceSelezionato].value);
+          if(tipo_piano.options[indiceSelezionato].value=='piano_illuminazione'){
+            document.getElementById("luminosita_da").disabled = false;
+            document.getElementById("luminosita_a").disabled = false;
+            document.getElementById("luminosita_da").value='';
+          document.getElementById("luminosita_a").value='';
+            document.getElementById("umidita_da").disabled = true;
+            document.getElementById("umidita_a").disabled = true;
+            document.getElementById("temperatura_da").disabled = true;
+            document.getElementById("temperatura_a").disabled = true;
+            document.getElementById("umidita_da").value='null';
+            document.getElementById("umidita_a").value='null';
+            document.getElementById("temperatura_da").value='null';
+            document.getElementById("temperatura_a").value='null';
+            //console.log(document.getElementById("umidita_da").value);
+        } else if(tipo_piano.options[indiceSelezionato].value=='piano_irrigazione'){
+          document.getElementById("umidita_da").disabled = false;
+            document.getElementById("umidita_a").disabled = false;
+            document.getElementById("umidita_da").value='';
+          document.getElementById("umidita_a").value='';
+          document.getElementById("luminosita_da").disabled = true;
+          document.getElementById("luminosita_a").disabled = true;
+          document.getElementById("temperatura_da").disabled = true;
+          document.getElementById("temperatura_a").disabled = true;
+          document.getElementById("luminosita_da").value='null';
+          document.getElementById("luminosita_a").value='null';
+          document.getElementById("temperatura_da").value='null';
+          document.getElementById("temperatura_a").value='null';
+        }else if(tipo_piano.options[indiceSelezionato].value=='piano_riscaldamento'){
+          document.getElementById("temperatura_da").disabled = false;
+            document.getElementById("temperatura_a").disabled = false;
+            document.getElementById("temperatura_da").value='';
+          document.getElementById("temperatura_a").value='';
+          document.getElementById("umidita_da").disabled = true;
+          document.getElementById("umidita_a").disabled = true;
+          document.getElementById("luminosita_da").disabled = true;
+          document.getElementById("luminosita_a").disabled = true;
+          document.getElementById("umidita_da").value='null';
+          document.getElementById("umidita_a").value='null';
+          document.getElementById("luminosita_da").value='null';
+          document.getElementById("luminosita_a").value='null';
+        } else console.log("ERR");
+
+        }));
+        
 
 
       const form=document.getElementById('form_piano');
