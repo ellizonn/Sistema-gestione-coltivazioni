@@ -74,9 +74,10 @@ class elimina_piano_app{
         let button_elimina_p = document.createElement('button');
 
         // button_elimina.addEventListener('onclick',crea_elimina(IOT.id_device),false); // onclick(crea_elimina(IOT.id_device));
-       button_elimina_p.addEventListener("click", function () {
+       button_elimina_p.addEventListener("click",function () {
+        sessionStorage.setItem("id_elimina_piano",info.id_piano);
         sessionStorage.setItem("id_elimina_pr",info.fk_proprieta);
-        sessionStorage.setItem("id_elimina_piano,",info.id_piano);
+        console.log(info.id_piano);
         //console.log('ho cliccato, IOT cliccato : ',info.id_azienda, info.id_proprieta, info.id_piano);
        //this.elimina_manager.eliminaDispositivo();
         });

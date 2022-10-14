@@ -66,7 +66,7 @@ class elimina_piano_manager{
      let tok=sessionStorage.getItem("token");
      let id_az=sessionStorage.getItem("per_elimina_piano_id_azienda");
      //console.log("id_az",id_az);
-
+        console.log(pia);
      let elim_piano=await fetch (`/v1/aziende/${id_az}/proprieta/${prop}/piani/${pia}`,{
         method:'DELETE',
         headers: new Headers({
