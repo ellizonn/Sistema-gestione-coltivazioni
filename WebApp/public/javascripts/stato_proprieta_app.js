@@ -31,7 +31,6 @@ class visual_stato_proprieta_app{
     showstatoProprieta(stato_proprieta, IOT_proprieta, ultime_misure, piano){
 
         
-        
         //console.log("in APP",stato_proprieta);
         let table_1 = `<br><br><br>
         <table class="table table-success table-striped">
@@ -62,15 +61,15 @@ class visual_stato_proprieta_app{
         </table>
 
         `;
-        
-
+        let tabella = document.getElementById("stato_proprieta");
+       tabella.innerHTML+=table_1;
     //PER IOT
         if(IOT_proprieta.length==0){
             //NESSUN DISPOSITIVO TROVATO
         } else{
        // $("#stato_proprieta").append(riga);
-       let tabella = document.getElementById("stato_proprieta");
-       tabella.innerHTML+=table_1;
+       let tabella1 = document.getElementById("IOT");
+       //tabella1.innerHTML+=table_1;
 
         let table = document.createElement('table');
         table.className="table table-success table-striped";
@@ -160,8 +159,8 @@ class visual_stato_proprieta_app{
     if(ultime_misure.length==0){
         //NON HO MISURE
     } else {
-        let tabella = document.getElementById("stato_proprieta");
-        tabella.innerHTML+=table_1;
+        let tabella3 = document.getElementById("misure");
+        //tabella.innerHTML+=table_1;
  
          let table = document.createElement('table');
          table.className="table table-success table-striped";
@@ -237,8 +236,8 @@ class visual_stato_proprieta_app{
     if(piano.length==0){
         
     } else {
-        let tabella = document.getElementById("stato_proprieta");
-        tabella.innerHTML+=table_1;
+        let tabella3 = document.getElementById("piano");
+       // tabella.innerHTML+=table_1;
  
          let table = document.createElement('table');
          table.className="table table-success table-striped";
@@ -253,7 +252,7 @@ class visual_stato_proprieta_app{
              let row = document.createElement('tr');
              let heading = document.createElement('th');
              row.appendChild(heading);
-             heading.innerHTML = "Attuatori coinvolti";
+             heading.innerHTML = "Id piano";
  
              let heading2 = document.createElement('th');
              row.appendChild(heading2);
@@ -261,58 +260,58 @@ class visual_stato_proprieta_app{
  
              let heading3 = document.createElement('th');
              row.appendChild(heading3);
-             heading3.innerHTML = "Conseguenze";
+             heading3.innerHTML = "Attuatori coinvolti";
  
              let heading4 = document.createElement('th');
              row.appendChild(heading4);
-             heading4.innerHTML = "Id piano";
+             heading4.innerHTML = "Conseguenze";
  
              let heading5 = document.createElement('th');
              row.appendChild(heading5);
-             heading5.innerHTML = "Luminosita a";
+             heading5.innerHTML = "Tipo piano";
  
              let heading6 = document.createElement('th');
              row.appendChild(heading6);
-             heading6.innerHTML = "Luminosita da";
+             heading6.innerHTML = "Umidita da";
 
              let heading7 = document.createElement('th');
              row.appendChild(heading7);
-             heading7.innerHTML = "Orario a";
+             heading7.innerHTML = "Umidita a";
 
              let heading8 = document.createElement('th');
              row.appendChild(heading8);
-             heading8.innerHTML = "Orario da";
+             heading8.innerHTML = "Tempo funz";
  
              let heading9 = document.createElement('th');
              row.appendChild(heading9);
-             heading9.innerHTML = "Temperatura a";
+             heading9.innerHTML = "Temp da";
 
              let heading10 = document.createElement('th');
              row.appendChild(heading10);
-             heading10.innerHTML = "LTemperatura da";
-
+             heading10.innerHTML = "Temp a";
+             
              let heading11 = document.createElement('th');
              row.appendChild(heading11);
-             heading11.innerHTML = "Temperatura max";
-             
+             heading11.innerHTML = "Lumin da";
+
              let heading12 = document.createElement('th');
              row.appendChild(heading12);
-             heading12.innerHTML = "Tempo funzionamento";
+             heading12.innerHTML = "Lumin a";
 
              let heading13 = document.createElement('th');
              row.appendChild(heading13);
-             heading13.innerHTML = "Tipo piano";
+             heading13.innerHTML = "Orario da";
 
              let heading14 = document.createElement('th');
              row.appendChild(heading14);
-             heading14.innerHTML = "Umidita min";
+             heading14.innerHTML = "Orario a";
               
              thead.appendChild(row);
 
              for(const p of piano){
                 let rowX = document.createElement('tr');
                 let rowXdata = document.createElement('td');
-                rowXdata.innerHTML = `${p.attuatori_coinvolti}`;
+                rowXdata.innerHTML = `${p.id_piano}`;
                 rowX.appendChild(rowXdata);
     
                 let rowXdata1 = document.createElement('td');
@@ -320,54 +319,52 @@ class visual_stato_proprieta_app{
                 rowX.appendChild(rowXdata1);
     
                 let rowXdata2 = document.createElement('td');
-                rowXdata2.innerHTML = `${p.conseguenze}`;
+                rowXdata2.innerHTML = `${p.attuatori_coinvolti}`;
                 rowX.appendChild(rowXdata2);
     
                 let rowXdata3 = document.createElement('td');
-                rowXdata3.innerHTML = `${p.id_piano}`;
+                rowXdata3.innerHTML = `${p.conseguenze}`;
                 rowX.appendChild(rowXdata3);
     
                 let rowXdata4 = document.createElement('td');
-                rowXdata4.innerHTML = `${p.luminosita_a}`;
+                rowXdata4.innerHTML = `${p.tipo_piano}`;
                 rowX.appendChild(rowXdata4);
     
                 let rowXdata5 = document.createElement('td');
-                rowXdata5.innerHTML = `${p.luminosita_da}`;
+                rowXdata5.innerHTML = `${p.umidita_da}`;
                 rowX.appendChild(rowXdata5);
 
                 let rowXdata6 = document.createElement('td');
-                rowXdata6.innerHTML = `${p.orario_a}`;
+                rowXdata6.innerHTML = `${p.umidita_a}`;
                 rowX.appendChild(rowXdata6);
 
                 let rowXdata7 = document.createElement('td');
-                rowXdata7.innerHTML = `${p.orario_da}`;
+                rowXdata7.innerHTML = `${p.tempo_funzionamento}`;
                 rowX.appendChild(rowXdata7);
 
                 let rowXdata8 = document.createElement('td');
-                rowXdata8.innerHTML = `${p.temperatura_a}`;
+                rowXdata8.innerHTML = `${p.temperatura_da}`;
                 rowX.appendChild(rowXdata8);
 
                 let rowXdata9 = document.createElement('td');
-                rowXdata9.innerHTML = `${p.temperatura_da}`;
+                rowXdata9.innerHTML = `${p.temperatura_a}`;
                 rowX.appendChild(rowXdata9);
 
                 let rowXdata10 = document.createElement('td');
-                rowXdata10.innerHTML = `${p.temperatura_max}`;
+                rowXdata10.innerHTML = `${p.luminosita_da}`;
                 rowX.appendChild(rowXdata10);
 
                 let rowXdata11 = document.createElement('td');
-                rowXdata11.innerHTML = `${p.tempo_funzionamento}`;
+                rowXdata11.innerHTML = `${p.luminosita_a}`;
                 rowX.appendChild(rowXdata11);
 
                 let rowXdata12 = document.createElement('td');
-                rowXdata12.innerHTML = `${p.tipo_piano}`;
+                rowXdata12.innerHTML = `${p.orario_da}`;
                 rowX.appendChild(rowXdata12);
-
-                let rowXdata13 = document.createElement('td');
-                rowXdata13.innerHTML = `${p.umidita_min}`;
-                rowX.appendChild(rowXdata13);
     
-                
+                let rowXdata13 = document.createElement('td');
+                rowXdata13.innerHTML = `${p.orario_a}`;
+                rowX.appendChild(rowXdata13);
     
                 tbody.appendChild(rowX);
             }

@@ -116,7 +116,7 @@ class visual_stato_proprieta_manager{
             //console.log('Ultime misure',this.ultime_misure);
 
             for(let i=0;i<prova_pianiJson.length;i++){
-                this.piano.push(new my_piano(prova_pianiJson[i].attuatori_coinvolti, prova_pianiJson[i].condizioni_misure, prova_pianiJson[i].conseguenze, prova_pianiJson[i].id_piano, prova_pianiJson[i].luminosita_a, prova_pianiJson[i].luminosita_da, prova_pianiJson[i].orario_a, prova_pianiJson[i].orario_da ,prova_pianiJson[i].temperatura_a, prova_pianiJson[i].temperatura_da, prova_pianiJson[i].temperatura_max, prova_pianiJson[i].tempo_funzionamento, prova_pianiJson[i].tipo_piano, prova_pianiJson[i].umidita_min));
+                this.piano.push(new my_piano(prova_pianiJson[i].id_piano, prova_pianiJson[i].condizioni_misure, prova_pianiJson[i].attuatori_coinvolti, prova_pianiJson[i].conseguenze, prova_pianiJson[i].tipo_piano, prova_pianiJson[i].umidita_da, prova_pianiJson[i].umidita_a, prova_pianiJson[i].tempo_funzionamento ,prova_pianiJson[i].temperatura_da, prova_pianiJson[i].temperatura_a, prova_pianiJson[i].luminosita_da, prova_pianiJson[i].luminosita_a, prova_pianiJson[i].orario_da, prova_pianiJson[i].orario_a));
             }
             
         return this.stato_proprieta, this.IOT_proprieta, this.ultime_misure, this.piano;

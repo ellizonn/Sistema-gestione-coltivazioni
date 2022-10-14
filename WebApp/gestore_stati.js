@@ -1,9 +1,8 @@
 "use strict";
 
 const sqlite = require('sqlite3').verbose();
-const gestore_devices = require('./gestore_devices');
-const gestore_conf = require('./gestore_configurazioni');
-const gestore_configurazioni = new gestore_conf(); 
+const g_f = require('./gestore_configurazioni');
+const gestore_configurazioni = new g_f();
 const iot = require('./obj_dispositivo_iot');
 const misura = require('./obj_misura');
 const mqtt = require('mqtt');
@@ -11,6 +10,8 @@ const options = {
     // Clean session
     clean: true,
     connectTimeout: 4000,
+    username: 'pissir',
+    password: 'pissir2020'
     // Auth - non ci serve autenticazione per test.mosquitto.org
     //clientId: 'emqx_test',
     //username: 'emqx_test',
@@ -85,13 +86,11 @@ class gestore_stati{
         this.db.run("PRAGMA foreign_keys=ON");
 
 
-        const client  = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
+        const client  = mqtt.connect('tcp://193.206.52.98:1883', options);
         client.on('connect', function () {
             console.log('gestore_stati connesso al server mqtt');
             client.subscribe('azienda/+/proprieta/+/misure', function (err) {
-                //if (!err) {
-                //client.publish('test', 'Hello mqtt')
-                //}
+                
             })
         })
 
@@ -118,41 +117,25 @@ class gestore_stati{
 
     cambio_stato_attuatore(id_device, new_stato) {
         return new Promise((resolve, reject) => {
+            
             this.ottieni_mod_singolo_attuatore(id_device).then ((manuale) => {
                 if(manuale==0) {
                     resolve({error404: 'Non è possibile cambiare lo stato del attuatore se questo è in modalità automatica: impostare modalità manuale.'});
                 }
                 else {
                     const sql = 'UPDATE dispositivo_iot SET stato = ? WHERE id_device = ?';
-                    this.db.run(sql,  [new_stato, id_device], 
-                    function (err) {
-                        if(err){
-                            reject(err);
-                        } else { 
-                            if (this.changes === 0)
-                                resolve({error404: 'Attuatore richiesto non trovato, oppure la proprietà o l\'azienda non esistono.'});
-                            else {
+                    this.db.run(sql,  [new_stato, id_device]);
+                                let topic = 'azienda/1/proprieta/2/attuatori';
+                                const client = mqtt.connect('tcp://193.206.52.98:1883', options);
+                                //console.log("scatto")
+                                client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato+'}');
+                              
                                 resolve();
-                            }
-                        }
-                    })
-                    this.publish_mqtt(id_device, new_stato);
+                            
                 }
             })
+    
         });
-    }
-
-    publish_mqtt(id_device, new_stato) {
-        let topic = 'azienda/+/proprieta/+/misure';
-        const client = mqtt.connect('mqtt://test.mosquitto.org:1883', options);
-        client.on('connect', function () {
-            console.log('gestore_stati connesso al server mqtt');
-            client.publish(topic, '{"id_device": ' + id_device + ', "stato": ' + new_stato, function (err) {
-                //if (!err) {
-                //client.publish('test', 'Hello mqtt')
-                //}
-            })
-        })
     }
 
     //TODO: si potrebbere mettere client e topic global
