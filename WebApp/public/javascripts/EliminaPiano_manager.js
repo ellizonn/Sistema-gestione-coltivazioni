@@ -61,7 +61,7 @@ class elimina_piano_manager{
 
       //  /v1/aziende/:id_azienda/proprieta/:id_propr/piani/:id_piano
 
-    let pia=sessionStorage.getItem("id_elimina_piano");
+     let pia=sessionStorage.getItem("id_elimina_piano");
      let prop=sessionStorage.getItem("id_elimina_pr");
      let tok=sessionStorage.getItem("token");
      let id_az=sessionStorage.getItem("per_elimina_piano_id_azienda");

@@ -254,18 +254,20 @@ class visual_stato_proprieta_app{
              row.appendChild(heading);
              heading.innerHTML = "Id piano";
  
+             /*
              let heading2 = document.createElement('th');
              row.appendChild(heading2);
              heading2.innerHTML = "Condizioni misure";
- 
+            */
              let heading3 = document.createElement('th');
              row.appendChild(heading3);
              heading3.innerHTML = "Attuatori coinvolti";
  
+             /*
              let heading4 = document.createElement('th');
              row.appendChild(heading4);
              heading4.innerHTML = "Conseguenze";
- 
+            */
              let heading5 = document.createElement('th');
              row.appendChild(heading5);
              heading5.innerHTML = "Tipo piano";
@@ -278,10 +280,11 @@ class visual_stato_proprieta_app{
              row.appendChild(heading7);
              heading7.innerHTML = "Umidita a";
 
+             /*
              let heading8 = document.createElement('th');
              row.appendChild(heading8);
              heading8.innerHTML = "Tempo funz";
- 
+            */ 
              let heading9 = document.createElement('th');
              row.appendChild(heading9);
              heading9.innerHTML = "Temp da";
@@ -314,17 +317,20 @@ class visual_stato_proprieta_app{
                 rowXdata.innerHTML = `${p.id_piano}`;
                 rowX.appendChild(rowXdata);
     
+                /*
                 let rowXdata1 = document.createElement('td');
                 rowXdata1.innerHTML = `${p.condizioni_misure}`;
                 rowX.appendChild(rowXdata1);
-    
+                */
                 let rowXdata2 = document.createElement('td');
                 rowXdata2.innerHTML = `${p.attuatori_coinvolti}`;
                 rowX.appendChild(rowXdata2);
     
+                /*
                 let rowXdata3 = document.createElement('td');
                 rowXdata3.innerHTML = `${p.conseguenze}`;
                 rowX.appendChild(rowXdata3);
+                */
     
                 let rowXdata4 = document.createElement('td');
                 rowXdata4.innerHTML = `${p.tipo_piano}`;
@@ -338,9 +344,11 @@ class visual_stato_proprieta_app{
                 rowXdata6.innerHTML = `${p.umidita_a}`;
                 rowX.appendChild(rowXdata6);
 
+                /*
                 let rowXdata7 = document.createElement('td');
                 rowXdata7.innerHTML = `${p.tempo_funzionamento}`;
                 rowX.appendChild(rowXdata7);
+                */
 
                 let rowXdata8 = document.createElement('td');
                 rowXdata8.innerHTML = `${p.temperatura_da}`;

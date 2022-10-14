@@ -38,27 +38,16 @@ class nuovo_piano_app{
         `
         <div class="row" style="border-left:50%,border-right:10%">
         <form encType="multipart/form-data" id="form_piano" class="row g-3"> 
-          <div class="col-md-6">
-            <label for="condizioni_misure" class="form-label">Condizioni misure</label>
-            <input type="text" class="form-control" name="condizioni_misure" id="condizioni_misure" placeholder="..." required>
-          </div>
-
 
 
           <div class="col-md-6">
-            <label for="attuatori_coinvolti" class="form-label">Attuatori coinvolti</label>
+            <label for="attuatori_coinvolti" class="form-label">Attuatore coinvolto</label>
             <select id="attuatori_coinvolti" class="form-select" required>
             <option selected>Scegli...</option>
             
             </select>
             </div>
 
-
-
-          <div class="col-md-6">
-            <label for="conseguenze" class="form-label">Conseguenze</label>
-            <input type="text" class="form-control" id="conseguenze" required>
-          </div>
           <div class="col-md-6">
             <label for="tipo_piano" class="form-label">Tipo piano</label>
             <select id="tipo_piano" class="form-select" required>
@@ -76,11 +65,6 @@ class nuovo_piano_app{
           <div class="col-md-6">
             <label for="umidita_a" class="form-label">Umidita a</label>
             <input type="text" class="form-control" id="umidita_a" required>
-          </div>
-
-          <div class="col-md-6">
-            <label for="tempo_funzionamento" class="form-label">Tempo funzionamento</label>
-            <input type="text" class="form-control" id="tempo_funzionamento" required>
           </div>
 
           
@@ -114,7 +98,7 @@ class nuovo_piano_app{
           <div class="col-12">
             <input class="form-check-input" type="checkbox" id="gridCheck" required>
             <label class="form-check-label" for="gridCheck">
-            Trattamento dati dispositivo IoT
+            Trattamento dati piano di configurazione
             </label>
           </div>
           <div class="col-12">
@@ -144,43 +128,43 @@ class nuovo_piano_app{
           if(tipo_piano.options[indiceSelezionato].value=='piano_illuminazione'){
             document.getElementById("luminosita_da").disabled = false;
             document.getElementById("luminosita_a").disabled = false;
-            document.getElementById("luminosita_da").value='';
-            document.getElementById("luminosita_a").value='';
+            //document.getElementById("luminosita_da").value=10;
+            //document.getElementById("luminosita_a").value=10;
             document.getElementById("umidita_da").disabled = true;
             document.getElementById("umidita_a").disabled = true;
             document.getElementById("temperatura_da").disabled = true;
             document.getElementById("temperatura_a").disabled = true;
-            document.getElementById("umidita_da").value='0';
-            document.getElementById("umidita_a").value='0';
-            document.getElementById("temperatura_da").value='0';
-            document.getElementById("temperatura_a").value='0';
+            document.getElementById("umidita_da").value="NULL";
+            document.getElementById("umidita_a").value="NULL";
+            document.getElementById("temperatura_da").value="NULL";
+            document.getElementById("temperatura_a").value="NULL";
             //console.log(document.getElementById("umidita_da").value);
         } else if(tipo_piano.options[indiceSelezionato].value=='piano_irrigazione'){
             document.getElementById("umidita_da").disabled = false;
             document.getElementById("umidita_a").disabled = false;
-            document.getElementById("umidita_da").value='';
-            document.getElementById("umidita_a").value='';
+            //document.getElementById("umidita_da").value='';
+            //document.getElementById("umidita_a").value='';
             document.getElementById("luminosita_da").disabled = true;
             document.getElementById("luminosita_a").disabled = true;
             document.getElementById("temperatura_da").disabled = true;
             document.getElementById("temperatura_a").disabled = true;
-            document.getElementById("luminosita_da").value='0';
-            document.getElementById("luminosita_a").value='0';
-            document.getElementById("temperatura_da").value='0';
-            document.getElementById("temperatura_a").value='0';
+            document.getElementById("luminosita_da").value="NULL";
+            document.getElementById("luminosita_a").value="NULL";
+            document.getElementById("temperatura_da").value="NULL";
+            document.getElementById("temperatura_a").value="NULL";
         }else if(tipo_piano.options[indiceSelezionato].value=='piano_riscaldamento'){
             document.getElementById("temperatura_da").disabled = false;
             document.getElementById("temperatura_a").disabled = false;
-            document.getElementById("temperatura_da").value='';
-            document.getElementById("temperatura_a").value='';
+            //document.getElementById("temperatura_da").value='';
+            //document.getElementById("temperatura_a").value='';
             document.getElementById("umidita_da").disabled = true;
             document.getElementById("umidita_a").disabled = true;
             document.getElementById("luminosita_da").disabled = true;
             document.getElementById("luminosita_a").disabled = true;
-            document.getElementById("umidita_da").value='0';
-            document.getElementById("umidita_a").value='0';
-            document.getElementById("luminosita_da").value='0';
-            document.getElementById("luminosita_a").value='0';
+            document.getElementById("umidita_da").value="NULL";
+            document.getElementById("umidita_a").value="NULL";
+            document.getElementById("luminosita_da").value="NULL";
+            document.getElementById("luminosita_a").value="NULL";
         } else console.log("ERR");
 
         }));
@@ -205,13 +189,13 @@ class nuovo_piano_app{
 
         const piano={
             piano_configurazione:{ 
-            condizioni_misure:document.getElementById('condizioni_misure').value,
+            condizioni_misure:"NULL",
             attuatori_coinvolti:document.getElementById('attuatori_coinvolti').value,
-            conseguenze:document.getElementById('conseguenze').value,
+            conseguenze:"NULL",
             tipo_piano:document.getElementById('tipo_piano').value,
             umidita_da:document.getElementById('umidita_da').value,
             umidita_a:document.getElementById('umidita_a').value,
-            tempo_funzionamento:document.getElementById('tempo_funzionamento').value,
+            tempo_funzionamento:"NULL",
             temperatura_da:document.getElementById('temperatura_da').value,
             temperatura_a:document.getElementById('temperatura_a').value,
             luminosita_da:document.getElementById('luminosita_da').value,
@@ -224,10 +208,22 @@ class nuovo_piano_app{
         }
 
         if(piano.piano_configurazione.tipo_piano=='piano_illuminazione'){
-            piano.piano_configurazione.umidita_da='0';
-            piano.piano_configurazione.umidita_a='0';
-            piano.piano_configurazione.temperatura_da='0';
-            piano.piano_configurazione.temperatura_a='0';
+            piano.piano_configurazione.umidita_da="NULL";
+            piano.piano_configurazione.umidita_a="NULL";
+            piano.piano_configurazione.temperatura_da="NULL";
+            piano.piano_configurazione.temperatura_a="NULL";
+        }
+        else if(piano.piano_configurazione.tipo_piano=='piano_riscaldamento'){
+          piano.piano_configurazione.umidita_da="NULL";
+          piano.piano_configurazione.umidita_a="NULL";
+          piano.piano_configurazione.luminosita_da="NULL";
+          piano.piano_configurazione.luminosita_a="NULL";
+        }
+        else {
+          piano.piano_configurazione.temperatura_da="NULL";
+          piano.piano_configurazione.temperatura_a="NULL";
+          piano.piano_configurazione.luminosita_da="NULL";
+          piano.piano_configurazione.luminosita_a="NULL";
         }
         //sessionStorage.setItem("n_IOT",propr.proprieta.n_iot); //PRENDO IL N DI IOT CHE DEVO INSERIRE DA QUA
         
@@ -258,7 +254,7 @@ class nuovo_piano_app{
             });;
             
           /*  if(c) window.location.href="Aggiungi_iot.html";
-           else */window.location.href="Visualizza_elenco_proprieta.html";
+           else */ window.location.href="Visualizza_elenco_proprieta.html";
       }));
 
 
