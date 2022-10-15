@@ -47,7 +47,7 @@ class elimina_proprieta_manager{
         }
 
         else {
-            throw infoJson;
+            return infoJson;
         } 
     }
 

@@ -31,7 +31,6 @@ class elimina_piano_app{
     
     if(info_proprieta.length !=0){
 
-        
         let table = document.createElement('table');
     table.className="table table-success table-striped";
     let thead = document.createElement('thead')
@@ -90,7 +89,41 @@ class elimina_piano_app{
         tbody.appendChild(rowX);
         }
 
-} else { }
+} else { 
+    let table = document.createElement('table');
+    table.className="table table-success table-striped";
+    let thead = document.createElement('thead')
+    let tbody = document.createElement('tbody');
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    document.getElementById("elimina-piano").appendChild(table);
+
+
+    let row = document.createElement('tr');
+        let heading = document.createElement('th');
+        row.appendChild(heading);
+        heading.innerHTML = "ID Proprieta";
+
+        let heading2 = document.createElement('th');
+        row.appendChild(heading2);
+        heading2.innerHTML = "ID Piano";
+
+        let heading3 = document.createElement('th');
+        row.appendChild(heading3);
+        heading3.innerHTML = "Elimina";
+
+        
+        let c=document.createElement("h3");
+        c.innerHTML="\"Nessun piano di configurazione\"";
+        document.getElementById("elimina-piano").appendChild(c);
+
+        thead.appendChild(row);
+
+        //console.log(info_proprieta);
+        
+       
 }
 
-}
+}}

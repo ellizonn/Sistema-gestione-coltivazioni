@@ -53,7 +53,7 @@ class elimina_piano_manager{
         }
 
         else {
-            throw infoJson;
+            return prova_piani;
         } 
     }
 

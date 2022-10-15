@@ -157,6 +157,7 @@ class visual_stato_proprieta_app{
 
     //PER MISURE
     if(ultime_misure.length==0){
+    
         let tabella3 = document.getElementById("misure");
         //tabella.innerHTML+=table_1;
  
@@ -190,6 +191,10 @@ class visual_stato_proprieta_app{
              let heading5 = document.createElement('th');
              row.appendChild(heading5);
              heading5.innerHTML = "Unita' di misura";
+
+             let h1=document.createElement('h3');
+             tabella3.appendChild(h1);
+             h1.innerHTML="\"Nessuna misura rilevata\"";
  /*
              let heading6 = document.createElement('th');
              row.appendChild(heading6);
@@ -273,6 +278,85 @@ class visual_stato_proprieta_app{
     }
 
     if(piano.length==0){
+
+        let tabella3 = document.getElementById("piano");
+       // tabella.innerHTML+=table_1;
+ 
+         let table = document.createElement('table');
+         table.className="table table-success table-striped";
+         let thead = document.createElement('thead')
+         let tbody = document.createElement('tbody');
+ 
+         table.appendChild(thead);
+         table.appendChild(tbody);
+ 
+         document.getElementById("piano").appendChild(table)
+ 
+             let row = document.createElement('tr');
+             let heading = document.createElement('th');
+             row.appendChild(heading);
+             heading.innerHTML = "Id piano";
+ 
+             /*
+             let heading2 = document.createElement('th');
+             row.appendChild(heading2);
+             heading2.innerHTML = "Condizioni misure";
+            */
+             let heading3 = document.createElement('th');
+             row.appendChild(heading3);
+             heading3.innerHTML = "Attuatori coinvolti";
+ 
+             /*
+             let heading4 = document.createElement('th');
+             row.appendChild(heading4);
+             heading4.innerHTML = "Conseguenze";
+            */
+             let heading5 = document.createElement('th');
+             row.appendChild(heading5);
+             heading5.innerHTML = "Tipo piano";
+ 
+             let heading6 = document.createElement('th');
+             row.appendChild(heading6);
+             heading6.innerHTML = "Umidita da";
+
+             let heading7 = document.createElement('th');
+             row.appendChild(heading7);
+             heading7.innerHTML = "Umidita a";
+
+             /*
+             let heading8 = document.createElement('th');
+             row.appendChild(heading8);
+             heading8.innerHTML = "Tempo funz";
+            */ 
+             let heading9 = document.createElement('th');
+             row.appendChild(heading9);
+             heading9.innerHTML = "Temp da";
+
+             let heading10 = document.createElement('th');
+             row.appendChild(heading10);
+             heading10.innerHTML = "Temp a";
+             
+             let heading11 = document.createElement('th');
+             row.appendChild(heading11);
+             heading11.innerHTML = "Lumin da";
+
+             let heading12 = document.createElement('th');
+             row.appendChild(heading12);
+             heading12.innerHTML = "Lumin a";
+
+             let heading13 = document.createElement('th');
+             row.appendChild(heading13);
+             heading13.innerHTML = "Orario da";
+
+             let heading14 = document.createElement('th');
+             row.appendChild(heading14);
+             heading14.innerHTML = "Orario a";
+              
+             let h1=document.createElement('h3');
+             tabella3.appendChild(h1);
+             h1.innerHTML="\"Nessun piano di configurazione rilevato\"";
+
+             thead.appendChild(row);
         
     } else {
         let tabella3 = document.getElementById("piano");
