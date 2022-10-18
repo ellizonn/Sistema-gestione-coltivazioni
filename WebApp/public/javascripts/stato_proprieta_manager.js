@@ -118,8 +118,9 @@ class visual_stato_proprieta_manager{
                 this.piano.push(new my_piano(prova_pianiJson[i].id_piano, prova_pianiJson[i].condizioni_misure, prova_pianiJson[i].attuatori_coinvolti, prova_pianiJson[i].conseguenze, prova_pianiJson[i].tipo_piano, prova_pianiJson[i].umidita_da, prova_pianiJson[i].umidita_a, prova_pianiJson[i].tempo_funzionamento ,prova_pianiJson[i].temperatura_da, prova_pianiJson[i].temperatura_a, prova_pianiJson[i].luminosita_da, prova_pianiJson[i].luminosita_a, prova_pianiJson[i].orario_da, prova_pianiJson[i].orario_a));
             }
 
-            if(misure.ok){
+            if(ritorno_misure.ok){
                 for(let i=0;i<misure.lista_stati_misure_proprieta.length;i++){
+                    console.log(misure.lista_stati_misure_proprieta[i]);
                     this.ultime_misure.push(new my_misure(misure.lista_stati_misure_proprieta[i].id_misura, misure.lista_stati_misure_proprieta[i].data_misurazione, misure.lista_stati_misure_proprieta[i].ora_misurazione, misure.lista_stati_misure_proprieta[i].valore_misurato, misure.lista_stati_misure_proprieta[i].unita_misura));
                 }
                 //console.log('Ultime misure',this.ultime_misure);
