@@ -32,7 +32,7 @@ class nuovo_piano_app{
 
     show1Proprieta(iot){
 
-        console.log(iot);
+        //console.log(iot);
         var z = document.createElement('div'); // is a node
         z.innerHTML = 
         `
@@ -48,14 +48,9 @@ class nuovo_piano_app{
             </select>
             </div>
 
-          <div class="col-md-6">
+            <div class="col-md-6">
             <label for="tipo_piano" class="form-label">Tipo piano</label>
-            <select id="tipo_piano" class="form-select" required>
-            <option selected>Scegli...</option>
-            <option>piano_illuminazione</option>
-            <option>piano_riscaldamento</option>
-            <option>piano_irrigazione</option>
-            </select>
+            <input type="text" readonly class="form-control" id="tipo_piano" required>
           </div>
 
           <div class="col-md-6">
@@ -108,23 +103,102 @@ class nuovo_piano_app{
         </div>
      `;
 
-    
+    /*
+    <div class="col-md-6">
+            <label for="tipo_piano" class="form-label">Tipo piano</label>
+            <select id="tipo_piano" class="form-select" required>
+            <option selected>Scegli...</option>
+            <option>piano_illuminazione</option>
+            <option>piano_riscaldamento</option>
+            <option>piano_irrigazione</option>
+            </select>
+          </div>
+    */
 
      var h = document.getElementById('form-aggiungi-piano');
       h.appendChild(z);
 
       let esempio_select_1 = document.getElementById('attuatori_coinvolti');
                     for(let i of iot ) {
-                    esempio_select_1.add( new Option( i.id_device ) ); 
+                    esempio_select_1.add( new Option( i.id_device ) );
                     }
+              
+        //
+        let tipo_iot=document.getElementById("attuatori_coinvolti");
+        tipo_iot.addEventListener('change',(async function(e){
+          e.preventDefault();
+          var indiceSelezionato_iot = tipo_iot.selectedIndex;
+          //var id_mio=iot.options[indiceSelezionato_iot].value;
+          //console.log(tipo_iot.options[indiceSelezionato_iot].value);
+          let app;
+          for(let a of iot){
+            if(a.id_device==tipo_iot.options[indiceSelezionato_iot].value)   app=a.funzione;
+          }
+         // console.log("indiceSelezionato_iot: ",indiceSelezionato_iot, "app ", app);
 
+         let piano_tipo = document.getElementById("tipo_piano");
+
+         if(app=="Luminosità") {
+           piano_tipo.value="piano_illuminazione";
+           document.getElementById("luminosita_da").disabled = false;
+            document.getElementById("luminosita_a").disabled = false;
+            document.getElementById("luminosita_da").value=''; //messo alla fine
+            document.getElementById("luminosita_a").value=''; //messo alla fine
+            document.getElementById("umidita_da").disabled = true;
+            document.getElementById("umidita_a").disabled = true;
+            document.getElementById("temperatura_da").disabled = true;
+            document.getElementById("temperatura_a").disabled = true;
+            document.getElementById("umidita_da").value="NULL";
+            document.getElementById("umidita_a").value="NULL";
+            document.getElementById("temperatura_da").value="NULL";
+            document.getElementById("temperatura_a").value="NULL";
+            //console.log(document.getElementById("umidita_da").value);
+        }
+        else if(app=="Temperatura"){
+          piano_tipo.value="piano_riscaldamento";
+          document.getElementById("temperatura_da").disabled = false;
+            document.getElementById("temperatura_a").disabled = false;
+            document.getElementById("temperatura_da").value=''; //messo alla fine
+            document.getElementById("temperatura_a").value=''; //messo alla fine
+            document.getElementById("umidita_da").disabled = true;
+            document.getElementById("umidita_a").disabled = true;
+            document.getElementById("luminosita_da").disabled = true;
+            document.getElementById("luminosita_a").disabled = true;
+            document.getElementById("umidita_da").value="NULL";
+            document.getElementById("umidita_a").value="NULL";
+            document.getElementById("luminosita_da").value="NULL";
+            document.getElementById("luminosita_a").value="NULL";
+        }
+        else if(app=="Umidità")
+        {
+          piano_tipo.value="piano_irrigazione";
+          document.getElementById("umidita_da").disabled = false;
+            document.getElementById("umidita_a").disabled = false;
+            document.getElementById("umidita_da").value=''; //messo alla fine
+            document.getElementById("umidita_a").value=''; //messo alla fine
+            document.getElementById("luminosita_da").disabled = true;
+            document.getElementById("luminosita_a").disabled = true;
+            document.getElementById("temperatura_da").disabled = true;
+            document.getElementById("temperatura_a").disabled = true;
+            document.getElementById("luminosita_da").value="NULL";
+            document.getElementById("luminosita_a").value="NULL";
+            document.getElementById("temperatura_da").value="NULL";
+            document.getElementById("temperatura_a").value="NULL";
+        }else console.log("ERR");
+          
+          
+        }));
+        //
+
+        
+
+        /*
 
         let piano_tipo = document.getElementById("tipo_piano");
         piano_tipo.addEventListener('change',(async function(e){
           e.preventDefault();
           var indiceSelezionato = piano_tipo.selectedIndex;
-          //console.log("indice",indiceSelezionato);
-          //console.log(tipo_piano.options[indiceSelezionato].value);
+
           if(tipo_piano.options[indiceSelezionato].value=='piano_illuminazione'){
             document.getElementById("luminosita_da").disabled = false;
             document.getElementById("luminosita_a").disabled = false;
@@ -168,7 +242,7 @@ class nuovo_piano_app{
         } else console.log("ERR");
 
         }));
-        
+        */
 
 
       const form=document.getElementById('form_piano');
