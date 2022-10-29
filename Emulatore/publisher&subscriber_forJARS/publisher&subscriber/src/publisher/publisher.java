@@ -17,7 +17,7 @@ public class publisher {
       pub_sub pubsub = new pub_sub();
  
       try{
-         connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Gregl\\OneDrive\\Desktop\\PISSIR project\\gruppo-6\\WebApp\\iserra.db" );	//Attensione: prima di consegnare, modificare il path in base al pc che usiamo durante la discussione
+         connection = DriverManager.getConnection("jdbc:\\WebApp\\iserra.db" );	//Attensione: prima di consegnare, modificare il path in base al pc che usiamo durante la discussione
          if ( connection != null ){
             System.out.println("Connessione ok!");
          }

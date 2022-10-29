@@ -55,9 +55,12 @@ public class pub_sub {
             options.setPassword(pwd);
             options.setCleanSession(false);
             options.setWill(mqttClient.getTopic("home/LWT"), "I'm gone. Bye.".getBytes(), 0, false);
-
+            options.setKeepAliveInterval(5);
+            options.setAutomaticReconnect(true);
             // connect the publisher to the broker
-            mqttClient.connect(options);
+            IMqttToken x = mqttClient.connectWithResult(options);
+            x.waitForCompletion();
+            //mqttClient.connect(options);
 
             // publish something...
 
@@ -70,9 +73,28 @@ public class pub_sub {
 
     public void publishMessage(String topic, String msg) throws MqttException {
         // get the topic
+    	if(!mqttClient.isConnected()) {
+			//mqttClient.disconnect();
+			//mqttClient.reconnect();
+			mqttClient = new MqttClient("tcp://193.206.52.98:1883",MqttClient.generateClientId());
+			char pwd[] = {'p','i','s','s','i','r','2','0','2','0'};
+            MqttConnectOptions options = new MqttConnectOptions();
+            // persistent, durable connection
+            options.setUserName("pissir");
+            options.setPassword(pwd);
+            options.setCleanSession(false);
+            options.setWill(mqttClient.getTopic("home/LWT"), "I'm gone. Bye.".getBytes(), 0, false);
+            options.setKeepAliveInterval(5);
+            options.setAutomaticReconnect(true);
+            // connect the publisher to the broker
+            IMqttToken x = mqttClient.connectWithResult(options);
+            x.waitForCompletion();
+    	}
+    	System.out.println("client connesso "+mqttClient.isConnected());
         MqttTopic myTopic = mqttClient.getTopic(topic);
         myTopic.publish(new MqttMessage(msg.toString().getBytes(StandardCharsets.UTF_8)));
         System.out.println("Messaggio pubblicato sul topic '" + myTopic + "': " + msg.toString());
+    	
     }
 
 }

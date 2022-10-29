@@ -17,6 +17,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Paolo/Desktop/progettopissir/gruppo-6/Emulatore/publisher&amp;subscriber_forJARS/sqlite-jdbc-3.8.11.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Paolo/Desktop/progetto/gruppo-6/Emulatore/publisher&amp;subscriber_forJARS/sqlite-jdbc-3.8.11.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
