@@ -1,9 +1,6 @@
-# Gruppo 6
-
-Iabichino Mattia - 20034670
-Lupano Gregorio - 20034169
-Marisio Elia - 20036782
-Rossari Paolo - 20034882
+[Progetto descrizione.pdf](https://github.com/user-attachments/files/17434164/Progetto.descrizione.pdf)
+[Instructions.docx](https://github.com/user-attachments/files/17434172/Instructions.docx)
+[CheckList-FASI.pdf](https://github.com/user-attachments/files/17434168/CheckList-FASI.pdf)
 
 # Fase di specifica
 
@@ -29,4 +26,3 @@ diagrammi/diagrammi_casi_uso/RF07 gestione_manuale_attuatori_proprieta.pdf
 diagrammi/diagrammi_casi_uso/RF08 invia_misure.pdf
 diagrammi/diagrammi_casi_uso/RF09 ricezione_comandi.pdf
 
-# Fase di implementazione 
